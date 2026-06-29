@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Crypto Council Dashboard · BTC</title>
+<meta name="description" content="Hội đồng BTC 12 thành viên · 3 tầng · chỉ báo đa khung · biểu đồ nến — cập nhật theo cron." />
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<style>
+  :root{
+    --bg:#0a0e17; --surface:#111826; --surface2:#0e1420; --border:#1d2940;
+    --text:#e6edf3; --muted:#8b9bb0; --faint:#5b6b80;
+    --green:#22c55e; --red:#ef4444; --amber:#f59e0b; --blue:#3b82f6; --purple:#a855f7; --cyan:#22d3ee;
+    --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+    --r:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(34,211,238,.06), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(168,85,247,.06), transparent 55%),
+      var(--bg);
+    color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .wrap{max-width:1280px;margin:0 auto;padding:18px 16px 60px}
+  a{color:var(--cyan);text-decoration:none}
+
+  /* Header */
+  header{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;padding:14px 0 18px;border-bottom:1px solid var(--border)}
+  .sym{font-weight:800;font-size:18px;letter-spacing:.5px}
+  .sym small{color:var(--faint);font-weight:600}
+  .price{font-family:var(--mono);font-size:34px;font-weight:700;letter-spacing:-1px}
+  .chg{font-family:var(--mono);font-weight:700;font-size:15px;padding:3px 9px;border-radius:8px}
+  .hl{color:var(--muted);font-size:12.5px}
+  .verdict{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .badge{font-weight:800;letter-spacing:.5px;padding:8px 16px;border-radius:999px;font-size:15px;border:1px solid transparent}
+  .updated{color:var(--faint);font-size:11.5px;text-align:right}
+
+  /* Grid */
+  .grid{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-top:18px}
+  @media(max-width:920px){.grid{grid-template-columns:1fr}}
+  .card{background:linear-gradient(180deg,var(--surface),var(--surface2));border:1px solid var(--border);border-radius:var(--r);padding:16px}
+  .card h3{margin:0 0 12px;font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:var(--muted);font-weight:700}
+  #chart{height:420px;width:100%}
+  @media(max-width:920px){#chart{height:320px}}
+
+  /* Council */
+  .tiers{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .pill{flex:1;min-width:90px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 10px;text-align:center}
+  .pill .k{font-size:10.5px;color:var(--faint);letter-spacing:.6px;text-transform:uppercase}
+  .pill .v{font-weight:800;font-size:13px;margin-top:2px}
+  .gate{font-size:10px;color:var(--amber)}
+  .members{display:flex;flex-direction:column;gap:7px}
+  .mrow{display:grid;grid-template-columns:13px 96px 1fr 42px;align-items:center;gap:9px;font-size:12.5px}
+  .mdot{width:9px;height:9px;border-radius:50%}
+  .mname{color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mbar{height:7px;background:var(--surface2);border-radius:4px;position:relative;overflow:hidden}
+  .mbar .fill{position:absolute;top:0;height:100%;border-radius:4px}
+  .mw{font-family:var(--mono);color:var(--faint);font-size:11px;text-align:right}
+
+  /* Kèo */
+  .keos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:560px){.keos{grid-template-columns:1fr}}
+  .keo{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px}
+  .keo .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .keo .style{font-size:11px;color:var(--faint);letter-spacing:.5px;text-transform:uppercase}
+  .keo .lvl{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:3px}
+  .keo .lvl b{color:var(--text)}
+  .verdict-txt{color:var(--muted);font-size:12.5px;margin-bottom:12px;font-style:italic}
+
+  /* Tables / cards */
+  .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+  @media(max-width:920px){.row3{grid-template-columns:1fr}}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--border)}
+  th{color:var(--faint);font-weight:600;font-size:11px;letter-spacing:.5px;text-transform:uppercase}
+  td.n{font-family:var(--mono);text-align:right}
+  .stat{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--border)}
+  .stat:last-child{border-bottom:0}
+  .stat .k{color:var(--muted);font-size:12.5px}
+  .stat .v{font-family:var(--mono);font-weight:700;font-size:13.5px}
+  .ev{font-size:12px;color:var(--muted);padding:5px 0;border-bottom:1px solid var(--border)}
+  .ev:last-child{border-bottom:0}
+  .ev .d{color:var(--cyan);font-family:var(--mono)}
+  .alts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media(max-width:560px){.alts{grid-template-columns:repeat(2,1fr)}}
+  .alt{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px}
+  .alt .s{font-weight:800;font-size:13px}
+  .alt .p{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:2px}
+  .g{color:var(--green)} .r{color:var(--red)} .y{color:var(--amber)} .b{color:var(--blue)} .mut{color:var(--muted)}
+  .bg-g{background:rgba(34,197,94,.14);color:var(--green)} .bg-r{background:rgba(239,68,68,.14);color:var(--red)} .bg-y{background:rgba(245,158,11,.14);color:var(--amber)}
+  .bd-g{border-color:rgba(34,197,94,.5)} .bd-r{border-color:rgba(239,68,68,.5)} .bd-y{border-color:rgba(245,158,11,.5)}
+  footer{margin-top:28px;color:var(--faint);font-size:11.5px;text-align:center;line-height:1.7}
+  .dot-live{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);margin-right:5px;animation:pulse 2s infinite}
+  @keyframes pulse{50%{opacity:.4}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="sym" id="sym">BTC <small>/USDT · 4H</small></div>
+      <div class="hl" id="hl">H — · L —</div>
+    </div>
+    <div>
+      <div class="price num" id="price">—</div>
+      <span class="chg num" id="chg">—</span>
+    </div>
+    <div class="verdict">
+      <span class="badge" id="badge">—</span>
+      <div class="updated"><span class="dot-live"></span><span id="updated">—</span></div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Biểu đồ BTC 4H · MA50/MA200 · mốc kèo</h3>
+      <div id="chart"></div>
+    </div>
+    <div class="card">
+      <h3>🏛️ Hội đồng · 3 tầng</h3>
+      <div class="tiers" id="tiers"></div>
+      <div class="members" id="members"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>👨‍💼 Kèo theo khung</h3>
+    <div class="verdict-txt" id="verdictTxt"></div>
+    <div class="keos" id="keos"></div>
+  </div>
+
+  <div class="row3">
+    <div class="card"><h3>📊 Chỉ báo đa khung</h3><table id="ind"></table></div>
+    <div class="card"><h3>🌐 Bối cảnh</h3><div id="ctx"></div></div>
+    <div class="card"><h3>🌀 Chu kỳ & 📅 Vĩ mô</h3><div id="cyc"></div></div>
+  </div>
+
+  <div class="card" style="margin-top:16px"><h3>📈 Altcoins</h3><div class="alts" id="alts"></div></div>
+
+  <footer>
+    <div id="genAt">—</div>
+    Tự cập nhật theo nhịp cron · chạy song song bot Telegram · GitHub Pages.<br>
+    ⚠️ Thông tin tham khảo, KHÔNG phải lời khuyên đầu tư. Luôn dùng stop-loss.
+  </footer>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const fmt = (n, d=0) => n==null ? "—" : Number(n).toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const fp = (n) => n==null ? "—" : (Math.abs(n)>=1000?fmt(n):Math.abs(n)>=1?n.toFixed(2):Math.abs(n)>=0.01?n.toFixed(4):n.toPrecision(3));
+const usdBig = (n) => n==null?"—":Math.abs(n)>=1e9?"$"+(n/1e9).toFixed(2)+"B":"$"+(n/1e6).toFixed(1)+"M";
+const dirCls = (d) => d==="LONG"?"g":d==="SHORT"?"r":"y";
+const dirBg = (d) => d==="LONG"?"bg-g":d==="SHORT"?"bg-r":"bg-y";
+const arrow = (s) => s===1?"↑":s===-1?"↓":"→";
+
+let chart, candleS, ma50S, ma200S, priceLines=[];
+
+function initChart(el){
+  chart = LightweightCharts.createChart(el, {
+    layout:{ background:{color:"transparent"}, textColor:"#8b9bb0", fontFamily:"ui-monospace,monospace" },
+    grid:{ vertLines:{color:"rgba(29,41,64,.5)"}, horzLines:{color:"rgba(29,41,64,.5)"} },
+    rightPriceScale:{ borderColor:"#1d2940" },
+    timeScale:{ borderColor:"#1d2940", timeVisible:true, secondsVisible:false },
+    crosshair:{ mode:LightweightCharts.CrosshairMode.Normal },
+    autoSize:true,
+  });
+  candleS = chart.addCandlestickSeries({ upColor:"#22c55e", downColor:"#ef4444", borderVisible:false, wickUpColor:"#22c55e", wickDownColor:"#ef4444" });
+  ma50S = chart.addLineSeries({ color:"#3b82f6", lineWidth:1, priceLineVisible:false, lastValueVisible:false, title:"MA50" });
+  ma200S = chart.addLineSeries({ color:"#a855f7", lineWidth:1, priceLineVisible:false, lastValueVisible:false, title:"MA200" });
+}
+
+function renderChart(c){
+  if(!chart) initChart($("chart"));
+  candleS.setData(c.candles);
+  ma50S.setData(c.ma50||[]);
+  ma200S.setData(c.ma200||[]);
+  priceLines.forEach(pl=>candleS.removePriceLine(pl)); priceLines=[];
+  (c.levels||[]).forEach(l=>{
+    priceLines.push(candleS.createPriceLine({ price:l.price, color:l.color, lineWidth:1, lineStyle:LightweightCharts.LineStyle.Dashed, axisLabelVisible:true, title:l.label }));
+  });
+  chart.timeScale().fitContent();
+}
+
+function render(d){
+  // Header
+  $("sym").innerHTML = (d.symbol||"BTC").replace("/USDT","") + ' <small>/USDT · 4H</small>';
+  $("price").textContent = "$"+fp(d.price.last);
+  const up = d.price.change24h>=0;
+  const chg=$("chg"); chg.textContent=(up?"▲ +":"▼ ")+d.price.change24h.toFixed(2)+"%";
+  chg.className="chg num "+(up?"bg-g":"bg-r");
+  $("hl").innerHTML = "H $"+fp(d.price.high24h)+" · L $"+fp(d.price.low24h);
+  const b=$("badge"), dir=d.council.direction;
+  b.textContent=(dir==="LONG"?"🟢 ":dir==="SHORT"?"🔴 ":"🟡 ")+dir+" · "+d.council.confidence;
+  b.className="badge "+dirBg(dir)+" "+("bd-"+dirCls(dir));
+  $("updated").textContent="Cập nhật "+d.generatedAtVN+" (GMT+7)";
+  $("genAt").textContent="Snapshot: "+d.generatedAtVN+" GMT+7 · "+(d.chart.candles.length)+" nến";
+
+  // Tiers
+  const t=d.council.tiers;
+  $("tiers").innerHTML = !t?"":[
+    ["Regime",t.regime.dir,t.regime.score,false],
+    ["Setup",t.setup.dir,null,t.setup.gated],
+    ["Trigger",t.trigger.dir,null,t.trigger.gated],
+  ].map(([k,dr,sc,g])=>`<div class="pill"><div class="k">${k}</div><div class="v ${dirCls(dr)}">${dr}${sc!=null?" "+sc:""}</div>${g?'<div class="gate">⛔ gated</div>':""}</div>`).join("");
+  $("tiers").insertAdjacentHTML("afterbegin",
+    `<div class="pill" style="flex-basis:100%;min-width:100%"><div class="k">Consensus / Đồng thuận</div><div class="v num">${d.council.consensus} · ${d.council.agreement}%</div></div>`);
+
+  // Members (vote bar centered at 50%)
+  $("members").innerHTML = d.council.members.map(m=>{
+    const w=Math.min(50,Math.abs(m.vote)*50), col=m.dot==="green"?"var(--green)":m.dot==="red"?"var(--red)":"var(--faint)";
+    const fill = m.vote>=0 ? `left:50%;width:${w}%;background:${col}` : `right:50%;width:${w}%;background:${col}`;
+    return `<div class="mrow"><span class="mdot" style="background:${col}"></span><span class="mname">${m.name}</span><span class="mbar"><span class="fill" style="${fill}"></span></span><span class="mw">×${Number(m.weight).toFixed(2)}</span></div>`;
+  }).join("");
+
+  // Kèo
+  $("verdictTxt").textContent = d.expert?.verdict||"";
+  const keo=(name,k)=> !k?`<div class="keo"><div class="top"><span class="style">${name}</span><span class="${dirCls('NEUTRAL')}">chờ</span></div><div class="lvl mut">range</div></div>`
+    :`<div class="keo"><div class="top"><span class="style">${name}</span><span class="${dirCls(k.dir)}" style="font-weight:800">${k.dir}</span></div>
+       <div class="lvl">Entry <b>$${fp(k.entry[0])}–$${fp(k.entry[1])}</b></div>
+       <div class="lvl">SL <b>$${fp(k.sl)}</b> · TP <b>$${(k.tp||[]).map(fp).join(" → $")}</b></div>
+       ${k.rr?`<div class="lvl">R:R <b>${k.rr}</b></div>`:""}</div>`;
+  $("keos").innerHTML = keo("⚡ Scalp",d.expert?.scalp)+keo("☀️ Day",d.expert?.day)+keo("📈 Swing",d.expert?.swing);
+
+  // Indicators
+  $("ind").innerHTML = "<tr><th>TF</th><th>RSI</th><th>MACD</th><th>Stoch</th><th>ST</th><th>Khác</th></tr>"+
+    d.indicators.map(i=>`<tr><td><b>${i.tf}</b></td><td class="n">${i.rsi??"—"}</td><td class="${i.macd==='bull'?'g':'r'}">${i.macd}</td><td class="n">${i.stoch??"—"}</td><td>${arrow(i.st)}</td><td class="mut" style="font-size:11px">${i.extra||""}</td></tr>`).join("");
+
+  // Context
+  const s=d.sentiment, dv=d.derivatives, fg=s.fearGreed;
+  const fr=dv&&dv.fundingRate!=null?(dv.fundingRate*100):null;
+  const cb=dv&&dv.coinbasePremium?dv.coinbasePremium.gap:null;
+  const stat=(k,v,cls)=>`<div class="stat"><span class="k">${k}</span><span class="v ${cls||''}">${v}</span></div>`;
+  $("ctx").innerHTML =
+    (fg?stat("😱 Fear & Greed", fg.value+" · "+fg.classification, fg.value<=25?"r":fg.value>=75?"g":"y"):"")+
+    (fr!=null?stat("📉 Funding", (fr>0?"+":"")+fr.toFixed(4)+"% "+(fr>0?"long đông":"short đông"), fr>0?"r":"g"):"")+
+    (cb!=null?stat("🇺🇸 Coinbase prem", (cb>0?"+":"")+fmt(cb), cb<=-30?"r":cb>=30?"g":""):"")+
+    (dv&&dv.openInterestValue?stat("🔓 OI notional", usdBig(dv.openInterestValue), ""):"")+
+    (d.etf?stat("💵 ETF (ngày)", (d.etf.latestNetInflowUsd>0?"+":"")+usdBig(d.etf.latestNetInflowUsd), d.etf.latestNetInflowUsd<0?"r":"g"):"")+
+    (d.etf?stat("💵 ETF (7d)", (d.etf.net7DaysUsd>0?"+":"")+usdBig(d.etf.net7DaysUsd), d.etf.net7DaysUsd<0?"r":"g"):"")+
+    (d.breadth?stat("📊 Breadth", d.breadth.green+"/"+d.breadth.count+" ("+d.breadth.pctGreen+"%)", d.breadth.pctGreen>=70?"g":d.breadth.pctGreen<=30?"r":"y"):"")+
+    (s.news?stat("📰 News (6551)", s.news.avgScore+"/100 ("+s.news.longCount+"L/"+s.news.shortCount+"S)", s.news.avgScore<=45?"r":s.news.avgScore>=55?"g":""):"")+
+    (s.community?stat("🗣️ Cộng đồng", s.community.upPct+"% ↑", s.community.net==="long"?"g":s.community.net==="short"?"r":""):"");
+
+  // Cycle & macro
+  const cy=d.cycle;
+  let cyc = cy?(
+    stat("Regime", cy.regime, cy.regime&&cy.regime.includes("BEAR")?"r":"g")+
+    stat("MA200W", "$"+fp(cy.ma200w), d.price.last<cy.ma200w?"r":"g")+
+    stat("Mayer", cy.mayer, cy.mayer<0.8?"g":cy.mayer>2.4?"r":"")+
+    stat("MACD tuần", cy.weeklyMacdBear?"bear":"bull", cy.weeklyMacdBear?"r":"g")+
+    (cy.piGapPct!=null?stat("Pi Cycle gap", cy.piGapPct+"%",""):"")+
+    (cy.supports||[]).map(x=>stat("🪜 "+x.ma, "$"+fp(x.level)+" ("+x.distPct+"%)","mut")).join("")
+  ):"";
+  if(d.macroEvents&&d.macroEvents.length){
+    cyc += '<div style="margin-top:10px"></div>';
+    cyc += d.macroEvents.slice(0,3).map(e=>`<div class="ev"><span class="d">${e.date.slice(5)}</span> ${e.high?"⚠️ ":""}${(e.events||[]).slice(0,2).join(", ")}</div>`).join("");
+  }
+  $("cyc").innerHTML=cyc;
+
+  // Alts
+  $("alts").innerHTML = (d.alts||[]).map(a=>{
+    const u=a.change24h>=0;
+    return `<div class="alt"><div class="s">${a.symbol} <span class="${dirCls(a.direction)}" style="font-size:11px">${a.direction}</span></div><div class="p">$${fp(a.price)} <span class="${u?'g':'r'}">${u?"+":""}${a.change24h?.toFixed(2)}%</span></div></div>`;
+  }).join("");
+
+  renderChart(d.chart);
+}
+
+async function load(){
+  try{
+    const res = await fetch("data.json?t="+Date.now());
+    const d = await res.json();
+    render(d);
+  }catch(e){ console.error(e); }
+}
+load();
+setInterval(load, 90000); // tự refresh 90s (đọc lại data.json mới do cron ghi)
+</script>
+</body>
+</html>
