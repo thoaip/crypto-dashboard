@@ -53,6 +53,11 @@
   #tv_chart{height:468px;width:100%}
   @media(max-width:960px){#tv_chart{height:340px}}
   .tvnote{color:var(--faint);font-size:11px;margin-top:8px}
+  .chips-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:-2px 0 10px}
+  .chips-lbl{font-size:11px;color:var(--faint)}
+  .chip{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);cursor:pointer;transition:.15s}
+  .chip:hover{color:var(--text);border-color:var(--cyan)}
+  .chip.on{background:rgba(34,211,238,.16);color:var(--cyan);border-color:var(--cyan)}
   /* Council */
   .tiers{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
   .pill{flex:1;min-width:84px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:7px 9px;text-align:center}
@@ -119,8 +124,9 @@
   <div class="grid">
     <div class="card">
       <h3>📈 Biểu đồ realtime · TradingView <span style="color:var(--faint);text-transform:none;letter-spacing:0">(đổi khung/chỉ báo ngay trên chart)</span></h3>
+      <div class="chips-row"><span class="chips-lbl">📌 Chỉ báo lưu sẵn:</span><span id="chips"></span></div>
       <div id="tv_chart"></div>
-      <div class="tvnote">Chart realtime từ TradingView. Phân tích Hội đồng/kèo bên dưới là snapshot khung 4H, cập nhật theo cron.</div>
+      <div class="tvnote">Chart realtime từ TradingView. Chỉ báo lưu qua các chip trên SỐNG qua refresh/đổi coin. Chỉ báo tự add bằng thanh công cụ chart chỉ giữ trong phiên (giới hạn widget free). Phân tích Hội đồng/kèo bên dưới là snapshot 4H theo cron.</div>
     </div>
     <div class="card">
       <h3>🏛️ Hội đồng · 3 tầng (4H)</h3>
@@ -164,20 +170,42 @@ const dirCls=(d)=> d==="LONG"?"g":d==="SHORT"?"r":"y";
 const dirBg=(d)=> d==="LONG"?"bg-g":d==="SHORT"?"bg-r":"bg-y";
 const arrow=(s)=> s===1?"↑":s===-1?"↓":"→";
 
-const state = { coin:"BTC", theme: localStorage.getItem("dash-theme")||"dark", data:null };
+const STUDY_IDS = { EMA:"MAExp@tv-basicstudies", MA:"MASimple@tv-basicstudies", RSI:"RSI@tv-basicstudies", MACD:"MACD@tv-basicstudies", BB:"BB@tv-basicstudies", Stoch:"Stochastic@tv-basicstudies", Vol:"Volume@tv-basicstudies" };
+let savedStudies; try{ savedStudies = JSON.parse(localStorage.getItem("dash-studies")); }catch(e){}
+const state = { coin:"BTC", theme: localStorage.getItem("dash-theme")||"dark", studies: Array.isArray(savedStudies)?savedStudies:["Volume@tv-basicstudies"], data:null };
 document.documentElement.dataset.theme = state.theme;
 $("themeBtn").textContent = state.theme==="dark"?"🌙":"☀️";
 
+let chartKey = null; // symbol+studies đang vẽ — chỉ tạo lại widget khi đổi, KHÔNG mỗi lần refresh
 function makeChart(){
   const c = state.data.coins[state.coin]; if(!c) return;
+  chartKey = c.tvSymbol + "|" + state.studies.join(",");
   $("tv_chart").innerHTML="";
   new TradingView.widget({
     container_id:"tv_chart", autosize:true, symbol:c.tvSymbol, interval:"240",
     timezone:"Asia/Ho_Chi_Minh", theme:state.theme, style:"1", locale:"vi_VN",
     toolbar_bg:"rgba(0,0,0,0)", enable_publishing:false, allow_symbol_change:true,
     hide_top_toolbar:false, hide_side_toolbar:false, withdateranges:true, details:false,
+    studies: state.studies,
   });
 }
+// Chỉ tạo lại widget khi symbol/studies đổi (đổi coin / bật-tắt chip) — refresh data KHÔNG đụng chart
+// → chỉ báo anh tự add trên chart KHÔNG bị mất mỗi lần cập nhật nữa.
+function ensureChart(){
+  const c = state.data.coins[state.coin]; if(!c) return;
+  const key = c.tvSymbol + "|" + state.studies.join(",");
+  if(key !== chartKey) makeChart();
+}
+function renderChips(){
+  $("chips").innerHTML = Object.entries(STUDY_IDS).map(([label,id])=>`<button class="chip ${state.studies.includes(id)?'on':''}" onclick="toggleStudy('${id}')">${label}</button>`).join("");
+}
+function toggleStudy(id){
+  const i=state.studies.indexOf(id);
+  if(i>=0) state.studies.splice(i,1); else state.studies.push(id);
+  localStorage.setItem("dash-studies", JSON.stringify(state.studies));
+  renderChips(); ensureChart();
+}
+function render(){ renderPanels(); ensureChart(); }
 
 function fundingSvg(hist){
   const svg=$("fhSvg"); if(!hist||!hist.length){svg.innerHTML="";return;}
@@ -196,7 +224,7 @@ function fundingSvg(hist){
   svg.innerHTML=s;
 }
 
-function render(){
+function renderPanels(){
   const d=state.data, c=d.coins[state.coin];
   // coin buttons
   $("coins").innerHTML=d.order.map(s=>`<button class="cbtn ${s===state.coin?'active':''}" onclick="setCoin('${s}')">${s}</button>`).join("");
@@ -256,7 +284,7 @@ function render(){
     (ex.macro?stat("🔺 BTC.D",ex.macro.btcDominance+"%",""):"")+
     (ex.macroEvents&&ex.macroEvents.length?'<div style="margin-top:6px"></div>'+ex.macroEvents.slice(0,2).map(e=>`<div class="ev"><span class="d">${e.date.slice(5)}</span> ${e.high?"⚠️ ":""}${(e.events||[]).slice(0,1).join(", ")}</div>`).join(""):"");
   fundingSvg(ex.fundingHistory);
-  makeChart();
+  renderChips();
 }
 
 function setCoin(s){ state.coin=s; render(); }
@@ -265,7 +293,7 @@ $("themeBtn").onclick=()=>{
   localStorage.setItem("dash-theme",state.theme);
   document.documentElement.dataset.theme=state.theme;
   $("themeBtn").textContent=state.theme==="dark"?"🌙":"☀️";
-  if(state.data) render(); // re-init chart với theme mới
+  if(state.data) renderPanels(); // chỉ đổi panel; GIỮ chart (không tạo lại → không mất chỉ báo)
 };
 
 async function load(){
