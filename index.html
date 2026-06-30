@@ -45,6 +45,11 @@
   .chg{font-family:var(--mono);font-weight:700;font-size:14px;padding:3px 9px;border-radius:8px}
   .hl{color:var(--muted);font-size:12.5px}
   .badge{font-weight:800;letter-spacing:.4px;padding:8px 15px;border-radius:999px;font-size:14px;border:1px solid transparent;margin-left:auto}
+  .bbanner{margin:12px 0 0;padding:10px 14px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);font-size:13px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .bbanner .lvl{font-weight:800}
+  .bbanner .sigs{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .bbanner.strong{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.10)}
+  .bbanner.mid{border-color:rgba(245,158,11,.5);background:rgba(245,158,11,.08)}
   /* Grid */
   .grid{display:grid;grid-template-columns:1.7fr 1fr;gap:16px;margin-top:14px}
   @media(max-width:960px){.grid{grid-template-columns:1fr}}
@@ -120,6 +125,8 @@
     <span class="chg num" id="chg">—</span>
     <span class="badge" id="badge">—</span>
   </div>
+
+  <div id="bottomBanner" class="bbanner"></div>
 
   <div class="grid">
     <div class="card">
@@ -238,6 +245,15 @@ function renderPanels(){
   b.className="badge "+dirBg(dir)+" bd-"+dirCls(dir);
   $("updated").textContent="Cập nhật "+d.generatedAtVN+" GMT+7";
   $("genAt").textContent="Snapshot phân tích: "+d.generatedAtVN+" GMT+7";
+  // 🔻 Banner đáy BTC (composite — luôn hiện vì là đáy chu kỳ BTC)
+  const bt=d.btcExtra&&d.btcExtra.bottom;
+  if(bt){
+    const cls=bt.count>=3?"strong":bt.count===2?"mid":"";
+    const emo=bt.count>=3?"🟢":bt.count===2?"🟡":"⚪";
+    const bb=$("bottomBanner");
+    bb.className="bbanner "+cls;
+    bb.innerHTML=`🔻 <span class="lvl">ĐÁY BTC: ${emo} ${bt.verdict}</span> <span>(${bt.count}/${bt.total})</span>`+(bt.active&&bt.active.length?` <span class="sigs">✓ ${bt.active.join(" · ")}</span>`:"");
+  }
   // tiers
   const t=c.council.tiers;
   $("tiers").innerHTML=(t?[["Regime",t.regime.dir,t.regime.score,false],["Setup",t.setup.dir,null,t.setup.gated],["Trigger",t.trigger.dir,null,t.trigger.gated]]
