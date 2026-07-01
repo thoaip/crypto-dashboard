@@ -85,6 +85,10 @@
   .keo .lvl{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:3px}
   .keo .lvl b{color:var(--text)}
   .verdict-txt{color:var(--muted);font-size:12.5px;margin-bottom:12px;font-style:italic}
+  .keo-live{margin-top:9px;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:6px;display:inline-block;color:var(--muted);background:var(--surface)}
+  .keo-live.inzone{background:rgba(34,211,238,.18);color:var(--cyan);animation:pulse 1.3s infinite}
+  .keo-live.sl{color:var(--red)} .keo-live.tp{color:var(--green)}
+  .keo.zone-hit{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan) inset}
   /* Rows / tables / cards */
   .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
   @media(max-width:960px){.row3{grid-template-columns:1fr}}
@@ -112,6 +116,7 @@
     <div class="brand"><span class="b">◆</span> CRYPTO COUNCIL <span style="color:var(--faint)">· dashboard</span></div>
     <div class="coins" id="coins"></div>
     <div class="right">
+      <button class="toggle" id="notifyBtn" title="Bật thông báo trình duyệt khi giá vào vùng entry kèo">🔔 off</button>
       <button class="toggle" id="themeBtn" title="Đổi sáng/tối">🌙</button>
       <div class="updated"><span class="dot-live"></span><span id="updated">—</span></div>
     </div>
@@ -267,12 +272,14 @@ function renderPanels(){
   }).join("");
   // kèo
   $("verdictTxt").textContent=c.expert?.verdict||"";
-  const keo=(name,k)=> !k?`<div class="keo"><div class="top"><span class="style">${name}</span><span class="y">chờ</span></div><div class="lvl mut">range</div></div>`
-    :`<div class="keo"><div class="top"><span class="style">${name}</span><span class="${dirCls(k.dir)}" style="font-weight:800">${k.dir}</span></div>
+  const keo=(key,name,k)=> !k?`<div class="keo" id="keo-${key}"><div class="top"><span class="style">${name}</span><span class="y">chờ</span></div><div class="lvl mut">range</div></div>`
+    :`<div class="keo" id="keo-${key}"><div class="top"><span class="style">${name}</span><span class="${dirCls(k.dir)}" style="font-weight:800">${k.dir}</span></div>
        <div class="lvl">Entry <b>$${fp(k.entry[0])}–$${fp(k.entry[1])}</b></div>
        <div class="lvl">SL <b>$${fp(k.sl)}</b> · TP <b>$${(k.tp||[]).map(fp).join(" → $")}</b></div>
-       ${k.rr?`<div class="lvl">R:R <b>${k.rr}</b></div>`:""}</div>`;
-  $("keos").innerHTML=keo("⚡ Scalp",c.expert?.scalp)+keo("☀️ Day",c.expert?.day)+keo("📈 Swing",c.expert?.swing);
+       ${k.rr?`<div class="lvl">R:R <b>${k.rr}</b></div>`:""}
+       <div class="keo-live" id="live-${key}">— chờ giá live —</div></div>`;
+  $("keos").innerHTML=keo("scalp","⚡ Scalp",c.expert?.scalp)+keo("day","☀️ Day",c.expert?.day)+keo("swing","📈 Swing",c.expert?.swing);
+  pollPrice();  // cập nhật trạng thái live ngay sau khi render
   // indicators
   $("ind").innerHTML="<tr><th>TF</th><th>RSI</th><th>MACD</th><th>Stoch</th><th>ST</th><th>Khác</th></tr>"+
     c.indicators.map(i=>`<tr><td><b>${i.tf}</b></td><td class="n">${i.rsi??"—"}</td><td class="${i.macd==='bull'?'g':'r'}">${i.macd}</td><td class="n">${i.stoch??"—"}</td><td>${arrow(i.st)}</td><td class="mut" style="font-size:11px">${i.extra||""}</td></tr>`).join("");
@@ -311,6 +318,44 @@ $("themeBtn").onclick=()=>{
   $("themeBtn").textContent=state.theme==="dark"?"🌙":"☀️";
   if(state.data) renderPanels(); // chỉ đổi panel; GIỮ chart (không tạo lại → không mất chỉ báo)
 };
+
+// ─── REALTIME KÈO: poll giá live → trạng thái vùng entry + browser notify ───
+let notifyOn = false;
+const prevInZone = {};
+async function fetchLivePrice(coin){
+  try{ const r=await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${coin}USDT`,{cache:"no-store"}); if(r.ok){ const j=await r.json(); const p=parseFloat(j.price); if(p>0) return p; } }catch(e){}
+  try{ const r=await fetch(`https://www.okx.com/api/v5/market/ticker?instId=${coin}-USDT`,{cache:"no-store"}); const j=await r.json(); const p=parseFloat(j.data&&j.data[0]&&j.data[0].last); if(p>0) return p; }catch(e){}
+  return null;
+}
+function keoStatus(k, price){
+  if(!k || !k.entry) return null;
+  const lo=Math.min(k.entry[0],k.entry[1]), hi=Math.max(k.entry[0],k.entry[1]);
+  if(price>=lo && price<=hi) return {txt:"⚡ ĐANG TRONG VÙNG ENTRY", cls:"inzone", inzone:true};
+  const tpLast=k.tp&&k.tp.length?k.tp[k.tp.length-1]:null;
+  if(k.dir==="LONG"){ if(price<=k.sl) return {txt:"🛑 chạm SL",cls:"sl"}; if(tpLast!=null&&price>=tpLast) return {txt:"✅ chạm TP",cls:"tp"}; }
+  else{ if(price>=k.sl) return {txt:"🛑 chạm SL",cls:"sl"}; if(tpLast!=null&&price<=tpLast) return {txt:"✅ chạm TP",cls:"tp"}; }
+  const near=price<lo?lo:hi, dPct=Math.abs((near-price)/price*100), arrow=price<lo?"▲":"▼";
+  return {txt:`cách entry ${dPct.toFixed(2)}% ${arrow}`, cls:""};
+}
+async function pollPrice(){
+  const c=state.data&&state.data.coins[state.coin]; if(!c||!c.expert) return;
+  const p=await fetchLivePrice(state.coin); if(p==null) return;
+  for(const [key,k] of [["scalp",c.expert.scalp],["day",c.expert.day],["swing",c.expert.swing]]){
+    const el=document.getElementById("live-"+key); if(!el) continue;
+    const st=keoStatus(k,p); if(!st){ el.textContent="—"; el.className="keo-live"; continue; }
+    el.textContent=`LIVE $${fp(p)} · ${st.txt}`; el.className="keo-live "+st.cls;
+    const card=document.getElementById("keo-"+key); if(card) card.classList.toggle("zone-hit",!!st.inzone);
+    const nk=state.coin+"-"+key;
+    if(st.inzone && !prevInZone[nk] && notifyOn) notify(`⚡ ${state.coin} ${k.dir} — giá vào vùng entry ${key.toUpperCase()}`, `Giá $${fp(p)} · Entry $${fp(k.entry[0])}–$${fp(k.entry[1])} · SL $${fp(k.sl)}`);
+    prevInZone[nk]=!!st.inzone;
+  }
+}
+function notify(title, body){ if(("Notification" in window) && Notification.permission==="granted") try{ new Notification(title,{body}); }catch(e){} }
+$("notifyBtn").onclick=()=>{
+  if(!("Notification" in window)){ alert("Trình duyệt không hỗ trợ thông báo"); return; }
+  Notification.requestPermission().then(pm=>{ notifyOn=pm==="granted"; $("notifyBtn").textContent=notifyOn?"🔔 on":"🔔 off"; });
+};
+setInterval(pollPrice, 15000); // giá live mỗi 15s
 
 async function load(){
   try{ const r=await fetch("data.json?t="+Date.now()); const d=await r.json(); state.data=d; if(!d.coins[state.coin]) state.coin=d.order[0]; render(); }
