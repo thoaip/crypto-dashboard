@@ -121,6 +121,11 @@
   .ptrow .rstyle{color:var(--faint);text-transform:uppercase;width:46px}
   .ptrow .rpnl{margin-left:auto;font-weight:800}
   .ptnote{color:var(--faint);font-size:10.5px;margin-top:10px;line-height:1.5}
+  .ptbreak{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .ptbk{flex:1;min-width:88px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:7px 9px;text-align:center;font-family:var(--mono)}
+  .ptbk .k{font-size:9.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.4px}
+  .ptbk .v{font-size:14px;font-weight:800;margin-top:2px}
+  .ptbk .s{font-size:9.5px;color:var(--muted);margin-top:1px}
   /* Rows / tables / cards */
   .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
   @media(max-width:960px){.row3{grid-template-columns:1fr}}
@@ -194,6 +199,7 @@
     </div>
     <div class="ptequity" id="paperEquity"></div>
     <div class="ptpos" id="paperPos"></div>
+    <div class="ptbreak" id="paperBreak"></div>
     <div class="ptrecent" id="paperRecent"></div>
     <div class="ptnote">📈 Forward-test 3 kèo (scalp/day/swing) chạy song song như 1 tài khoản futures 30x — mô phỏng thanh lý thật. uPnL cập nhật realtime theo giá BTC. Không phải khuyến nghị đầu tư.</div>
   </div>
@@ -447,6 +453,11 @@ function paperCardHtml(p){
     <div class="ptliq" id="ptliq-${p.style}">⚠️ Thanh lý $${fp(p.liq)}</div>
   </div>`;
 }
+function bkChip(label, a){
+  if(!a||!a.trades) return `<div class="ptbk"><div class="k">${label}</div><div class="v" style="color:var(--faint)">—</div><div class="s">0 lệnh</div></div>`;
+  const col=a.winRate>=50?'var(--green)':a.winRate>=35?'var(--amber)':'var(--red)';
+  return `<div class="ptbk"><div class="k">${label}</div><div class="v" style="color:${col}">${a.winRate}%</div><div class="s">${a.trades} lệnh · ${a.net>=0?'+':'−'}$${Math.abs(Math.round(a.net))}</div></div>`;
+}
 function renderPaperEquity(capital, net, netPct, stats){
   const g=net>=0;
   $("paperEquity").innerHTML=
@@ -462,6 +473,10 @@ function renderPaper(){
   renderPaperEquity(pp.capital, pp.net, pp.netPct, pp.stats);
   $("paperPos").innerHTML=state.paperPos.length?state.paperPos.map(paperCardHtml).join("")
     :`<div class="ptempty">Chưa có lệnh mở — chờ giá chạm vùng entry (scalp/day/swing). Lệnh mở/đóng cập nhật mỗi 30 phút.</div>`;
+  const an=pp.analysis;
+  $("paperBreak").innerHTML=(an&&an.overall&&an.overall.trades)
+    ? bkChip("Scalp",an.byStyle.scalp)+bkChip("Day",an.byStyle.day)+bkChip("Swing",an.byStyle.swing)+bkChip("Long",an.byDir.LONG)+bkChip("Short",an.byDir.SHORT)
+    : "";
   const rec=pp.recent||[];
   $("paperRecent").innerHTML=rec.length?(`<div class="ptrow" style="border-top:none;color:var(--faint)"><span>Lệnh đã đóng gần đây</span></div>`+rec.map(t=>{
     const g=t.pnlUsd>=0;
