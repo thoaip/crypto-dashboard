@@ -87,7 +87,9 @@
   .verdict-txt{color:var(--muted);font-size:12.5px;margin-bottom:12px;font-style:italic}
   .keo-live{margin-top:9px;font-family:var(--mono);font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:6px;display:inline-block;color:var(--muted);background:var(--surface)}
   .keo-live.inzone{background:rgba(34,211,238,.18);color:var(--cyan);animation:pulse 1.3s infinite}
+  .keo-live.near{background:rgba(245,158,11,.18);color:var(--amber);animation:pulse 1.3s infinite}
   .keo-live.sl{color:var(--red)} .keo-live.tp{color:var(--green)}
+  .livetag{font-family:var(--mono);font-size:11px;color:var(--red);font-weight:700}
   .keo.zone-hit{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan) inset}
   /* Rows / tables / cards */
   .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
@@ -116,7 +118,8 @@
     <div class="brand"><span class="b">◆</span> CRYPTO COUNCIL <span style="color:var(--faint)">· dashboard</span></div>
     <div class="coins" id="coins"></div>
     <div class="right">
-      <button class="toggle" id="notifyBtn" title="Bật thông báo trình duyệt khi giá vào vùng entry kèo">🔔 off</button>
+      <button class="toggle" id="fontBtn" title="Cỡ chữ (bấm để đổi)">🔤 Vừa</button>
+      <button class="toggle" id="notifyBtn" title="Bật thông báo trình duyệt khi giá vào/gần vùng entry kèo">🔔 off</button>
       <button class="toggle" id="themeBtn" title="Đổi sáng/tối">🌙</button>
       <div class="updated"><span class="dot-live"></span><span id="updated">—</span></div>
     </div>
@@ -128,6 +131,7 @@
       <div class="hl" id="hl">H — · L —</div>
     </div>
     <span class="chg num" id="chg">—</span>
+    <span class="livetag" id="liveTag"></span>
     <span class="badge" id="badge">—</span>
   </div>
 
@@ -319,35 +323,50 @@ $("themeBtn").onclick=()=>{
   if(state.data) renderPanels(); // chỉ đổi panel; GIỮ chart (không tạo lại → không mất chỉ báo)
 };
 
-// ─── REALTIME KÈO: poll giá live → trạng thái vùng entry + browser notify ───
+// ─── REALTIME: giá header live + trạng thái vùng entry kèo + browser notify ───
 let notifyOn = false;
-const prevInZone = {};
-async function fetchLivePrice(coin){
-  try{ const r=await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${coin}USDT`,{cache:"no-store"}); if(r.ok){ const j=await r.json(); const p=parseFloat(j.price); if(p>0) return p; } }catch(e){}
-  try{ const r=await fetch(`https://www.okx.com/api/v5/market/ticker?instId=${coin}-USDT`,{cache:"no-store"}); const j=await r.json(); const p=parseFloat(j.data&&j.data[0]&&j.data[0].last); if(p>0) return p; }catch(e){}
+const prevZone = {};
+const NEAR_PCT = 0.3; // ngưỡng "sắp vào vùng" (%)
+async function fetchLive(coin){
+  try{ const r=await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${coin}USDT`,{cache:"no-store"});
+    if(r.ok){ const j=await r.json(); const p=parseFloat(j.lastPrice); if(p>0) return {price:p, chg:parseFloat(j.priceChangePercent), high:parseFloat(j.highPrice), low:parseFloat(j.lowPrice)}; } }catch(e){}
+  try{ const r=await fetch(`https://www.okx.com/api/v5/market/ticker?instId=${coin}-USDT`,{cache:"no-store"});
+    const j=await r.json(); const d=j.data&&j.data[0]; const p=parseFloat(d&&d.last);
+    if(p>0){ const o=parseFloat(d.open24h); return {price:p, chg:o?((p-o)/o*100):null, high:parseFloat(d.high24h), low:parseFloat(d.low24h)}; } }catch(e){}
   return null;
 }
 function keoStatus(k, price){
   if(!k || !k.entry) return null;
   const lo=Math.min(k.entry[0],k.entry[1]), hi=Math.max(k.entry[0],k.entry[1]);
-  if(price>=lo && price<=hi) return {txt:"⚡ ĐANG TRONG VÙNG ENTRY", cls:"inzone", inzone:true};
+  if(price>=lo && price<=hi) return {txt:"⚡ ĐANG TRONG VÙNG ENTRY", cls:"inzone", state:"in"};
   const tpLast=k.tp&&k.tp.length?k.tp[k.tp.length-1]:null;
-  if(k.dir==="LONG"){ if(price<=k.sl) return {txt:"🛑 chạm SL",cls:"sl"}; if(tpLast!=null&&price>=tpLast) return {txt:"✅ chạm TP",cls:"tp"}; }
-  else{ if(price>=k.sl) return {txt:"🛑 chạm SL",cls:"sl"}; if(tpLast!=null&&price<=tpLast) return {txt:"✅ chạm TP",cls:"tp"}; }
-  const near=price<lo?lo:hi, dPct=Math.abs((near-price)/price*100), arrow=price<lo?"▲":"▼";
-  return {txt:`cách entry ${dPct.toFixed(2)}% ${arrow}`, cls:""};
+  if(k.dir==="LONG"){ if(price<=k.sl) return {txt:"🛑 chạm SL",cls:"sl",state:"out"}; if(tpLast!=null&&price>=tpLast) return {txt:"✅ chạm TP",cls:"tp",state:"out"}; }
+  else{ if(price>=k.sl) return {txt:"🛑 chạm SL",cls:"sl",state:"out"}; if(tpLast!=null&&price<=tpLast) return {txt:"✅ chạm TP",cls:"tp",state:"out"}; }
+  const nb=price<lo?lo:hi, dPct=Math.abs((nb-price)/price*100), arrow=price<lo?"▲":"▼";
+  if(dPct < NEAR_PCT) return {txt:`🔔 SẮP VÀO VÙNG (còn ${dPct.toFixed(2)}% ${arrow})`, cls:"near", state:"near"};
+  return {txt:`cách entry ${dPct.toFixed(2)}% ${arrow}`, cls:"", state:"out"};
 }
 async function pollPrice(){
-  const c=state.data&&state.data.coins[state.coin]; if(!c||!c.expert) return;
-  const p=await fetchLivePrice(state.coin); if(p==null) return;
+  const c=state.data&&state.data.coins[state.coin]; if(!c) return;
+  const lv=await fetchLive(state.coin); if(!lv) return;
+  const p=lv.price;
+  // giá HEADER realtime (mục mũi tên)
+  $("price").textContent="$"+fp(p);
+  if(lv.chg!=null){ const up=lv.chg>=0, g=$("chg"); g.textContent=(up?"▲ +":"▼ ")+lv.chg.toFixed(2)+"%"; g.className="chg num "+(up?"bg-g":"bg-r"); }
+  if(lv.high&&lv.low) $("hl").innerHTML="H $"+fp(lv.high)+" · L $"+fp(lv.low);
+  $("liveTag").textContent="🔴 LIVE";
+  if(!c.expert) return;
   for(const [key,k] of [["scalp",c.expert.scalp],["day",c.expert.day],["swing",c.expert.swing]]){
     const el=document.getElementById("live-"+key); if(!el) continue;
     const st=keoStatus(k,p); if(!st){ el.textContent="—"; el.className="keo-live"; continue; }
     el.textContent=`LIVE $${fp(p)} · ${st.txt}`; el.className="keo-live "+st.cls;
-    const card=document.getElementById("keo-"+key); if(card) card.classList.toggle("zone-hit",!!st.inzone);
+    const card=document.getElementById("keo-"+key); if(card) card.classList.toggle("zone-hit", st.state==="in"||st.state==="near");
     const nk=state.coin+"-"+key;
-    if(st.inzone && !prevInZone[nk] && notifyOn) notify(`⚡ ${state.coin} ${k.dir} — giá vào vùng entry ${key.toUpperCase()}`, `Giá $${fp(p)} · Entry $${fp(k.entry[0])}–$${fp(k.entry[1])} · SL $${fp(k.sl)}`);
-    prevInZone[nk]=!!st.inzone;
+    if(notifyOn && st.state!=="out" && prevZone[nk]!==st.state){
+      if(st.state==="in") notify(`⚡ ${state.coin} ${k.dir} — giá VÀO vùng entry ${key.toUpperCase()}`, `Giá $${fp(p)} · Entry $${fp(k.entry[0])}–$${fp(k.entry[1])} · SL $${fp(k.sl)}`);
+      else notify(`🔔 ${state.coin} ${k.dir} — giá SẮP vào vùng entry ${key.toUpperCase()}`, `Giá $${fp(p)} · Entry $${fp(k.entry[0])}–$${fp(k.entry[1])}`);
+    }
+    prevZone[nk]=st.state;
   }
 }
 function notify(title, body){ if(("Notification" in window) && Notification.permission==="granted") try{ new Notification(title,{body}); }catch(e){} }
@@ -355,6 +374,12 @@ $("notifyBtn").onclick=()=>{
   if(!("Notification" in window)){ alert("Trình duyệt không hỗ trợ thông báo"); return; }
   Notification.requestPermission().then(pm=>{ notifyOn=pm==="granted"; $("notifyBtn").textContent=notifyOn?"🔔 on":"🔔 off"; });
 };
+// ── Cỡ chữ (zoom toàn dashboard, nhớ localStorage) ──
+const FONT_ORDER=["Nhỏ","Vừa","To","Rất to"], FONT_SCALE={"Nhỏ":0.9,"Vừa":1,"To":1.15,"Rất to":1.3};
+state.font=localStorage.getItem("dash-font")||"Vừa";
+function applyFont(){ const w=document.querySelector('.wrap'); if(w) w.style.zoom=FONT_SCALE[state.font]||1; $("fontBtn").textContent="🔤 "+state.font; }
+$("fontBtn").onclick=()=>{ state.font=FONT_ORDER[(FONT_ORDER.indexOf(state.font)+1)%FONT_ORDER.length]; localStorage.setItem("dash-font",state.font); applyFont(); };
+applyFont();
 setInterval(pollPrice, 15000); // giá live mỗi 15s
 
 async function load(){
