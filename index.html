@@ -91,6 +91,36 @@
   .keo-live.sl{color:var(--red)} .keo-live.tp{color:var(--green)}
   .livetag{font-family:var(--mono);font-size:11px;color:var(--red);font-weight:700}
   .keo.zone-hit{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan) inset}
+  /* Paper trading */
+  .pthead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .pthead h3{text-transform:none!important;letter-spacing:0!important;font-size:15px!important;color:var(--text)!important}
+  .ptsym{font-family:var(--mono);font-size:11px;font-weight:800;color:var(--amber);background:rgba(245,158,11,.14);padding:2px 8px;border-radius:6px}
+  .ptmeta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint)}
+  .ptequity{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;margin-bottom:12px}
+  .ptequity .eq{font-family:var(--mono);font-size:26px;font-weight:800;letter-spacing:-.5px}
+  .ptequity .eqnet{font-family:var(--mono);font-weight:800;font-size:13px;padding:3px 9px;border-radius:8px}
+  .ptequity .eqst{margin-left:auto;display:flex;gap:14px;font-size:11.5px;color:var(--muted);font-family:var(--mono)}
+  .ptequity .eqst b{color:var(--text)}
+  .ptpos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:600px){.ptpos{grid-template-columns:1fr}}
+  .ptcard{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px;overflow:hidden}
+  .ptcard.long{border-color:rgba(34,197,94,.35)} .ptcard.short{border-color:rgba(239,68,68,.35)}
+  .ptcard .pttop{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .ptcard .ptstyle{font-size:11px;color:var(--faint);letter-spacing:.5px;text-transform:uppercase;font-weight:700}
+  .ptcard .lvl{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:2px}
+  .ptcard .lvl b{color:var(--text)}
+  .ptcard .ptpnl{font-family:var(--mono);font-size:20px;font-weight:800;margin:8px 0 3px;letter-spacing:-.5px}
+  .ptcard .ptpnl small{font-size:12px;font-weight:700;opacity:.85;margin-left:4px}
+  .pttrack{height:6px;border-radius:4px;background:linear-gradient(90deg,rgba(239,68,68,.5),var(--surface),rgba(34,197,94,.5));position:relative;margin-top:6px}
+  .pttrack.short{background:linear-gradient(90deg,rgba(34,197,94,.5),var(--surface),rgba(239,68,68,.5))}
+  .pttrack .dot{position:absolute;top:-2px;width:10px;height:10px;border-radius:50%;background:var(--cyan);box-shadow:0 0 7px var(--cyan);transform:translateX(-50%)}
+  .ptliq{font-family:var(--mono);font-size:10.5px;color:var(--amber);margin-top:6px}
+  .ptempty{color:var(--faint);font-size:12.5px;padding:10px 0}
+  .ptrecent{display:flex;flex-direction:column;gap:0;margin-top:12px}
+  .ptrow{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;color:var(--muted);padding:4px 0;border-top:1px solid var(--border)}
+  .ptrow .rstyle{color:var(--faint);text-transform:uppercase;width:46px}
+  .ptrow .rpnl{margin-left:auto;font-weight:800}
+  .ptnote{color:var(--faint);font-size:10.5px;margin-top:10px;line-height:1.5}
   /* Rows / tables / cards */
   .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
   @media(max-width:960px){.row3{grid-template-columns:1fr}}
@@ -155,6 +185,17 @@
     <h3>👨‍💼 Kèo theo khung</h3>
     <div class="verdict-txt" id="verdictTxt"></div>
     <div class="keos" id="keos"></div>
+  </div>
+
+  <div class="card" id="paperCard" style="margin-top:16px">
+    <div class="pthead">
+      <h3 style="margin:0">📄 Paper Trading <span class="ptsym">BTC</span></h3>
+      <span class="ptmeta" id="paperMeta">vốn $10.000 · $1.000/lệnh · 30x</span>
+    </div>
+    <div class="ptequity" id="paperEquity"></div>
+    <div class="ptpos" id="paperPos"></div>
+    <div class="ptrecent" id="paperRecent"></div>
+    <div class="ptnote">📈 Forward-test 3 kèo (scalp/day/swing) chạy song song như 1 tài khoản futures 30x — mô phỏng thanh lý thật. uPnL cập nhật realtime theo giá BTC. Không phải khuyến nghị đầu tư.</div>
   </div>
 
   <div class="row3">
@@ -283,6 +324,7 @@ function renderPanels(){
        ${k.rr?`<div class="lvl">R:R <b>${k.rr}</b></div>`:""}
        <div class="keo-live" id="live-${key}">— chờ giá live —</div></div>`;
   $("keos").innerHTML=keo("scalp","⚡ Scalp",c.expert?.scalp)+keo("day","☀️ Day",c.expert?.day)+keo("swing","📈 Swing",c.expert?.swing);
+  renderPaper();  // panel paper-trade (BTC) — cấu trúc snapshot; uPnL do pollPrice cập nhật live
   pollPrice();  // cập nhật trạng thái live ngay sau khi render
   // indicators
   $("ind").innerHTML="<tr><th>TF</th><th>RSI</th><th>MACD</th><th>Stoch</th><th>ST</th><th>Khác</th></tr>"+
@@ -355,6 +397,10 @@ async function pollPrice(){
   if(lv.chg!=null){ const up=lv.chg>=0, g=$("chg"); g.textContent=(up?"▲ +":"▼ ")+lv.chg.toFixed(2)+"%"; g.className="chg num "+(up?"bg-g":"bg-r"); }
   if(lv.high&&lv.low) $("hl").innerHTML="H $"+fp(lv.high)+" · L $"+fp(lv.low);
   $("liveTag").textContent="🔴 LIVE";
+  // paper-trade uPnL realtime (luôn theo giá BTC, độc lập coin đang xem)
+  let btcP = state.coin==="BTC" ? p : null;
+  if(btcP==null){ const bl=await fetchLive("BTC"); if(bl) btcP=bl.price; }
+  if(btcP!=null) renderPaperLive(btcP);
   if(!c.expert) return;
   for(const [key,k] of [["scalp",c.expert.scalp],["day",c.expert.day],["swing",c.expert.swing]]){
     const el=document.getElementById("live-"+key); if(!el) continue;
@@ -374,6 +420,69 @@ $("notifyBtn").onclick=()=>{
   if(!("Notification" in window)){ alert("Trình duyệt không hỗ trợ thông báo"); return; }
   Notification.requestPermission().then(pm=>{ notifyOn=pm==="granted"; $("notifyBtn").textContent=notifyOn?"🔔 on":"🔔 off"; });
 };
+// ─── PAPER TRADING (BTC) — cấu trúc snapshot + uPnL realtime ───
+function outcomeEmoji(o){ return o==="TP2"?"🏆":o==="LIQUIDATED"?"💥":o==="BE"?"⚪":o==="SL"?"🛑":"•"; }
+function paperUPnl(p, price){
+  const dirSign=p.dir==="LONG"?1:-1;
+  const liquidated=p.dir==="LONG"?price<=p.liq:price>=p.liq;
+  if(liquidated) return {usd:-p.margin, pct:-100, liquidated:true};
+  const gross=p.notional*((price-p.entry)/p.entry)*dirSign;
+  const usd=gross-2*(p.notional*(state.paper.feeRate||0.0005));
+  return {usd, pct:usd/p.margin*100, liquidated:false};
+}
+function paperTrackPct(p, price){
+  const tpLast=(p.tp&&p.tp.length)?p.tp[p.tp.length-1]:p.entry;
+  const lo=Math.min(p.sl,tpLast), hi=Math.max(p.sl,tpLast);
+  let pct=hi>lo?(price-lo)/(hi-lo)*100:50;
+  return Math.max(2,Math.min(98,pct)).toFixed(1);
+}
+function paperCardHtml(p){
+  const cls=p.dir==="LONG"?"long":"short", be=p.tp1Hit?" <span style='color:var(--green)'>(BE)</span>":"";
+  return `<div class="ptcard ${cls}" id="pt-${p.style}">
+    <div class="pttop"><span class="ptstyle">${p.style}</span><span class="${dirCls(p.dir)}" style="font-weight:800">${p.dir} ${p.leverage}x</span></div>
+    <div class="lvl">Entry <b>$${fp(p.entry)}</b> · ký quỹ $${p.margin}</div>
+    <div class="lvl">SL <b>$${fp(p.sl)}</b>${be} · TP <b>$${(p.tp||[]).map(fp).join(' → $')}</b></div>
+    <div class="ptpnl" id="ptpnl-${p.style}">— chờ giá —</div>
+    <div class="pttrack ${cls}"><div class="dot" id="ptdot-${p.style}" style="left:50%"></div></div>
+    <div class="ptliq" id="ptliq-${p.style}">⚠️ Thanh lý $${fp(p.liq)}</div>
+  </div>`;
+}
+function renderPaperEquity(capital, net, netPct, stats){
+  const g=net>=0;
+  $("paperEquity").innerHTML=
+    `<span class="eq">$${fp(Math.round(capital))}</span>`+
+    `<span class="eqnet ${g?'bg-g':'bg-r'}">${g?'▲ +':'▼ −'}$${Math.abs(Math.round(net))} · ${netPct>0?'+':''}${netPct}%</span>`+
+    `<span class="eqst"><span>Thắng <b>${stats.winRate}%</b></span><span><b>${stats.trades}</b> lệnh</span><span>Cháy <b>${stats.liquidations}</b></span></span>`;
+}
+function renderPaper(){
+  const pp=state.data&&state.data.btcExtra&&state.data.btcExtra.paper, card=$("paperCard"); if(!card) return;
+  if(!pp){ card.style.display="none"; return; } card.style.display="";
+  state.paper=pp; state.paperPos=pp.positions||[];
+  $("paperMeta").textContent=`vốn $${fp(pp.startCapital)} · $${fp(pp.marginPerTrade)}/lệnh · ${pp.leverage}x · phí ${(pp.feeRate*100).toFixed(2)}%`;
+  renderPaperEquity(pp.capital, pp.net, pp.netPct, pp.stats);
+  $("paperPos").innerHTML=state.paperPos.length?state.paperPos.map(paperCardHtml).join("")
+    :`<div class="ptempty">Chưa có lệnh mở — chờ giá chạm vùng entry (scalp/day/swing). Lệnh mở/đóng cập nhật mỗi 30 phút.</div>`;
+  const rec=pp.recent||[];
+  $("paperRecent").innerHTML=rec.length?(`<div class="ptrow" style="border-top:none;color:var(--faint)"><span>Lệnh đã đóng gần đây</span></div>`+rec.map(t=>{
+    const g=t.pnlUsd>=0;
+    return `<div class="ptrow"><span class="rstyle">${t.style}</span><span class="${dirCls(t.dir)}">${t.dir}</span><span>${outcomeEmoji(t.outcome)} ${t.outcome}</span><span class="rpnl ${g?'g':'r'}">${g?'+':'−'}$${Math.abs(t.pnlUsd).toFixed(0)} · ${t.pnlPct>0?'+':''}${t.pnlPct}%</span></div>`;
+  }).join("")):"";
+}
+function renderPaperLive(price){
+  const pp=state.paper, pos=state.paperPos; if(!pp||!pos||!pos.length) return;
+  let sumU=0;
+  for(const p of pos){
+    const u=paperUPnl(p, price); sumU+=u.usd;
+    const el=document.getElementById("ptpnl-"+p.style);
+    if(el){ const g=u.usd>=0; el.className="ptpnl "+(g?'g':'r');
+      el.innerHTML=`${g?'+':'−'}$${Math.abs(u.usd).toFixed(1)}<small>${u.pct>0?'+':''}${u.pct.toFixed(1)}%</small>${u.liquidated?' 💥':''}`; }
+    const dot=document.getElementById("ptdot-"+p.style); if(dot) dot.style.left=paperTrackPct(p, price)+"%";
+    const liqEl=document.getElementById("ptliq-"+p.style);
+    if(liqEl){ const dl=Math.abs((p.liq-price)/price*100);
+      liqEl.innerHTML=`⚠️ Thanh lý $${fp(p.liq)} <span style="color:var(--faint)">(cách ${dl.toFixed(2)}%)</span>`; }
+  }
+  renderPaperEquity(pp.capital+sumU, (pp.net||0)+sumU, +(((pp.net||0)+sumU)/pp.startCapital*100).toFixed(2), pp.stats);
+}
 // ── Cỡ chữ (zoom toàn dashboard, nhớ localStorage) ──
 const FONT_ORDER=["Nhỏ","Vừa","To","Rất to"], FONT_SCALE={"Nhỏ":0.9,"Vừa":1,"To":1.15,"Rất to":1.3};
 state.font=localStorage.getItem("dash-font")||"Vừa";
