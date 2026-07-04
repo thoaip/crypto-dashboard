@@ -218,7 +218,7 @@
     <div class="ptpos" id="paperPos"></div>
     <div class="ptbreak" id="paperBreak"></div>
     <div class="ptrecent" id="paperRecent"></div>
-    <div class="ptnote">🔬 <b>A/B đòn bẩy:</b> 3 tài khoản (30x · 10x · Risk 1.5%/lệnh) chạy song song trên CÙNG kèo hội đồng — chỉ khác cách đặt đòn bẩy/sizing → so hiệu quả &amp; rủi ro (maxDD, cháy) để rút <b>SL/TP hợp lý</b>. "Risk 1.5%" = size vị thế theo SL sao cho chạm SL chỉ mất ~1.5% vốn (đòn bẩy là hệ quả, gần như không cháy). Mô phỏng thanh lý thật · uPnL realtime · không phải khuyến nghị.</div>
+    <div class="ptnote">🔬 <b>A/B đòn bẩy:</b> 3 tài khoản (30x · 10x · Risk 1.5%/lệnh) chạy song song trên CÙNG kèo hội đồng — chỉ khác đòn bẩy/sizing → so hiệu quả &amp; rủi ro (maxDD, cháy) để rút <b>SL/TP hợp lý</b>. "Risk 1.5%" = size theo SL sao cho chạm SL chỉ mất ~1.5% vốn (gần như không cháy). 📐 <b>SL/TP theo Fibonacci:</b> entry vùng vàng 0.5–0.618, SL ngoài 0.786, TP <b>chốt 3 phần</b> (40/30/30%) tại 38.2% → đỉnh/đáy cũ → mở rộng 161.8%, R:R≥2. Chạm TP1 → dời SL hòa vốn. Mô phỏng thanh lý thật · uPnL realtime · không phải khuyến nghị.</div>
   </div>
 
   <div class="row3">
@@ -444,13 +444,16 @@ $("notifyBtn").onclick=()=>{
   Notification.requestPermission().then(pm=>{ notifyOn=pm==="granted"; $("notifyBtn").textContent=notifyOn?"🔔 on":"🔔 off"; });
 };
 // ─── PAPER TRADING (BTC) — cấu trúc snapshot + uPnL realtime ───
-function outcomeEmoji(o){ return o==="TP2"?"🏆":o==="LIQUIDATED"?"💥":o==="BE"?"⚪":o==="SL"?"🛑":"•"; }
+function outcomeEmoji(o){ return o==="TP"||o==="TP2"?"🏆":o==="PARTIAL"?"🎯":o==="LIQUIDATED"?"💥":o==="BE"?"⚪":o==="SL"?"🛑":"•"; }
 function paperUPnl(p, price){
   const dirSign=p.dir==="LONG"?1:-1;
-  const liquidated=p.dir==="LONG"?price<=p.liq:price>=p.liq;
+  const remaining=p.remaining!=null?p.remaining:1, realized=p.realizedUsd||0, tpHits=p.tpHits||0;
+  // Chỉ cháy khi CHƯA chốt phần nào (sau TP1, SL đã về hòa vốn → hết rủi ro thanh lý).
+  const liquidated=tpHits===0 && (p.dir==="LONG"?price<=p.liq:price>=p.liq);
   if(liquidated) return {usd:-p.margin, pct:-100, liquidated:true};
   const gross=p.notional*((price-p.entry)/p.entry)*dirSign;
-  const usd=gross-2*(p.notional*(state.paper.feeRate||0.0005));
+  const unreal=remaining*(gross-2*(p.notional*(state.paper.feeRate||0.0005)));
+  const usd=realized+unreal;
   return {usd, pct:usd/p.margin*100, liquidated:false};
 }
 function paperTrackPct(p, price){
@@ -460,11 +463,15 @@ function paperTrackPct(p, price){
   return Math.max(2,Math.min(98,pct)).toFixed(1);
 }
 function paperCardHtml(p){
-  const cls=p.dir==="LONG"?"long":"short", be=p.tp1Hit?" <span style='color:var(--green)'>(BE)</span>":"";
+  const cls=p.dir==="LONG"?"long":"short", be=p.tp1Hit?" <span style='color:var(--green)'>→BE</span>":"";
+  const tpHits=p.tpHits||0, rem=Math.round((p.remaining!=null?p.remaining:1)*100);
+  const tps=(p.tp||[]).map((t,i)=>`<b style="color:${i<tpHits?'var(--green)':'var(--text)'}">$${fp(t)}${i<tpHits?'✓':''}</b>`).join(' → ');
+  const scale=tpHits>0?`<div class="lvl" style="color:var(--green)">🎯 Đã chốt ${tpHits} TP · còn ${rem}% chạy tiếp</div>`:'';
   return `<div class="ptcard ${cls}" id="pt-${p.style}">
     <div class="pttop"><span class="ptstyle">${p.style}</span><span class="${dirCls(p.dir)}" style="font-weight:800">${p.dir} ${p.leverage}x</span></div>
     <div class="lvl">Entry <b>$${fp(p.entry)}</b> · ký quỹ $${p.margin}</div>
-    <div class="lvl">SL <b>$${fp(p.sl)}</b>${be} · TP <b>$${(p.tp||[]).map(fp).join(' → $')}</b></div>
+    <div class="lvl">SL <b>$${fp(p.sl)}</b>${be} · TP ${tps}</div>
+    ${scale}
     <div class="ptpnl" id="ptpnl-${p.style}">— chờ giá —</div>
     <div class="pttrack ${cls}"><div class="dot" id="ptdot-${p.style}" style="left:50%"></div></div>
     <div class="ptliq" id="ptliq-${p.style}">⚠️ Thanh lý $${fp(p.liq)}</div>
