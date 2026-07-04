@@ -126,6 +126,22 @@
   .ptbk .k{font-size:9.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.4px}
   .ptbk .v{font-size:14px;font-weight:800;margin-top:2px}
   .ptbk .s{font-size:9.5px;color:var(--muted);margin-top:1px}
+  .ptbklbl{flex-basis:100%;font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px;margin-bottom:-2px}
+  /* Paper A/B table */
+  .ptab{overflow-x:auto;margin-bottom:12px}
+  .abtab{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:12.5px}
+  .abtab th{font-size:9.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.4px;font-weight:700;text-align:right;padding:5px 8px;border-bottom:1px solid var(--border)}
+  .abtab th:first-child{text-align:left}
+  .abtab td{padding:8px;text-align:right;border-bottom:1px solid var(--border)}
+  .abtab td.ablbl{text-align:left;font-weight:700;color:var(--text);font-family:inherit}
+  .abtab tr.abprim{background:rgba(34,211,238,.06)}
+  .abtab tr.abprim td.ablbl{color:var(--cyan)}
+  .abtag{font-size:9px;background:rgba(34,211,238,.16);color:var(--cyan);padding:1px 6px;border-radius:5px;font-weight:700;margin-left:4px;vertical-align:middle}
+  .abtab td.num.g{color:var(--green)} .abtab td.num.r{color:var(--red)}
+  .abtab .mut{color:var(--faint);font-size:11px}
+  .ptposlbl{font-size:11px;color:var(--muted);letter-spacing:.3px;margin:4px 0 8px}
+  .ptposlbl b{color:var(--cyan);font-family:var(--mono)}
+  .ptposhint{color:var(--faint);font-size:10px}
   /* Rows / tables / cards */
   .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
   @media(max-width:960px){.row3{grid-template-columns:1fr}}
@@ -194,14 +210,15 @@
 
   <div class="card" id="paperCard" style="margin-top:16px">
     <div class="pthead">
-      <h3 style="margin:0">📄 Paper Trading <span class="ptsym">BTC</span></h3>
-      <span class="ptmeta" id="paperMeta">vốn $10.000 · $1.000/lệnh · 30x</span>
+      <h3 style="margin:0">📄 Paper Trading · A/B Đòn bẩy <span class="ptsym">BTC</span></h3>
+      <span class="ptmeta" id="paperMeta">vốn $10.000/tài khoản · cùng kèo hội đồng</span>
     </div>
-    <div class="ptequity" id="paperEquity"></div>
+    <div class="ptab" id="paperAB"></div>
+    <div class="ptposlbl">⚡ Vị thế đang mở · tài khoản <b id="primLbl">30x</b> <span class="ptposhint">(uPnL realtime)</span></div>
     <div class="ptpos" id="paperPos"></div>
     <div class="ptbreak" id="paperBreak"></div>
     <div class="ptrecent" id="paperRecent"></div>
-    <div class="ptnote">📈 Forward-test 3 kèo (scalp/day/swing) chạy song song như 1 tài khoản futures 30x — mô phỏng thanh lý thật. uPnL cập nhật realtime theo giá BTC. Không phải khuyến nghị đầu tư.</div>
+    <div class="ptnote">🔬 <b>A/B đòn bẩy:</b> 3 tài khoản (30x · 10x · Risk 1.5%/lệnh) chạy song song trên CÙNG kèo hội đồng — chỉ khác cách đặt đòn bẩy/sizing → so hiệu quả &amp; rủi ro (maxDD, cháy) để rút <b>SL/TP hợp lý</b>. "Risk 1.5%" = size vị thế theo SL sao cho chạm SL chỉ mất ~1.5% vốn (đòn bẩy là hệ quả, gần như không cháy). Mô phỏng thanh lý thật · uPnL realtime · không phải khuyến nghị.</div>
   </div>
 
   <div class="row3">
@@ -458,36 +475,50 @@ function bkChip(label, a){
   const col=a.winRate>=50?'var(--green)':a.winRate>=35?'var(--amber)':'var(--red)';
   return `<div class="ptbk"><div class="k">${label}</div><div class="v" style="color:${col}">${a.winRate}%</div><div class="s">${a.trades} lệnh · ${a.net>=0?'+':'−'}$${Math.abs(Math.round(a.net))}</div></div>`;
 }
-function renderPaperEquity(capital, net, netPct, stats){
-  const g=net>=0;
-  $("paperEquity").innerHTML=
-    `<span class="eq">$${fp(Math.round(capital))}</span>`+
-    `<span class="eqnet ${g?'bg-g':'bg-r'}">${g?'▲ +':'▼ −'}$${Math.abs(Math.round(net))} · ${netPct>0?'+':''}${netPct}%</span>`+
-    `<span class="eqst"><span>Thắng <b>${stats.winRate}%</b></span><span><b>${stats.trades}</b> lệnh</span><span>Cháy <b>${stats.liquidations}</b></span></span>`;
+function renderPaperAB(){
+  const arms=state.paperArms||[], primId=state.paperPrimary.id;
+  $("paperAB").innerHTML=`<table class="abtab"><thead><tr><th>Tài khoản</th><th>Equity</th><th>Net</th><th>Thắng</th><th>Cháy</th><th>maxDD</th></tr></thead><tbody>`+
+    arms.map(a=>`<tr class="${a.id===primId?'abprim':''}">`+
+      `<td class="ablbl">${a.label}${a.id===primId?' <span class="abtag">chính</span>':''}</td>`+
+      `<td class="num" id="abeq-${a.id}">$${fp(Math.round(a.capital))}</td>`+
+      `<td class="num ${a.net>=0?'g':'r'}" id="abnet-${a.id}">${a.net>=0?'+':''}${a.netPct}%</td>`+
+      `<td class="num">${a.stats.winRate}% <span class="mut">(${a.stats.trades})</span></td>`+
+      `<td class="num ${a.stats.liquidations?'r':''}">${a.stats.liquidations}</td>`+
+      `<td class="num">${a.stats.maxDD}%</td></tr>`).join("")+`</tbody></table>`;
 }
 function renderPaper(){
   const pp=state.data&&state.data.btcExtra&&state.data.btcExtra.paper, card=$("paperCard"); if(!card) return;
-  if(!pp){ card.style.display="none"; return; } card.style.display="";
-  state.paper=pp; state.paperPos=pp.positions||[];
-  $("paperMeta").textContent=`vốn $${fp(pp.startCapital)} · $${fp(pp.marginPerTrade)}/lệnh · ${pp.leverage}x · phí ${(pp.feeRate*100).toFixed(2)}%`;
-  renderPaperEquity(pp.capital, pp.net, pp.netPct, pp.stats);
+  if(!pp||!pp.arms){ card.style.display="none"; return; } card.style.display="";
+  state.paper=pp; state.paperArms=pp.arms;
+  const prim=pp.arms.find(a=>a.id===pp.primary)||pp.arms[0];
+  state.paperPrimary=prim; state.paperPos=prim.positions||[];
+  $("paperMeta").textContent=`vốn $${fp(pp.startCapital)}/tài khoản · phí ${(pp.feeRate*100).toFixed(2)}%`;
+  const pl=$("primLbl"); if(pl) pl.textContent=prim.desc;
+  renderPaperAB();
   $("paperPos").innerHTML=state.paperPos.length?state.paperPos.map(paperCardHtml).join("")
     :`<div class="ptempty">Chưa có lệnh mở — chờ giá chạm vùng entry (scalp/day/swing). Lệnh mở/đóng cập nhật mỗi 30 phút.</div>`;
   const an=pp.analysis;
   $("paperBreak").innerHTML=(an&&an.overall&&an.overall.trades)
-    ? bkChip("Scalp",an.byStyle.scalp)+bkChip("Day",an.byStyle.day)+bkChip("Swing",an.byStyle.swing)+bkChip("Long",an.byDir.LONG)+bkChip("Short",an.byDir.SHORT)
+    ? `<div class="ptbklbl">Chất lượng tín hiệu hội đồng · tài khoản ${prim.desc}</div>`+bkChip("Scalp",an.byStyle.scalp)+bkChip("Day",an.byStyle.day)+bkChip("Swing",an.byStyle.swing)+bkChip("Long",an.byDir.LONG)+bkChip("Short",an.byDir.SHORT)
     : "";
   const rec=pp.recent||[];
-  $("paperRecent").innerHTML=rec.length?(`<div class="ptrow" style="border-top:none;color:var(--faint)"><span>Lệnh đã đóng gần đây</span></div>`+rec.map(t=>{
+  $("paperRecent").innerHTML=rec.length?(`<div class="ptrow" style="border-top:none;color:var(--faint)"><span>Lệnh đã đóng gần đây · tài khoản ${prim.desc}</span></div>`+rec.map(t=>{
     const g=t.pnlUsd>=0;
     return `<div class="ptrow"><span class="rstyle">${t.style}</span><span class="${dirCls(t.dir)}">${t.dir}</span><span>${outcomeEmoji(t.outcome)} ${t.outcome}</span><span class="rpnl ${g?'g':'r'}">${g?'+':'−'}$${Math.abs(t.pnlUsd).toFixed(0)} · ${t.pnlPct>0?'+':''}${t.pnlPct}%</span></div>`;
   }).join("")):"";
 }
 function renderPaperLive(price){
-  const pp=state.paper, pos=state.paperPos; if(!pp||!pos||!pos.length) return;
-  let sumU=0;
-  for(const p of pos){
-    const u=paperUPnl(p, price); sumU+=u.usd;
+  const pp=state.paper; if(!pp||!pp.arms) return;
+  // Mỗi arm: equity live = vốn thực (đã chốt) + Σ uPnL vị thế đang mở của arm đó.
+  for(const a of pp.arms){
+    let sumU=0; for(const p of (a.positions||[])) sumU+=paperUPnl(p, price).usd;
+    const eq=a.capital+sumU, net=eq-pp.startCapital;
+    const eqEl=document.getElementById("abeq-"+a.id); if(eqEl) eqEl.textContent="$"+fp(Math.round(eq));
+    const netEl=document.getElementById("abnet-"+a.id); if(netEl){ netEl.textContent=(net>=0?'+':'')+(net/pp.startCapital*100).toFixed(2)+"%"; netEl.className="num "+(net>=0?'g':'r'); }
+  }
+  // Vị thế tài khoản chính: uPnL từng lệnh + track + cảnh báo thanh lý.
+  for(const p of (state.paperPos||[])){
+    const u=paperUPnl(p, price);
     const el=document.getElementById("ptpnl-"+p.style);
     if(el){ const g=u.usd>=0; el.className="ptpnl "+(g?'g':'r');
       el.innerHTML=`${g?'+':'−'}$${Math.abs(u.usd).toFixed(1)}<small>${u.pct>0?'+':''}${u.pct.toFixed(1)}%</small>${u.liquidated?' 💥':''}`; }
@@ -496,7 +527,6 @@ function renderPaperLive(price){
     if(liqEl){ const dl=Math.abs((p.liq-price)/price*100);
       liqEl.innerHTML=`⚠️ Thanh lý $${fp(p.liq)} <span style="color:var(--faint)">(cách ${dl.toFixed(2)}%)</span>`; }
   }
-  renderPaperEquity(pp.capital+sumU, (pp.net||0)+sumU, +(((pp.net||0)+sumU)/pp.startCapital*100).toFixed(2), pp.stats);
 }
 // ── Cỡ chữ (zoom toàn dashboard, nhớ localStorage) ──
 const FONT_ORDER=["Nhỏ","Vừa","To","Rất to"], FONT_SCALE={"Nhỏ":0.9,"Vừa":1,"To":1.15,"Rất to":1.3};
