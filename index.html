@@ -527,11 +527,11 @@ function renderPaper(){
 function renderPaperHistory(pp, prim){
   const hist=pp.history||pp.recent||[], tot=pp.historyTotal||{trades:hist.length,pnlUsd:hist.reduce((s,t)=>s+(t.pnlUsd||0),0)};
   state.paperHistory=hist;
-  if(!hist.length){ $("paperRecent").innerHTML=""; return; }
   const g=tot.pnlUsd>=0;
   const head=`<div class="pthisthead"><span>📒 Lịch sử lệnh đã đóng · tài khoản ${prim.desc}</span>`+
     `<span class="pthisttot">Tổng PnL đã chốt: <b class="${g?'g':'r'}">${g?'+':'−'}$${Math.abs(tot.pnlUsd).toFixed(0)}</b> · ${tot.trades} lệnh</span>`+
-    `<button class="chip" onclick="paperCsv()" title="Tải toàn bộ lịch sử về máy (backup / phân tích Excel)">⬇ CSV</button></div>`;
+    (hist.length?`<button class="chip" onclick="paperCsv()" title="Tải toàn bộ lịch sử về máy (backup / phân tích Excel)">⬇ CSV</button>`:"")+`</div>`;
+  if(!hist.length){ $("paperRecent").innerHTML=head+`<div class="ptempty">📭 Chưa có lệnh nào đóng — bảng tự điền khi lệnh đầu tiên chốt (TP / SL / cháy). Vị thế đang chạy xem ở trên.</div>`; return; }
   const rows=hist.map(t=>{
     const w=t.pnlUsd>=0;
     return `<tr><td class="mut">${t.closedAt||"—"}</td><td class="rstyle">${t.style}</td><td class="${dirCls(t.dir)}">${t.dir}${t.leverage?" "+t.leverage+"x":""}</td>`+
