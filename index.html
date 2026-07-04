@@ -325,7 +325,9 @@ function renderPanels(){
     const emo=bt.count>=3?"🟢":bt.count===2?"🟡":"⚪";
     const bb=$("bottomBanner");
     bb.className="bbanner "+cls;
-    bb.innerHTML=`🔻 <span class="lvl">ĐÁY BTC: ${emo} ${bt.verdict}</span> <span>(${bt.count}/${bt.total})</span>`+(bt.active&&bt.active.length?` <span class="sigs">✓ ${bt.active.join(" · ")}</span>`:"");
+    const hv=bt.halving;
+    bb.innerHTML=`🔻 <span class="lvl">ĐÁY BTC: ${emo} ${bt.verdict}</span> <span>(${bt.count}/${bt.total})</span>`+(bt.active&&bt.active.length?` <span class="sigs">✓ ${bt.active.join(" · ")}</span>`:"")
+      +(hv?` <span class="sigs">🔄 tuần ${Math.round(hv.weeksSince)} sau halving — ${hv.phase==="bottomWindow"?"CỬA SỔ ĐÁY "+hv.bottomWindow.from+"→"+hv.bottomWindow.to:hv.label}</span>`:"");
   }
   // tiers
   const t=c.council.tiers;
