@@ -117,6 +117,17 @@
   .ptliq{font-family:var(--mono);font-size:10.5px;color:var(--amber);margin-top:6px}
   .ptempty{color:var(--faint);font-size:12.5px;padding:10px 0}
   .ptrecent{display:flex;flex-direction:column;gap:0;margin-top:12px}
+  .pthisthead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:11.5px;color:var(--muted)}
+  .pthisttot{font-family:var(--mono)}
+  .pthisttot b.g{color:var(--green)} .pthisttot b.r{color:var(--red)}
+  .pthisthead .chip{margin-left:auto}
+  .pthistwrap{max-height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:10px}
+  .pthist{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11px}
+  .pthist th{position:sticky;top:0;background:var(--surface2);font-size:9.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.4px;text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)}
+  .pthist td{padding:5px 8px;border-bottom:1px solid var(--border);color:var(--muted);white-space:nowrap}
+  .pthist td.rpnl{text-align:right;font-weight:800}
+  .pthist td.rstyle{text-transform:uppercase;color:var(--faint)}
+  .pthist tr:last-child td{border-bottom:none}
   .ptrow{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;color:var(--muted);padding:4px 0;border-top:1px solid var(--border)}
   .ptrow .rstyle{color:var(--faint);text-transform:uppercase;width:46px}
   .ptrow .rpnl{margin-left:auto;font-weight:800}
@@ -510,11 +521,34 @@ function renderPaper(){
   $("paperBreak").innerHTML=(an&&an.overall&&an.overall.trades)
     ? `<div class="ptbklbl">Chất lượng tín hiệu hội đồng · tài khoản ${prim.desc}</div>`+bkChip("Scalp",an.byStyle.scalp)+bkChip("Day",an.byStyle.day)+bkChip("Swing",an.byStyle.swing)+bkChip("Long",an.byDir.LONG)+bkChip("Short",an.byDir.SHORT)
     : "";
-  const rec=pp.recent||[];
-  $("paperRecent").innerHTML=rec.length?(`<div class="ptrow" style="border-top:none;color:var(--faint)"><span>Lệnh đã đóng gần đây · tài khoản ${prim.desc}</span></div>`+rec.map(t=>{
-    const g=t.pnlUsd>=0;
-    return `<div class="ptrow"><span class="rstyle">${t.style}</span><span class="${dirCls(t.dir)}">${t.dir}</span><span>${outcomeEmoji(t.outcome)} ${t.outcome}</span><span class="rpnl ${g?'g':'r'}">${g?'+':'−'}$${Math.abs(t.pnlUsd).toFixed(0)} · ${t.pnlPct>0?'+':''}${t.pnlPct}%</span></div>`;
-  }).join("")):"";
+  renderPaperHistory(pp, prim);
+}
+// 📒 Lịch sử ĐẦY ĐỦ lệnh đã đóng + tổng PnL (dữ liệu rút kinh nghiệm) + xuất CSV (backup).
+function renderPaperHistory(pp, prim){
+  const hist=pp.history||pp.recent||[], tot=pp.historyTotal||{trades:hist.length,pnlUsd:hist.reduce((s,t)=>s+(t.pnlUsd||0),0)};
+  state.paperHistory=hist;
+  if(!hist.length){ $("paperRecent").innerHTML=""; return; }
+  const g=tot.pnlUsd>=0;
+  const head=`<div class="pthisthead"><span>📒 Lịch sử lệnh đã đóng · tài khoản ${prim.desc}</span>`+
+    `<span class="pthisttot">Tổng PnL đã chốt: <b class="${g?'g':'r'}">${g?'+':'−'}$${Math.abs(tot.pnlUsd).toFixed(0)}</b> · ${tot.trades} lệnh</span>`+
+    `<button class="chip" onclick="paperCsv()" title="Tải toàn bộ lịch sử về máy (backup / phân tích Excel)">⬇ CSV</button></div>`;
+  const rows=hist.map(t=>{
+    const w=t.pnlUsd>=0;
+    return `<tr><td class="mut">${t.closedAt||"—"}</td><td class="rstyle">${t.style}</td><td class="${dirCls(t.dir)}">${t.dir}${t.leverage?" "+t.leverage+"x":""}</td>`+
+      `<td class="num">$${fp(t.entry)} → $${fp(t.exit)}</td><td>${outcomeEmoji(t.outcome)} ${t.outcome}${t.tpHits?` <span class="mut">(${t.tpHits} TP)</span>`:""}</td>`+
+      `<td class="num rpnl ${w?'g':'r'}">${w?'+':'−'}$${Math.abs(t.pnlUsd).toFixed(0)} · ${t.pnlPct>0?'+':''}${t.pnlPct}%</td></tr>`;
+  }).join("");
+  $("paperRecent").innerHTML=head+`<div class="pthistwrap"><table class="pthist"><thead><tr><th>Đóng lúc</th><th>Khung</th><th>Hướng</th><th>Entry → Exit</th><th>Kết cục</th><th>PnL</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function paperCsv(){
+  const hist=state.paperHistory||[]; if(!hist.length) return;
+  const cols=["closedAt","openedAt","style","dir","leverage","entry","exit","sl","tp","outcome","tpHits","pnlUsd","pnlPct"];
+  const esc=v=>v==null?"":Array.isArray(v)?'"'+v.join(" / ")+'"':(String(v).includes(",")?'"'+String(v).replace(/"/g,'""')+'"':String(v));
+  const csv=[cols.join(",")].concat(hist.map(t=>cols.map(c=>esc(t[c])).join(","))).join("\n");
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"}));
+  a.download="papertrade-history-"+new Date().toISOString().slice(0,10)+".csv";
+  a.click(); URL.revokeObjectURL(a.href);
 }
 function renderPaperLive(price){
   const pp=state.paper; if(!pp||!pp.arms) return;
