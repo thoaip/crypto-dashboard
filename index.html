@@ -426,7 +426,7 @@ function keoStatus(k, price){
 }
 async function pollPrice(){
   const c=state.data&&state.data.coins[state.coin]; if(!c) return;
-  const lv=await fetchLive(state.coin); if(!lv) return;
+  const lv=await fetchLive(c.liveBase||state.coin); if(!lv) return; // XAU dùng PAXGUSDT, không phải XAUUSDT
   const p=lv.price;
   // giá HEADER realtime (mục mũi tên)
   $("price").textContent="$"+fp(p);
