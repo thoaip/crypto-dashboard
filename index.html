@@ -118,6 +118,7 @@
   .ptempty{color:var(--faint);font-size:12.5px;padding:10px 0}
   .ptrecent{display:flex;flex-direction:column;gap:0;margin-top:12px}
   .pthisthead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;font-size:11.5px;color:var(--muted)}
+  .pthistwarn{font-size:10.5px;color:var(--amber);margin-bottom:8px;line-height:1.4}
   .pthisttot{font-family:var(--mono)}
   .pthisttot b.g{color:var(--green)} .pthisttot b.r{color:var(--red)}
   .pthisthead .chip{margin-left:auto}
@@ -132,6 +133,7 @@
   .ptrow .rstyle{color:var(--faint);text-transform:uppercase;width:46px}
   .ptrow .rpnl{margin-left:auto;font-weight:800}
   .ptnote{color:var(--faint);font-size:10.5px;margin-top:10px;line-height:1.5}
+  .ptpolicy{color:var(--muted);font-size:11px;line-height:1.5;margin-top:10px;padding:8px 10px;background:var(--surface2);border-left:3px solid var(--amber);border-radius:6px}
   .ptbreak{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
   .ptbk{flex:1;min-width:88px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:7px 9px;text-align:center;font-family:var(--mono)}
   .ptbk .k{font-size:9.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.4px}
@@ -229,6 +231,7 @@
     <div class="ptpos" id="paperPos"></div>
     <div class="ptbreak" id="paperBreak"></div>
     <div class="ptrecent" id="paperRecent"></div>
+    <div class="ptpolicy">📌 <b>Từ 31/07/2026:</b> paper CHỈ mở kèo <b>SWING</b> (Hội đồng 4H + Fib pullback) — đã dừng hẳn <b>Scalp</b> &amp; <b>Day</b> sau khi A/B cho thấy chúng kéo lùi hiệu suất (net-âm), trong khi Swing dương ổn định qua nhiều quý. Số liệu tổng/lịch sử bên dưới còn lẫn giai đoạn thử nghiệm cũ (đa khung, trước 31/07) cho tới khi trôi khỏi 100 lệnh gần nhất — không phải hiệu suất của chính sách hiện hành.</div>
     <div class="ptnote">🔬 <b>A/B đòn bẩy:</b> 3 tài khoản (30x · 10x · Risk 1.5%/lệnh) chạy song song trên CÙNG kèo hội đồng — chỉ khác đòn bẩy/sizing → so hiệu quả &amp; rủi ro (maxDD, cháy) để rút <b>SL/TP hợp lý</b>. "Risk 1.5%" = size theo SL sao cho chạm SL chỉ mất ~1.5% vốn (gần như không cháy). 📐 <b>SL/TP theo Fibonacci:</b> entry vùng vàng 0.5–0.618, SL ngoài 0.786, TP <b>chốt 3 phần</b> (40/30/30%) tại 38.2% → đỉnh/đáy cũ → mở rộng 161.8%, R:R≥2. Chạm TP1 → dời SL hòa vốn. Mô phỏng thanh lý thật · uPnL realtime · không phải khuyến nghị.</div>
   </div>
 
@@ -519,7 +522,7 @@ function renderPaper(){
     :`<div class="ptempty">Chưa có lệnh mở — chờ giá chạm vùng entry (scalp/day/swing). Lệnh mở/đóng cập nhật mỗi 30 phút.</div>`;
   const an=pp.analysis;
   $("paperBreak").innerHTML=(an&&an.overall&&an.overall.trades)
-    ? `<div class="ptbklbl">Chất lượng tín hiệu hội đồng · tài khoản ${prim.desc}</div>`+bkChip("Scalp",an.byStyle.scalp)+bkChip("Day",an.byStyle.day)+bkChip("Swing",an.byStyle.swing)+bkChip("Long",an.byDir.LONG)+bkChip("Short",an.byDir.SHORT)
+    ? `<div class="ptbklbl">Chất lượng tín hiệu hội đồng · tài khoản ${prim.desc}</div>`+bkChip("Scalp (cũ)",an.byStyle.scalp)+bkChip("Day (cũ)",an.byStyle.day)+bkChip("Swing ★",an.byStyle.swing)+bkChip("Long",an.byDir.LONG)+bkChip("Short",an.byDir.SHORT)
     : "";
   renderPaperHistory(pp, prim);
 }
@@ -528,9 +531,11 @@ function renderPaperHistory(pp, prim){
   const hist=pp.history||pp.recent||[], tot=pp.historyTotal||{trades:hist.length,pnlUsd:hist.reduce((s,t)=>s+(t.pnlUsd||0),0)};
   state.paperHistory=hist;
   const g=tot.pnlUsd>=0;
+  const hasOld=hist.some(t=>t.style==="scalp"||t.style==="day");
   const head=`<div class="pthisthead"><span>📒 Lịch sử lệnh đã đóng · tài khoản ${prim.desc}</span>`+
     `<span class="pthisttot">Tổng PnL đã chốt: <b class="${g?'g':'r'}">${g?'+':'−'}$${Math.abs(tot.pnlUsd).toFixed(0)}</b> · ${tot.trades} lệnh</span>`+
-    (hist.length?`<button class="chip" onclick="paperCsv()" title="Tải toàn bộ lịch sử về máy (backup / phân tích Excel)">⬇ CSV</button>`:"")+`</div>`;
+    (hist.length?`<button class="chip" onclick="paperCsv()" title="Tải toàn bộ lịch sử về máy (backup / phân tích Excel)">⬇ CSV</button>`:"")+`</div>`+
+    (hasOld?`<div class="pthistwarn">⚠️ Số liệu trên gồm CẢ lệnh Scalp/Day cũ (thử nghiệm, dừng từ 31/07/2026) lẫn Swing hiện hành — không phản ánh riêng chính sách đang chạy. Xem breakdown theo khung ở bảng dưới.</div>`:"");
   if(!hist.length){ $("paperRecent").innerHTML=head+`<div class="ptempty">📭 Chưa có lệnh nào đóng — bảng tự điền khi lệnh đầu tiên chốt (TP / SL / cháy). Vị thế đang chạy xem ở trên.</div>`; return; }
   const rows=hist.map(t=>{
     const w=t.pnlUsd>=0;
