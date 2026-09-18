@@ -1,6 +1,6 @@
 {
- "generatedAt": "2026-09-17T15:35:34.965Z",
- "generatedAtVN": "22:35 17-09",
+ "generatedAt": "2026-09-18T01:26:42.874Z",
+ "generatedAtVN": "08:26 18-09",
  "order": [
   "BTC",
   "ETH",
@@ -14,21 +14,21 @@
    "tvSymbol": "BINANCE:BTCUSDT",
    "liveBase": "BTC",
    "price": {
-    "last": 76464.6,
-    "change24h": 0.3479025452922919,
+    "last": 76584,
+    "change24h": 0.2274565437598645,
     "high24h": 77146.2,
-    "low24h": 75083.8
+    "low24h": 76020.5
    },
    "council": {
     "direction": "NEUTRAL",
     "confidence": "low",
-    "consensus": -0.013,
-    "agreement": 36,
+    "consensus": -0.011,
+    "agreement": 40,
     "counterTrend": false,
     "tiers": {
      "regime": {
       "dir": "NEUTRAL",
-      "score": -0.098
+      "score": -0.109
      },
      "setup": {
       "dir": "NEUTRAL",
@@ -70,7 +70,7 @@
      },
      {
       "name": "Momentum",
-      "vote": 0.64,
+      "vote": 0.62,
       "weight": 1.39,
       "tier": "trigger",
       "dot": "green"
@@ -83,17 +83,31 @@
       "dot": "green"
      },
      {
+      "name": "Volume",
+      "vote": 0.65,
+      "weight": 0.91,
+      "tier": "trigger",
+      "dot": "green"
+     },
+     {
       "name": "SMC",
-      "vote": 0.18,
+      "vote": 0.3,
       "weight": 1.53,
       "tier": "setup",
       "dot": "green"
      },
      {
       "name": "Macro",
-      "vote": -0.63,
+      "vote": -0.77,
       "weight": 0.5,
       "tier": "regime",
+      "dot": "red"
+     },
+     {
+      "name": "Derivatives",
+      "vote": -0.55,
+      "weight": 0.7,
+      "tier": "trigger",
       "dot": "red"
      },
      {
@@ -104,46 +118,50 @@
       "dot": "green"
      },
      {
-      "name": "Volume",
-      "vote": 0.05,
-      "weight": 0.91,
-      "tier": "trigger",
-      "dot": "gray"
-     },
-     {
       "name": "Sentiment",
       "vote": 0,
       "weight": 1,
       "tier": "regime",
-      "dot": "gray"
-     },
-     {
-      "name": "Derivatives",
-      "vote": 0,
-      "weight": 0.7,
-      "tier": "trigger",
       "dot": "gray"
      }
     ]
    },
    "expert": {
     "verdict": "Khung lớn chưa rõ hướng — ưu tiên giao dịch ngắn theo intraday (SHORT), nhỏ size.",
-    "scalp": null,
+    "scalp": {
+     "dir": "LONG",
+     "entry": [
+      76461,
+      76584
+     ],
+     "sl": 76337,
+     "tp": [
+      76769,
+      76954
+     ],
+     "rr": 2.3,
+     "method": "atr",
+     "reasons": [
+      "MACD+",
+      "ST↑",
+      "VWAP↑"
+     ]
+    },
     "day": {
      "dir": "SHORT",
      "entry": [
-      76465,
-      77114
+      76584,
+      77078
      ],
-     "sl": 77762,
+     "sl": 77571,
      "tp": [
-      75383,
-      74302
+      75761,
+      74938
      ],
      "rr": 2.6,
      "method": "atr",
      "reasons": [
-      "MACD+",
+      "MACD−",
       "ST↓",
       "VWAP↓"
      ]
@@ -153,71 +171,71 @@
    "indicators": [
     {
      "tf": "1D",
-     "rsi": 51.13,
+     "rsi": 51.57,
      "macd": "bear",
-     "stoch": 23.19,
+     "stoch": 29,
      "st": "up",
      "extra": "ADX 40 · EMA golden"
     },
     {
      "tf": "4H",
-     "rsi": 45.9,
+     "rsi": 47.93,
      "macd": "bull",
-     "stoch": 63.53,
+     "stoch": 72.74,
      "st": "down",
      "extra": "Ichi below"
     },
     {
      "tf": "1H",
-     "rsi": 53,
-     "macd": "bull",
-     "stoch": 39,
+     "rsi": 54,
+     "macd": "bear",
+     "stoch": 50,
      "st": -1,
      "extra": "VWAP below"
     },
     {
      "tf": "15m",
-     "rsi": 48,
-     "macd": "bear",
-     "stoch": 39,
+     "rsi": 54,
+     "macd": "bull",
+     "stoch": 81,
      "st": 1,
      "extra": ""
     }
    ],
    "cycle": {
     "regime": "Pullback/bear-rally (giữa MA200W và MA50W)",
-    "ma200w": 65869.1,
+    "ma200w": 65869.69,
     "mayer": 1.09,
     "weeklyMacdBear": false,
     "supports": [
      {
       "ma": "MA200W",
-      "level": 65869,
-      "distPct": -13.9
+      "level": 65870,
+      "distPct": -14
      },
      {
       "ma": "MA300W",
       "level": 56863,
-      "distPct": -25.6
+      "distPct": -25.8
      },
      {
       "ma": "MA350W",
       "level": 50315,
-      "distPct": -34.2
+      "distPct": -34.3
      }
     ],
-    "piGapPct": 9.6
+    "piGapPct": 9.7
    },
    "derivatives": {
-    "fundingRate": 0.00006,
+    "fundingRate": 0.000043,
     "coinbasePremium": {
-     "gap": -27.62,
-     "signal": "⚪ trung tính"
+     "gap": -59.8,
+     "signal": "🔴 bearish (xả)"
     }
    },
    "levels": [
     {
-     "price": 65869.1,
+     "price": 65869.69,
      "label": "MA200W",
      "color": "#a855f7"
     }
@@ -228,21 +246,21 @@
    "tvSymbol": "BINANCE:ETHUSDT",
    "liveBase": "ETH",
    "price": {
-    "last": 2459.08,
-    "change24h": 1.7439479008494245,
+    "last": 2451.32,
+    "change24h": 0.1638533737041894,
     "high24h": 2482.48,
-    "low24h": 2369.77
+    "low24h": 2416.17
    },
    "council": {
-    "direction": "LONG",
+    "direction": "NEUTRAL",
     "confidence": "low",
-    "consensus": 0.183,
-    "agreement": 61,
+    "consensus": 0.123,
+    "agreement": 49,
     "counterTrend": false,
     "tiers": {
      "regime": {
       "dir": "NEUTRAL",
-      "score": -0.094
+      "score": -0.107
      },
      "setup": {
       "dir": "LONG",
@@ -277,7 +295,7 @@
      },
      {
       "name": "Momentum",
-      "vote": 0.59,
+      "vote": 0.61,
       "weight": 1.39,
       "tier": "trigger",
       "dot": "green"
@@ -290,24 +308,17 @@
       "dot": "green"
      },
      {
-      "name": "Volume",
-      "vote": 0.65,
-      "weight": 0.91,
-      "tier": "trigger",
-      "dot": "green"
-     },
-     {
       "name": "Macro",
-      "vote": -0.76,
+      "vote": -0.93,
       "weight": 0.5,
       "tier": "regime",
       "dot": "red"
      },
      {
-      "name": "Patterns",
-      "vote": 0.4,
-      "weight": 1.85,
-      "tier": "setup",
+      "name": "Volume",
+      "vote": 0.3,
+      "weight": 0.91,
+      "tier": "trigger",
       "dot": "green"
      },
      {
@@ -325,6 +336,13 @@
       "dot": "gray"
      },
      {
+      "name": "Patterns",
+      "vote": 0,
+      "weight": 1.85,
+      "tier": "setup",
+      "dot": "gray"
+     },
+     {
       "name": "Sentiment",
       "vote": 0,
       "weight": 1,
@@ -341,136 +359,71 @@
     ]
    },
    "expert": {
-    "verdict": "3 khung đồng pha LONG — thuận xu hướng, vào theo style.",
+    "verdict": "Khung lớn chưa rõ hướng — ưu tiên giao dịch ngắn theo intraday (NEUTRAL), nhỏ size.",
     "scalp": null,
-    "day": {
-     "dir": "LONG",
-     "entry": [
-      2413,
-      2426
-     ],
-     "sl": 2390,
-     "tp": [
-      2439,
-      2482,
-      2552
-     ],
-     "rr": 2.15,
-     "method": "fib",
-     "fib": {
-      "f0": 2370,
-      "f382": 2439,
-      "f500": 2426,
-      "f618": 2413,
-      "f786": 2394,
-      "f100": 2482,
-      "ext1618": 2552
-     },
-     "meetsMinRR": true,
-     "reasons": [
-      "MACD+",
-      "ST↑",
-      "VWAP↑",
-      "RSI64"
-     ]
-    },
-    "swing": {
-     "dir": "LONG",
-     "entry": [
-      2370,
-      2459
-     ],
-     "sl": 2312,
-     "tp": [
-      2680,
-      2753,
-      2900
-     ],
-     "rr": 3.3,
-     "method": "atr-fallback",
-     "fib": null
-    }
+    "day": null,
+    "swing": null
    },
    "indicators": [
     {
      "tf": "1D",
-     "rsi": 55.02,
+     "rsi": 54.47,
      "macd": "bear",
-     "stoch": 32.78,
+     "stoch": 30.25,
      "st": "up",
-     "extra": "ADX 48 · EMA golden"
+     "extra": "ADX 47 · EMA golden"
     },
     {
      "tf": "4H",
-     "rsi": 51.4,
+     "rsi": 49.47,
      "macd": "bull",
-     "stoch": 77.91,
+     "stoch": 72.35,
      "st": "down",
      "extra": "Ichi below"
     },
     {
      "tf": "1H",
-     "rsi": 64,
-     "macd": "bull",
-     "stoch": 65,
+     "rsi": 55,
+     "macd": "bear",
+     "stoch": 36,
      "st": 1,
-     "extra": "VWAP above"
+     "extra": "VWAP below"
     },
     {
      "tf": "15m",
-     "rsi": 53,
-     "macd": "bear",
-     "stoch": 52,
-     "st": 1,
+     "rsi": 52,
+     "macd": "bull",
+     "stoch": 89,
+     "st": -1,
      "extra": ""
     }
    ],
    "cycle": {
     "regime": "DEEP BEAR / vùng đáy chu kỳ",
-    "ma200w": 2524.04,
-    "mayer": 1.19,
+    "ma200w": 2524,
+    "mayer": 1.18,
     "weeklyMacdBear": false,
     "supports": [
      {
       "ma": "MA350W",
       "level": 2183,
-      "distPct": -11.2
+      "distPct": -10.9
      }
     ],
-    "piGapPct": 4
+    "piGapPct": 4.2
    },
    "derivatives": {
-    "fundingRate": 0.000037,
+    "fundingRate": 0.0001,
     "coinbasePremium": {
-     "gap": -3.08,
+     "gap": -2.49,
      "signal": "⚪ trung tính"
     }
    },
    "levels": [
     {
-     "price": 2459,
-     "label": "Entry LONG",
-     "color": "#22c55e"
-    },
-    {
-     "price": 2312,
-     "label": "SL",
-     "color": "#f59e0b"
-    },
-    {
-     "price": 2680,
-     "label": "TP1",
-     "color": "#3b82f6"
-    },
-    {
-     "price": 2524.04,
+     "price": 2524,
      "label": "MA200W",
      "color": "#a855f7"
-    },
-    {
-     "price": 2358,
-     "label": "Hỗ trợ",
-     "color": "#64748b"
     }
    ]
   },
@@ -479,25 +432,25 @@
    "tvSymbol": "BINANCE:SOLUSDT",
    "liveBase": "SOL",
    "price": {
-    "last": 100.72,
-    "change24h": 2.1915584415584415,
-    "high24h": 101.76,
-    "low24h": 96.13
+    "last": 101.81,
+    "change24h": 0.2066929133858267,
+    "high24h": 102.05,
+    "low24h": 98.87
    },
    "council": {
     "direction": "LONG",
     "confidence": "low",
-    "consensus": 0.202,
-    "agreement": 71,
+    "consensus": 0.162,
+    "agreement": 55,
     "counterTrend": false,
     "tiers": {
      "regime": {
-      "dir": "NEUTRAL",
-      "score": 0.115
+      "dir": "LONG",
+      "score": 0.306
      },
      "setup": {
-      "dir": "LONG",
-      "gated": false
+      "dir": "NEUTRAL",
+      "gated": true
      },
      "trigger": {
       "dir": "LONG",
@@ -513,20 +466,6 @@
       "dot": "green"
      },
      {
-      "name": "Ichimoku",
-      "vote": -0.6,
-      "weight": 1.94,
-      "tier": "regime",
-      "dot": "red"
-     },
-     {
-      "name": "Volume",
-      "vote": 0.65,
-      "weight": 0.91,
-      "tier": "trigger",
-      "dot": "green"
-     },
-     {
       "name": "Cycle",
       "vote": 0.4,
       "weight": 1.2,
@@ -535,21 +474,14 @@
      },
      {
       "name": "SMC",
-      "vote": 0.3,
+      "vote": -0.3,
       "weight": 1.53,
       "tier": "setup",
-      "dot": "green"
-     },
-     {
-      "name": "Momentum",
-      "vote": 0.25,
-      "weight": 1.39,
-      "tier": "trigger",
-      "dot": "green"
+      "dot": "red"
      },
      {
       "name": "Macro",
-      "vote": -0.76,
+      "vote": -0.93,
       "weight": 0.5,
       "tier": "regime",
       "dot": "red"
@@ -562,6 +494,20 @@
       "dot": "green"
      },
      {
+      "name": "Momentum",
+      "vote": 0.21,
+      "weight": 1.39,
+      "tier": "trigger",
+      "dot": "green"
+     },
+     {
+      "name": "Volume",
+      "vote": 0.3,
+      "weight": 0.91,
+      "tier": "trigger",
+      "dot": "green"
+     },
+     {
       "name": "MeanReversion",
       "vote": -0.3,
       "weight": 0.63,
@@ -569,11 +515,11 @@
       "dot": "red"
      },
      {
-      "name": "Derivatives",
-      "vote": 0.15,
-      "weight": 0.7,
-      "tier": "trigger",
-      "dot": "green"
+      "name": "Ichimoku",
+      "vote": -0.1,
+      "weight": 1.94,
+      "tier": "regime",
+      "dot": "red"
      },
      {
       "name": "ETFFlow",
@@ -588,56 +534,93 @@
       "weight": 1,
       "tier": "regime",
       "dot": "gray"
+     },
+     {
+      "name": "Derivatives",
+      "vote": 0,
+      "weight": 0.7,
+      "tier": "trigger",
+      "dot": "gray"
      }
     ]
    },
    "expert": {
     "verdict": "3 khung đồng pha LONG — thuận xu hướng, vào theo style.",
-    "scalp": null,
-    "day": {
+    "scalp": {
      "dir": "LONG",
      "entry": [
-      98.28,
-      98.95
+      101.18,
+      101.32
      ],
-     "sl": 97.16,
+     "sl": 100.93,
      "tp": [
-      99.61,
-      101.76,
-      105.24
+      101.45,
+      101.89,
+      102.6
      ],
-     "rr": 2.17,
+     "rr": 2.02,
      "method": "fib",
      "fib": {
-      "f0": 96.13,
-      "f382": 99.61,
-      "f500": 98.95,
-      "f618": 98.28,
-      "f786": 97.33,
-      "f100": 101.76,
-      "ext1618": 105.24
+      "f0": 100.74,
+      "f382": 101.45,
+      "f500": 101.32,
+      "f618": 101.18,
+      "f786": 100.99,
+      "f100": 101.89,
+      "ext1618": 102.6
      },
      "meetsMinRR": true,
      "reasons": [
       "MACD+",
       "ST↑",
       "VWAP↑",
-      "RSI63"
+      "RSI60"
+     ]
+    },
+    "day": {
+     "dir": "LONG",
+     "entry": [
+      99.25,
+      99.79
+     ],
+     "sl": 98.35,
+     "tp": [
+      100.32,
+      102.05,
+      104.85
+     ],
+     "rr": 2.16,
+     "method": "fib",
+     "fib": {
+      "f0": 97.52,
+      "f382": 100.32,
+      "f500": 99.79,
+      "f618": 99.25,
+      "f786": 98.49,
+      "f100": 102.05,
+      "ext1618": 104.85
+     },
+     "meetsMinRR": true,
+     "reasons": [
+      "MACD−",
+      "ST↑",
+      "VWAP↑",
+      "RSI66"
      ]
     },
     "swing": {
      "dir": "LONG",
      "entry": [
       96,
-      101
+      102
      ],
      "sl": 94,
      "tp": [
-      111,
-      115,
-      122
+      114,
+      118,
+      125
      ],
-     "rr": 3.4,
+     "rr": 3.6,
      "method": "atr-fallback",
      "fib": null
     }
@@ -645,33 +628,33 @@
    "indicators": [
     {
      "tf": "1D",
-     "rsi": 54,
+     "rsi": 55.4,
      "macd": "bear",
-     "stoch": 42.71,
+     "stoch": 52.17,
      "st": "up",
-     "extra": "ADX 42 · EMA golden"
+     "extra": "ADX 41 · EMA golden"
     },
     {
      "tf": "4H",
-     "rsi": 54.75,
+     "rsi": 58.91,
      "macd": "bull",
-     "stoch": 82.55,
+     "stoch": 95.95,
      "st": "down",
-     "extra": "Ichi below"
+     "extra": "Ichi inside"
     },
     {
      "tf": "1H",
-     "rsi": 63,
-     "macd": "bull",
-     "stoch": 64,
+     "rsi": 66,
+     "macd": "bear",
+     "stoch": 90,
      "st": 1,
      "extra": "VWAP above"
     },
     {
      "tf": "15m",
-     "rsi": 53,
-     "macd": "bear",
-     "stoch": 50,
+     "rsi": 60,
+     "macd": "bull",
+     "stoch": 92,
      "st": 1,
      "extra": ""
     }
@@ -679,21 +662,21 @@
    "cycle": {
     "regime": "DEEP BEAR / vùng đáy chu kỳ",
     "ma200w": 110.32,
-    "mayer": 1.21,
+    "mayer": 1.22,
     "weeklyMacdBear": false,
     "supports": [],
-    "piGapPct": -5.9
+    "piGapPct": -5.6
    },
    "derivatives": {
-    "fundingRate": -0.000013,
+    "fundingRate": 0.00003,
     "coinbasePremium": {
-     "gap": -0.12,
+     "gap": -0.13,
      "signal": "⚪ trung tính"
     }
    },
    "levels": [
     {
-     "price": 101,
+     "price": 102,
      "label": "Entry LONG",
      "color": "#22c55e"
     },
@@ -703,7 +686,7 @@
      "color": "#f59e0b"
     },
     {
-     "price": 111,
+     "price": 114,
      "label": "TP1",
      "color": "#3b82f6"
     },
@@ -724,36 +707,43 @@
    "tvSymbol": "BINANCE:BNBUSDT",
    "liveBase": "BNB",
    "price": {
-    "last": 725.74,
-    "change24h": -0.0922344130725072,
-    "high24h": 731.75,
-    "low24h": 710.22
+    "last": 741.07,
+    "change24h": 0.3955835534782903,
+    "high24h": 741.07,
+    "low24h": 722.66
    },
    "council": {
     "direction": "LONG",
-    "confidence": "low",
-    "consensus": 0.193,
-    "agreement": 56,
+    "confidence": "medium",
+    "consensus": 0.272,
+    "agreement": 71,
     "counterTrend": false,
     "tiers": {
      "regime": {
       "dir": "LONG",
-      "score": 0.247
+      "score": 0.551
      },
      "setup": {
-      "dir": "LONG",
+      "dir": "NEUTRAL",
       "gated": false
      },
      "trigger": {
       "dir": "NEUTRAL",
-      "gated": false
+      "gated": true
      }
     },
     "members": [
      {
       "name": "Trend",
-      "vote": 0.7,
+      "vote": 1,
       "weight": 2.47,
+      "tier": "regime",
+      "dot": "green"
+     },
+     {
+      "name": "Ichimoku",
+      "vote": 0.5,
+      "weight": 1.94,
       "tier": "regime",
       "dot": "green"
      },
@@ -766,9 +756,23 @@
      },
      {
       "name": "Macro",
-      "vote": -0.76,
+      "vote": -0.93,
       "weight": 0.5,
       "tier": "regime",
+      "dot": "red"
+     },
+     {
+      "name": "Volume",
+      "vote": -0.4,
+      "weight": 0.91,
+      "tier": "trigger",
+      "dot": "red"
+     },
+     {
+      "name": "MeanReversion",
+      "vote": -0.7,
+      "weight": 0.63,
+      "tier": "setup",
       "dot": "red"
      },
      {
@@ -780,31 +784,10 @@
      },
      {
       "name": "Momentum",
-      "vote": 0.15,
+      "vote": 0.13,
       "weight": 1.39,
       "tier": "trigger",
       "dot": "green"
-     },
-     {
-      "name": "Volume",
-      "vote": -0.05,
-      "weight": 0.91,
-      "tier": "trigger",
-      "dot": "gray"
-     },
-     {
-      "name": "Ichimoku",
-      "vote": 0,
-      "weight": 1.94,
-      "tier": "regime",
-      "dot": "gray"
-     },
-     {
-      "name": "MeanReversion",
-      "vote": 0,
-      "weight": 0.63,
-      "tier": "setup",
-      "dot": "gray"
      },
      {
       "name": "Cycle",
@@ -839,134 +822,161 @@
    "expert": {
     "verdict": "3 khung đồng pha LONG — thuận xu hướng, vào theo style.",
     "scalp": {
-     "dir": "SHORT",
+     "dir": "LONG",
      "entry": [
-      726,
-      727
+      732.62,
+      734.24
      ],
-     "sl": 729,
+     "sl": 729.92,
      "tp": [
-      724,
-      722
+      735.85,
+      741.07,
+      749.52
      ],
-     "rr": 2.3,
-     "method": "atr",
+     "rr": 2.18,
+     "method": "fib",
+     "fib": {
+      "f0": 727.4,
+      "f382": 735.85,
+      "f500": 734.24,
+      "f618": 732.62,
+      "f786": 730.33,
+      "f100": 741.07,
+      "ext1618": 749.52
+     },
+     "meetsMinRR": true,
      "reasons": [
-      "MACD−",
-      "ST↓",
-      "VWAP↓"
+      "MACD+",
+      "ST↑",
+      "VWAP↑",
+      "RSI74"
      ]
     },
     "day": {
      "dir": "LONG",
      "entry": [
-      718.01,
-      720.64
+      727.29,
+      729.92
      ],
-     "sl": 713.61,
+     "sl": 722.87,
      "tp": [
-      723.26,
-      731.75,
-      745.49
+      732.55,
+      741.07,
+      754.85
      ],
      "rr": 2.18,
      "method": "fib",
      "fib": {
-      "f0": 709.52,
-      "f382": 723.26,
-      "f500": 720.64,
-      "f618": 718.01,
-      "f786": 714.28,
-      "f100": 731.75,
-      "ext1618": 745.49
+      "f0": 718.77,
+      "f382": 732.55,
+      "f500": 729.92,
+      "f618": 727.29,
+      "f786": 723.54,
+      "f100": 741.07,
+      "ext1618": 754.85
      },
      "meetsMinRR": true,
      "reasons": [
-      "MACD−",
+      "MACD+",
       "ST↑",
       "VWAP↑",
-      "RSI57"
+      "RSI71"
      ]
     },
     "swing": {
      "dir": "LONG",
      "entry": [
-      707,
-      726
+      719,
+      723
      ],
-     "sl": 696,
+     "sl": 711,
      "tp": [
-      770,
-      785,
-      814
+      727,
+      741,
+      764
      ],
-     "rr": 3.4,
-     "method": "atr-fallback",
-     "fib": null
+     "rr": 2.1,
+     "method": "fibonacci",
+     "fib": {
+      "f0": 704.73,
+      "f382": 727.19,
+      "f500": 722.9,
+      "f618": 718.61,
+      "f786": 712.51,
+      "f100": 741.07,
+      "ext1618": 763.53
+     },
+     "meetsMinRR": true
     }
    },
    "indicators": [
     {
      "tf": "1D",
-     "rsi": 57.44,
+     "rsi": 61.4,
      "macd": "bear",
-     "stoch": 28.03,
+     "stoch": 48.33,
      "st": "up",
      "extra": "ADX 37 · EMA golden"
     },
     {
      "tf": "4H",
-     "rsi": 54.95,
+     "rsi": 67.09,
      "macd": "bull",
-     "stoch": 77.76,
-     "st": "down",
-     "extra": "Ichi below"
+     "stoch": 100,
+     "st": "up",
+     "extra": "Ichi inside"
     },
     {
      "tf": "1H",
-     "rsi": 57,
-     "macd": "bear",
-     "stoch": 34,
+     "rsi": 71,
+     "macd": "bull",
+     "stoch": 100,
      "st": 1,
      "extra": "VWAP above"
     },
     {
      "tf": "15m",
-     "rsi": 48,
-     "macd": "bear",
-     "stoch": 18,
-     "st": -1,
+     "rsi": 74,
+     "macd": "bull",
+     "stoch": 100,
+     "st": 1,
      "extra": ""
     }
    ],
    "cycle": {
-    "regime": "DEEP BEAR / vùng đáy chu kỳ",
+    "regime": "BULL (trên MA50W)",
     "ma200w": null,
-    "mayer": 1.16,
+    "mayer": 1.18,
     "weeklyMacdBear": false,
-    "supports": [],
-    "piGapPct": 15.8
+    "supports": [
+     {
+      "ma": "MA50W",
+      "level": 731,
+      "distPct": -1.4
+     }
+    ],
+    "piGapPct": 16
    },
    "derivatives": {
     "fundingRate": 0.0001,
     "coinbasePremium": {
-     "gap": -0.37,
+     "gap": -0.81,
      "signal": "⚪ trung tính"
     }
    },
    "levels": [
     {
-     "price": 726,
+     "price": 723,
      "label": "Entry LONG",
      "color": "#22c55e"
     },
     {
-     "price": 696,
+     "price": 711,
      "label": "SL",
      "color": "#f59e0b"
     },
     {
-     "price": 770,
+     "price": 727,
      "label": "TP1",
      "color": "#3b82f6"
     },
@@ -982,39 +992,32 @@
    "tvSymbol": "OKX:XAUUSDT.P",
    "liveBase": "PAXG",
    "price": {
-    "last": 4359.2,
-    "change24h": 0.17,
+    "last": 4361.34,
+    "change24h": 1.1,
     "high24h": 4378.94,
-    "low24h": 4235.54
+    "low24h": 4280.21
    },
    "council": {
     "direction": "NEUTRAL",
     "confidence": "low",
-    "consensus": 0.111,
-    "agreement": 49,
+    "consensus": -0.084,
+    "agreement": 56,
     "counterTrend": false,
     "tiers": {
      "regime": {
       "dir": "NEUTRAL",
-      "score": -0.065
+      "score": 0.014
      },
      "setup": {
-      "dir": "LONG",
+      "dir": "SHORT",
       "gated": false
      },
      "trigger": {
-      "dir": "LONG",
+      "dir": "NEUTRAL",
       "gated": false
      }
     },
     "members": [
-     {
-      "name": "SMC",
-      "vote": 0.54,
-      "weight": 1.53,
-      "tier": "setup",
-      "dot": "green"
-     },
      {
       "name": "Trend",
       "vote": -0.4,
@@ -1030,25 +1033,46 @@
       "dot": "green"
      },
      {
-      "name": "Volume",
-      "vote": 0.65,
-      "weight": 0.91,
-      "tier": "trigger",
+      "name": "Ichimoku",
+      "vote": 0.5,
+      "weight": 1.94,
+      "tier": "regime",
       "dot": "green"
      },
      {
       "name": "Macro",
-      "vote": -0.76,
+      "vote": -0.93,
       "weight": 0.5,
       "tier": "regime",
       "dot": "red"
      },
      {
+      "name": "SMC",
+      "vote": -0.21,
+      "weight": 1.53,
+      "tier": "setup",
+      "dot": "red"
+     },
+     {
+      "name": "Volume",
+      "vote": -0.4,
+      "weight": 0.91,
+      "tier": "trigger",
+      "dot": "red"
+     },
+     {
       "name": "Momentum",
-      "vote": 0.22,
+      "vote": 0.23,
       "weight": 1.39,
       "tier": "trigger",
       "dot": "green"
+     },
+     {
+      "name": "Patterns",
+      "vote": -0.36,
+      "weight": 1.85,
+      "tier": "setup",
+      "dot": "red"
      },
      {
       "name": "MeanReversion",
@@ -1056,20 +1080,6 @@
       "weight": 0.63,
       "tier": "setup",
       "dot": "red"
-     },
-     {
-      "name": "Patterns",
-      "vote": 0.04,
-      "weight": 1.85,
-      "tier": "setup",
-      "dot": "gray"
-     },
-     {
-      "name": "Ichimoku",
-      "vote": 0,
-      "weight": 1.94,
-      "tier": "regime",
-      "dot": "gray"
      },
      {
       "name": "ETFFlow",
@@ -1099,63 +1109,63 @@
     "scalp": {
      "dir": "LONG",
      "entry": [
-      4335,
-      4344
+      4350,
+      4352
      ],
-     "sl": 4321,
+     "sl": 4345,
      "tp": [
-      4352,
-      4379,
-      4422
+      4355,
+      4364,
+      4378
      ],
-     "rr": 2.18,
+     "rr": 2.07,
      "method": "fib",
      "fib": {
-      "f0": 4308,
-      "f382": 4352,
-      "f500": 4344,
-      "f618": 4335,
-      "f786": 4324,
-      "f100": 4379,
-      "ext1618": 4422
-     },
-     "meetsMinRR": true,
-     "reasons": [
-      "MACD−",
-      "ST↑",
-      "VWAP↓",
-      "RSI56"
-     ]
-    },
-    "day": {
-     "dir": "LONG",
-     "entry": [
-      4290,
-      4307
-     ],
-     "sl": 4262,
-     "tp": [
-      4324,
-      4379,
-      4468
-     ],
-     "rr": 2.18,
-     "method": "fib",
-     "fib": {
-      "f0": 4236,
-      "f382": 4324,
-      "f500": 4307,
-      "f618": 4290,
-      "f786": 4266,
-      "f100": 4379,
-      "ext1618": 4468
+      "f0": 4341,
+      "f382": 4355,
+      "f500": 4352,
+      "f618": 4350,
+      "f786": 4346,
+      "f100": 4364,
+      "ext1618": 4378
      },
      "meetsMinRR": true,
      "reasons": [
       "MACD+",
       "ST↑",
       "VWAP↑",
-      "RSI61"
+      "RSI68"
+     ]
+    },
+    "day": {
+     "dir": "LONG",
+     "entry": [
+      4309,
+      4322
+     ],
+     "sl": 4286,
+     "tp": [
+      4335,
+      4379,
+      4449
+     ],
+     "rr": 2.18,
+     "method": "fib",
+     "fib": {
+      "f0": 4265,
+      "f382": 4335,
+      "f500": 4322,
+      "f618": 4309,
+      "f786": 4290,
+      "f100": 4379,
+      "ext1618": 4449
+     },
+     "meetsMinRR": true,
+     "reasons": [
+      "MACD−",
+      "ST↑",
+      "VWAP↑",
+      "RSI60"
      ]
     },
     "swing": null
@@ -1163,61 +1173,61 @@
    "indicators": [
     {
      "tf": "1D",
-     "rsi": 48.28,
+     "rsi": 48.6,
      "macd": "bear",
-     "stoch": 48.69,
+     "stoch": 60.61,
      "st": "down",
      "extra": "ADX 24 · EMA death"
     },
     {
      "tf": "4H",
-     "rsi": 58.14,
+     "rsi": 57.42,
      "macd": "bull",
-     "stoch": 86.23,
+     "stoch": 87.73,
      "st": "up",
-     "extra": "Ichi below"
+     "extra": "Ichi inside"
     },
     {
      "tf": "1H",
-     "rsi": 61,
-     "macd": "bull",
-     "stoch": 80,
+     "rsi": 60,
+     "macd": "bear",
+     "stoch": 54,
      "st": 1,
      "extra": "VWAP above"
     },
     {
      "tf": "15m",
-     "rsi": 56,
-     "macd": "bear",
-     "stoch": 27,
+     "rsi": 68,
+     "macd": "bull",
+     "stoch": 90,
      "st": 1,
      "extra": ""
     }
    ],
    "cycle": {
     "regime": "Pullback/bear-rally (giữa MA200W và MA50W)",
-    "ma200w": 2950.06,
+    "ma200w": 2950.07,
     "mayer": 0.98,
     "weeklyMacdBear": false,
     "supports": [
      {
       "ma": "MA200W",
       "level": 2950,
-      "distPct": -32.3
+      "distPct": -32.4
      }
     ],
-    "piGapPct": 39.6
+    "piGapPct": 39.5
    },
    "derivatives": {
     "fundingRate": 0.00005,
     "coinbasePremium": {
-     "gap": -7.71,
+     "gap": -4.63,
      "signal": "⚪ trung tính"
     }
    },
    "levels": [
     {
-     "price": 2950.06,
+     "price": 2950.07,
      "label": "MA200W",
      "color": "#a855f7"
     }
@@ -1230,25 +1240,29 @@
    "net7DaysUsd": -1049000722.1299999
   },
   "etfMetrics": {
-   "totalNetAssetsUsd": 95185081971.85114,
-   "pctOfMcap": 0.06220943,
-   "dailyNetInflowUsd": -295980763.08,
-   "cumNetInflowUsd": 54589867899.848,
-   "dailyValueTradedUsd": 2805921467,
-   "totalBtcHeld": 1249516.58884178,
+   "totalNetAssetsUsd": 95471813217.18536,
+   "pctOfMcap": 0.06227965,
+   "dailyNetInflowUsd": -24210356.75,
+   "cumNetInflowUsd": 54565657543.098,
+   "dailyValueTradedUsd": 1660401942.7,
+   "totalBtcHeld": 1250938.7114781,
    "topIssuer": {
     "ticker": "IBIT",
     "institute": "BlackRock",
     "netAssetsUsd": 59282891360.00001,
     "pctOfMcap": 0.03874509
    },
-   "asOf": "2026-09-16"
+   "asOf": "2026-09-17"
   },
   "sentiment": {
    "fearGreed": {
-    "value": 50,
-    "classification": "Neutral",
+    "value": 56,
+    "classification": "Greed",
     "history": [
+     {
+      "value": 56,
+      "classification": "Greed"
+     },
      {
       "value": 50,
       "classification": "Neutral"
@@ -1272,10 +1286,6 @@
      {
       "value": 63,
       "classification": "Greed"
-     },
-     {
-      "value": 56,
-      "classification": "Greed"
      }
     ]
    },
@@ -1283,42 +1293,42 @@
     "source": "6551",
     "articles": 30,
     "scored": 17,
-    "avgScore": 33,
-    "longCount": 2,
-    "shortCount": 6,
-    "neutralCount": 9,
+    "avgScore": 37,
+    "longCount": 4,
+    "shortCount": 8,
+    "neutralCount": 5,
     "net": "short",
     "headlines": [
-     "Live: Jeffries says Democrats haven’t ruled anything out or in on wether  to pursue impeac",
-     "ZCG is sitting on a large accumulated treasury, and the Foundation has historically held t",
-     "Miner here 👋\n\nNice write up however I think that most of it is nonsense...\n\nThe reason th"
+     "Lara Trump was asked about the Left's latest attack on the late Charlie Kirk.\n\nGet your pr",
+     "Former Institute of Peace Workers Warn Trump May Push to Engrave Name on Building",
+     "Former Institute of Peace Workers Warn Trump May Push to Engrave Name on Building"
     ]
    },
    "community": {
     "source": "coingecko",
-    "upPct": 69.4,
-    "downPct": 30.6,
+    "upPct": 77.8,
+    "downPct": 22.2,
     "net": "long"
    },
    "divergence": "rumor_bull_news_bear"
   },
   "breadth": {
    "count": 12,
-   "green": 11,
-   "pctGreen": 92,
-   "avgChange": 2.17,
-   "btcChange": 0.51,
-   "avgAltChange": 2.33,
+   "green": 10,
+   "pctGreen": 83,
+   "avgChange": 0.56,
+   "btcChange": 0.03,
+   "avgAltChange": 0.61,
    "altsOutperform": true
   },
   "macro": {
-   "btcDominance": 58.2,
-   "ethDominance": 11.36,
-   "usdtDominance": 6.96,
+   "btcDominance": 58.09,
+   "ethDominance": 11.3,
+   "usdtDominance": 6.93,
    "usdcDominance": 2.79,
-   "stablecoinDominance": 9.75,
-   "totalMarketCapUsd": 2628007100818,
-   "mcapChange24h": -1.15,
+   "stablecoinDominance": 9.72,
+   "totalMarketCapUsd": 2633556462653,
+   "mcapChange24h": -1.87,
    "interpretation": "Stablecoin dominance cao → tiền đứng ngoài, tâm lý risk-off (thận trọng với alt)"
   },
   "macroEvents": [
@@ -1356,14 +1366,6 @@
    }
   ],
   "fundingHistory": [
-   {
-    "time": 1788278400,
-    "rate": 0.00005
-   },
-   {
-    "time": 1788307200,
-    "rate": 0.000076
-   },
    {
     "time": 1788336000,
     "rate": 0.0001
@@ -1547,6 +1549,14 @@
    {
     "time": 1789632000,
     "rate": 0.000034
+   },
+   {
+    "time": 1789660800,
+    "rate": 0.000063
+   },
+   {
+    "time": 1789689600,
+    "rate": 0.000057
    }
   ],
   "paper": {
@@ -2626,7 +2636,7 @@
      "closedAt": "00:06 29-08 GMT+7"
     }
    ],
-   "updatedAt": "19:15 17-09 GMT+7"
+   "updatedAt": "07:51 18-09 GMT+7"
   },
   "bottom": {
    "count": 2,
@@ -2638,7 +2648,7 @@
    ],
    "halving": {
     "lastHalving": "2024-04-19",
-    "weeksSince": 125.9,
+    "weeksSince": 126,
     "phase": "bottomWindow",
     "label": "🎯 CỬA SỔ ĐÁY chu kỳ (lịch sử: đáy tuần 111/127/132)",
     "inBottomWindow": true,
