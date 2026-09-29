@@ -6,6 +6,11 @@
 <title>Crypto Council Dashboard</title>
 <meta name="description" content="Hội đồng 12 thành viên · chỉ báo đa khung · biểu đồ TradingView realtime · funding history — BTC/ETH/SOL/BNB." />
 <script src="https://s3.tradingview.com/tv.js"></script>
+<!-- lightweight-charts: thư viện chart mã nguồn mở của chính TradingView. Cần nó vì widget
+     nhúng free KHÔNG nạp được Pine script (tài liệu widget của TV: "It is not possible to add
+     pine scripts to widgets at this time"), nên chỉ báo tự viết phải tự vẽ.
+     GHIM version 4.2.3: v5 đổi API (addSeries/createSeriesMarkers) nên để "latest" sẽ vỡ im lặng. -->
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js"></script>
 <style>
   :root{
     --bg:#0a0e17; --surface:#111826; --surface2:#0e1420; --border:#1d2940;
@@ -204,9 +209,11 @@
   <div class="grid">
     <div class="card">
       <h3>📈 Biểu đồ realtime · TradingView <span style="color:var(--faint);text-transform:none;letter-spacing:0">(đổi khung/chỉ báo ngay trên chart)</span></h3>
-      <div class="chips-row"><span class="chips-lbl">📌 Chỉ báo lưu sẵn:</span><span id="chips"></span></div>
+      <div class="chips-row"><span class="chips-lbl">🖼 Chế độ:</span><span id="modeChips"></span></div>
+      <div class="chips-row" id="studyRow"><span class="chips-lbl">📌 Chỉ báo lưu sẵn:</span><span id="chips"></span></div>
       <div id="tv_chart"></div>
-      <div class="tvnote">Chart realtime từ TradingView. Chỉ báo lưu qua các chip trên SỐNG qua refresh/đổi coin. Chỉ báo tự add bằng thanh công cụ chart chỉ giữ trong phiên (giới hạn widget free). Phân tích Hội đồng/kèo bên dưới là snapshot 4H theo cron.</div>
+      <div id="qqe_chart" style="display:none;height:520px"></div>
+      <div class="tvnote" id="chartNote"></div>
     </div>
     <div class="card">
       <h3>🏛️ Hội đồng · 3 tầng (4H)</h3>
@@ -270,6 +277,62 @@ const state = { coin:"BTC", theme: localStorage.getItem("dash-theme")||"dark", s
 document.documentElement.dataset.theme = state.theme;
 $("themeBtn").textContent = state.theme==="dark"?"🌙":"☀️";
 
+// ── CHẾ ĐỘ CHART ──────────────────────────────────────────────────────────────
+// "tv"  = widget TradingView (realtime, đủ công cụ, chỉ báo DỰNG SẴN của TV)
+// "qqe" = chart tự vẽ bằng lightweight-charts + tín hiệu QQE do engine tính
+// Tách hai chế độ thay vì thay thế: widget TV có realtime + công cụ vẽ mà ta không dựng lại
+// được, còn Pine tự viết thì TV không cho nhúng. Mỗi bên giữ thế mạnh của mình.
+state.chartMode = localStorage.getItem("dash-chartmode")==="qqe" ? "qqe" : "tv";
+let qqeChart=null, qqeSeries=null, qqeKey=null;
+
+function renderModeChips(){
+  const M = { tv:"TradingView", qqe:"QQE signals" };
+  $("modeChips").innerHTML = Object.entries(M).map(([id,label])=>
+    `<button class="chip ${state.chartMode===id?'on':''}" onclick="setChartMode('${id}')">${label}</button>`).join("");
+  $("studyRow").style.display = state.chartMode==="tv" ? "" : "none";
+  $("tv_chart").style.display  = state.chartMode==="tv" ? "" : "none";
+  $("qqe_chart").style.display = state.chartMode==="qqe" ? "" : "none";
+  $("chartNote").innerHTML = state.chartMode==="tv"
+    ? 'Chart realtime từ TradingView. Chỉ báo lưu qua các chip trên SỐNG qua refresh/đổi coin. Chỉ báo tự add bằng thanh công cụ chart chỉ giữ trong phiên (giới hạn widget free). Phân tích Hội đồng/kèo bên dưới là snapshot 4H theo cron.'
+    : 'QQE signals — port JavaScript từ Pine Script "QQE signals" © colinmck (<a href="https://mozilla.org/MPL/2.0/" target="_blank" rel="noopener">MPL-2.0</a>), engine tự tính. Nến 4H theo cron, <b>KHÔNG realtime</b> như chế độ TradingView. Mũi tên = nến đầu tiên sau khi đường QQE đổi phía; tín hiệu luân phiên Long/Short theo đúng thuật toán gốc.';
+}
+function setChartMode(m){
+  state.chartMode = m;
+  localStorage.setItem("dash-chartmode", m);
+  renderModeChips(); ensureChart();
+}
+function makeQQE(){
+  const c = state.data.coins[state.coin];
+  const q = c && c.qqe;
+  if(!q || !q.candles || !q.candles.length){
+    // Nói rõ vì sao trống thay vì để một ô đen — engine có thể chưa kịp sinh block này.
+    $("qqe_chart").innerHTML = '<div style="padding:24px;color:var(--faint)">Chưa có dữ liệu QQE cho '+(c?c.symbol:'coin này')+'. Block này do engine sinh theo cron; nếu vừa deploy thì chờ nhịp chạy kế tiếp.</div>';
+    qqeChart=null; return;
+  }
+  $("qqe_chart").innerHTML="";
+  const dark = state.theme==="dark";
+  qqeChart = LightweightCharts.createChart($("qqe_chart"), {
+    autoSize:true,
+    layout:{ background:{color:"transparent"}, textColor: dark?"#94a3b8":"#475569" },
+    grid:{ vertLines:{color: dark?"#1e293b":"#e2e8f0"}, horzLines:{color: dark?"#1e293b":"#e2e8f0"} },
+    rightPriceScale:{ borderColor: dark?"#334155":"#cbd5e1" },
+    timeScale:{ borderColor: dark?"#334155":"#cbd5e1", timeVisible:true },
+    localization:{ locale:"vi-VN" },
+  });
+  qqeSeries = qqeChart.addCandlestickSeries({
+    upColor:"#22c55e", downColor:"#ef4444", borderUpColor:"#22c55e",
+    borderDownColor:"#ef4444", wickUpColor:"#22c55e", wickDownColor:"#ef4444",
+  });
+  // lightweight-charts nhận `time` là GIÂY, dữ liệu của ta là MILI-giây → phải chia 1000.
+  qqeSeries.setData(q.candles.map(k=>({ time:Math.floor(k[0]/1000), open:k[1], high:k[2], low:k[3], close:k[4] })));
+  const mk = [];
+  for(const t of (q.long||[]))  mk.push({ time:Math.floor(t/1000), position:"belowBar", color:"#22c55e", shape:"arrowUp",   text:"Long" });
+  for(const t of (q.short||[])) mk.push({ time:Math.floor(t/1000), position:"aboveBar", color:"#ef4444", shape:"arrowDown", text:"Short" });
+  mk.sort((a,b)=>a.time-b.time);          // API đòi marker đã sắp theo thời gian
+  qqeSeries.setMarkers(mk);
+  qqeChart.timeScale().fitContent();
+}
+
 let chartKey = null; // symbol+studies đang vẽ — chỉ tạo lại widget khi đổi, KHÔNG mỗi lần refresh
 function makeChart(){
   const c = state.data.coins[state.coin]; if(!c) return;
@@ -280,6 +343,10 @@ function makeChart(){
     timezone:"Asia/Ho_Chi_Minh", theme:state.theme, style:"1", locale:"vi_VN",
     toolbar_bg:"rgba(0,0,0,0)", enable_publishing:false, allow_symbol_change:true,
     hide_top_toolbar:false, hide_side_toolbar:false, withdateranges:true, details:false,
+    // TRÙNG VOLUME: widget TV tự vẽ volume sẵn, nên bật thêm chip "Vol"
+    // (Volume@tv-basicstudies) là ra HAI volume — một chồng trên nến, một pane riêng.
+    // hide_volume:true tắt cái mặc định của TV, để chip "Vol" thành công tắc DUY NHẤT.
+    hide_volume:true,
     studies: state.studies,
   });
 }
@@ -287,6 +354,12 @@ function makeChart(){
 // → chỉ báo anh tự add trên chart KHÔNG bị mất mỗi lần cập nhật nữa.
 function ensureChart(){
   const c = state.data.coins[state.coin]; if(!c) return;
+  if(state.chartMode === "qqe"){
+    // vẽ lại khi đổi coin hoặc đổi theme; refresh dữ liệu KHÔNG dựng lại chart vô ích
+    const key = "qqe|" + c.symbol + "|" + state.theme;
+    if(key !== qqeKey || !qqeChart){ qqeKey = key; makeQQE(); }
+    return;
+  }
   const key = c.tvSymbol + "|" + state.studies.join(",");
   if(key !== chartKey) makeChart();
 }
@@ -392,7 +465,7 @@ function renderPanels(){
     (ex.macro?stat("🔺 BTC.D",ex.macro.btcDominance+"%",""):"")+
     (ex.macroEvents&&ex.macroEvents.length?'<div style="margin-top:6px"></div>'+ex.macroEvents.slice(0,2).map(e=>`<div class="ev"><span class="d">${e.date.slice(5)}</span> ${e.high?"⚠️ ":""}${(e.events||[]).slice(0,1).join(", ")}</div>`).join(""):"");
   fundingSvg(ex.fundingHistory);
-  renderChips();
+  renderChips(); renderModeChips();
 }
 
 function setCoin(s){ state.coin=s; render(); }
