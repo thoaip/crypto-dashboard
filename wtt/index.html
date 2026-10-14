@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Waves Trend Signals</title>
+  <meta name="description" content="Bảng tín hiệu Waves Trend Toolkit [CR] v2.3.0 cho 11 coin trên 6 khung thời gian, tính trực tiếp trong trình duyệt từ dữ liệu công khai của Binance.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <p class="kicker">Waves Trend Toolkit [CR] · v2.3.0</p>
+      <h1>Bảng tín hiệu đa khung</h1>
+      <p class="lede">Tính ngay trong trình duyệt của bạn từ nến <strong>đã đóng</strong> trên Binance, cùng một engine với chỉ báo Pine và bộ backtest. Chỉ mua (Long Only); BÁN = thoát lệnh mua.</p>
+    </div>
+    <div class="status" aria-live="polite">
+      <span id="statusDot" class="dot"></span>
+      <span id="statusText">Đang tải dữ liệu…</span>
+      <button id="refreshBtn" class="btn" type="button">Làm mới</button>
+      <button id="themeBtn" class="btn ghost" type="button" aria-label="Đổi giao diện sáng/tối">◐</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" aria-labelledby="matrixTitle">
+      <div class="panel-head">
+        <h2 id="matrixTitle">Ma trận tín hiệu</h2>
+        <p class="hint">Mỗi ô: tín hiệu cuối · xu hướng hiện tại · số nến đã qua · lãi/lỗ từ giá tín hiệu. <span class="tag warn">⚠</span> = xu hướng đã đảo nhưng tín hiệu ngược chiều bị bộ lọc chặn. Bấm một dòng để xem biểu đồ.</p>
+      </div>
+      <div class="table-wrap">
+        <table id="matrix">
+          <thead><tr id="matrixHead"></tr></thead>
+          <tbody id="matrixBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel detail" aria-labelledby="detailTitle">
+      <div class="panel-head row">
+        <h2 id="detailTitle">Biểu đồ</h2>
+        <div class="controls">
+          <label>Coin <select id="coinSel"></select></label>
+          <label>Khung <select id="tfSel"></select></label>
+        </div>
+      </div>
+      <div id="tradeBox" class="trade-box"></div>
+      <div id="chart" class="chart" role="img" aria-label="Biểu đồ nến với tín hiệu, EMA200 và mức stop"></div>
+      <p class="legend"><span class="sw ema"></span>EMA200 <span class="sw vsu"></span>Stop/xu hướng tăng <span class="sw vsd"></span>xu hướng giảm <span class="sw buy"></span>MUA <span class="sw sell"></span>BÁN</p>
+    </section>
+
+    <section class="panel" aria-labelledby="btTitle">
+      <div class="panel-head">
+        <h2 id="btTitle">Backtest nhanh</h2>
+        <p class="hint">Chạy lại chiến lược (Long Only, phí 0,05%/chiều) trên các nến đang tải của coin và khung đang chọn. Số nến ít hơn nhiều so với backtest đầy đủ — chỉ để tham khảo.</p>
+      </div>
+      <div id="btStats" class="stats"></div>
+      <div class="table-wrap"><table id="btTrades"></table></div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Trang tĩnh, không có máy chủ, không đặt lệnh và không cần đăng nhập. Dữ liệu: API công khai của Binance. Nội dung chỉ để tham khảo, không phải lời khuyên đầu tư. Kết quả quá khứ không đảm bảo tương lai.</p>
+    <p><a href="../">← Về Crypto Council Dashboard</a></p>
+  </footer>
+
+  <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
+  <script src="engine.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
