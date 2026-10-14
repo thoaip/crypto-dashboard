@@ -1,0 +1,87 @@
+# Waves Trend Toolkit [CR] v2.3.0 - PAPER trading agent, one cycle every 15 minutes.
+# Paper only: MODE is hard-coded and no exchange API key is ever passed to this job.
+# State lives on the `agent-state` branch so it never mixes with the dashboard files on main.
+name: WTT paper agent
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['agent/**', '.github/workflows/wtt-agent.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wtt-paper-agent
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          path: repo
+
+      - name: Checkout paper state (branch agent-state)
+        id: state
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          ref: agent-state
+          path: state
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: repo/agent/trading-agent/package-lock.json
+
+      - name: Install
+        working-directory: repo/agent/trading-agent
+        run: npm ci --omit=dev --no-audit --no-fund
+
+      - name: Restore state
+        run: |
+          mkdir -p repo/agent/trading-agent/data
+          for f in state-paper.json trades-paper.jsonl; do
+            if [ -f "state/$f" ]; then cp "state/$f" repo/agent/trading-agent/data/; fi
+          done
+
+      - name: Run one agent cycle (paper)
+        working-directory: repo/agent/trading-agent
+        env:
+          MODE: paper
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node src/index.js --tick
+
+      - name: Save state to agent-state
+        if: always()
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          src=repo/agent/trading-agent/data
+          [ -f "$src/state-paper.json" ] || { echo "no state written"; exit 0; }
+          if [ ! -d state/.git ]; then
+            rm -rf state && mkdir state && cd state
+            git init -q -b agent-state
+            git remote add origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+            cd ..
+          fi
+          cp "$src/state-paper.json" state/
+          [ -f "$src/trades-paper.jsonl" ] && cp "$src/trades-paper.jsonl" state/
+          cd state
+          git config user.name "wtt-paper-agent"
+          git config user.email "wtt-paper-agent@users.noreply.github.com"
+          git add state-paper.json trades-paper.jsonl 2>/dev/null || git add state-paper.json
+          if git diff --cached --quiet; then echo "state unchanged"; exit 0; fi
+          git commit -q -m "paper: $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -q origin HEAD:agent-state

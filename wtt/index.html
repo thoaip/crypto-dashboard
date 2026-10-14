@@ -52,6 +52,16 @@
       <p class="legend"><span class="sw ema"></span>EMA200 <span class="sw vsu"></span>Stop/xu hướng tăng <span class="sw vsd"></span>xu hướng giảm <span class="sw buy"></span>MUA <span class="sw sell"></span>BÁN</p>
     </section>
 
+    <section class="panel" aria-labelledby="paperTitle">
+      <div class="panel-head">
+        <h2 id="paperTitle">Paper trading (agent tự chạy)</h2>
+        <p class="hint">Agent chạy bằng GitHub Actions mỗi 15 phút với <strong>tiền ảo</strong> (không có key sàn), theo đúng luật của chỉ báo: khung 4H, Long Only, mỗi lệnh 100 USDT, 2 TP + trailing stop. Số dư tính theo giá nến 4H mới nhất.</p>
+      </div>
+      <div id="paperStats" class="stats"></div>
+      <div class="table-wrap"><table id="paperOpen"></table></div>
+      <div class="table-wrap"><table id="paperTrades"></table></div>
+    </section>
+
     <section class="panel" aria-labelledby="btTitle">
       <div class="panel-head">
         <h2 id="btTitle">Backtest nhanh</h2>

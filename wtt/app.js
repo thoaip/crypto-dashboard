@@ -193,6 +193,61 @@
         `<td>${fmtDate(rows[x.exitIdx][0])}</td><td>${why[x.why] || x.why}</td><td class="${x.pnl >= 0 ? 'pos' : 'neg'}">${fmtPct(x.pnl * 100)}</td></tr>`).join('') + '</tbody>';
   }
 
+  // ───────────────────────── paper agent (GitHub Actions) ─────────────────────────
+  const STATE_BASE = 'https://raw.githubusercontent.com/thoaip/crypto-dashboard/agent-state';
+
+  async function loadPaper() {
+    try {
+      const res = await fetch(`${STATE_BASE}/state-paper.json?t=${Date.now()}`, { cache: 'no-store' });
+      if (res.status === 404) { renderPaper(null, []); return; }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const state = await res.json();
+      let trades = [];
+      const tr = await fetch(`${STATE_BASE}/trades-paper.jsonl?t=${Date.now()}`, { cache: 'no-store' });
+      if (tr.ok) trades = (await tr.text()).split('\n').filter(Boolean).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      renderPaper(state, trades);
+    } catch (err) {
+      $('paperStats').innerHTML = `<div class="stat"><b>Trạng thái</b><span>Không đọc được (${esc(err.message)})</span></div>`;
+    }
+  }
+
+  function renderPaper(state, trades) {
+    if (!state) {
+      $('paperStats').innerHTML = '<div class="stat"><b>Trạng thái</b><span>Agent chưa chạy lần nào</span></div>';
+      $('paperOpen').innerHTML = ''; $('paperTrades').innerHTML = '';
+      return;
+    }
+    const lastPx = sym => cache.get(`${sym.split('/')[0]}|4h`)?.ev?.close;
+    const positions = Object.values(state.positions || {});
+    let posValue = 0;
+    for (const p of positions) { const px = lastPx(p.symbol); posValue += Number.isFinite(px) ? p.qty * px : p.cost * (p.qty / p.initialQty); }
+    const equity = state.paper.usdt + posValue;
+    const start = 1000;
+    const closed = trades.filter(t => t.type === 'close');
+    const wins = closed.filter(t => t.realized > 0).length;
+    const realized = closed.reduce((s, t) => s + t.realized, 0);
+    const lastCheck = Math.max(0, ...Object.values(state.lastCheck || {}));
+    $('paperStats').innerHTML = [
+      ['Vốn ảo hiện tại', `${equity.toFixed(2)} USDT`],
+      ['So với ban đầu', fmtPct((equity / start - 1) * 100)],
+      ['Đã chốt', `${realized >= 0 ? '+' : ''}${realized.toFixed(2)} USDT`],
+      ['Lệnh đã đóng', closed.length ? `${closed.length} (thắng ${Math.round((wins / closed.length) * 100)}%)` : '0'],
+      ['Đang mở', String(positions.length)],
+      ['Lần chạy gần nhất', lastCheck ? fmtDate(lastCheck) : '–'],
+      ['Bắt đầu', state.startedAt ? new Date(state.startedAt).toLocaleDateString('vi-VN') : '–'],
+      ['Trạng thái', state.halted ? 'Tạm dừng (/stop)' : 'Đang chạy'],
+    ].map(([k, v]) => `<div class="stat"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('');
+    $('paperOpen').innerHTML = positions.length
+      ? '<thead><tr><th>Lệnh đang mở</th><th>Giá vào</th><th>Giá hiện tại</th><th>Stop</th><th>TP</th><th>Lãi/lỗ</th></tr></thead><tbody>' +
+        positions.map(p => { const px = lastPx(p.symbol); const pnl = Number.isFinite(px) ? (px / p.entry - 1) * 100 : NaN;
+          return `<tr><td>${esc(p.symbol)}</td><td>${fmtPx(p.entry)}</td><td>${fmtPx(px)}</td><td>${fmtPx(p.sl)}</td><td>${p.tps.map((t, k) => `${t.hit ? '✔' : ''}TP${k + 1} ${fmtPx(t.px)}`).join(' · ') || '—'}</td><td class="${pnl >= 0 ? 'pos' : 'neg'}">${fmtPct(pnl)}</td></tr>`; }).join('') + '</tbody>'
+      : '';
+    $('paperTrades').innerHTML = closed.length
+      ? '<thead><tr><th>Đóng lúc</th><th>Coin</th><th>Lý do</th><th>Kết quả</th></tr></thead><tbody>' +
+        closed.slice(-15).reverse().map(t => `<tr><td>${fmtDate(Date.parse(t.time))}</td><td>${esc(t.symbol)}</td><td>${esc(t.reason)}</td><td class="${t.realized >= 0 ? 'pos' : 'neg'}">${t.realized >= 0 ? '+' : ''}${t.realized.toFixed(2)} USDT (${fmtPct(t.pct)})</td></tr>`).join('') + '</tbody>'
+      : '<tbody><tr><td class="hint">Chưa có lệnh nào đóng. Agent chỉ vào lệnh khi có tín hiệu MUA trên nến 4H vừa đóng.</td></tr></tbody>';
+  }
+
   // ───────────────────────── wiring ─────────────────────────
   function initControls() {
     $('coinSel').innerHTML = COINS.map(c => `<option value="${c}">${c}/USDT</option>`).join('');
@@ -216,6 +271,6 @@
   if (!E || !window.LightweightCharts) { setStatus('Không tải được thư viện (engine hoặc biểu đồ).', 'err'); return; }
   initControls();
   renderMatrix();
-  loadAll(false);
-  setInterval(() => loadAll(false), CHECK_EVERY_MS); // only refetches series whose candle has closed
+  loadAll(false).then(loadPaper);
+  setInterval(() => loadAll(false).then(loadPaper), CHECK_EVERY_MS); // only refetches series whose candle has closed
 })();
