@@ -81,6 +81,7 @@ class Agent {
 
   // ───────────────────────────── main loop step ─────────────────────────────
   async tick() {
+    this.tickErrors = new Set();
     await this.handleCommands();
     for (const symbol of this.cfg.symbols) await this.processSymbol(symbol);
     this.persist();
@@ -90,6 +91,7 @@ class Agent {
     try {
       return await fn();
     } catch (err) {
+      this.tickErrors?.add(symbol);
       this.log(`[${symbol}] ${what} error: ${err.stack || err.message}`);
       await this.alertOnce(`${symbol}:${what}`, `⚠️ ${symbol} (${what}): ${cleanErr(err)}`);
       return undefined;

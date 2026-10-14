@@ -73,7 +73,10 @@ async function main() {
     await agent.tick();
     store.save(state);
     const open = Object.keys(state.positions);
-    log(`tick done | open: ${open.length ? open.join(', ') : 'none'} | paper USDT ${state.paper.usdt.toFixed(2)}`);
+    const failed = [...(agent.tickErrors || [])];
+    log(`tick done | open: ${open.length ? open.join(', ') : 'none'} | paper USDT ${state.paper.usdt.toFixed(2)} | errors: ${failed.length ? failed.join(', ') : 'none'}`);
+    // Make a fully broken run visible (red in GitHub Actions) instead of silently "succeeding".
+    if (failed.length === cfg.symbols.length) process.exitCode = 1;
     return;
   }
 
