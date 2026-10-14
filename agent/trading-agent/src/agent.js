@@ -402,7 +402,7 @@ class Agent {
   async announce(symbol, ev, action) {
     try {
       const tf = this.cfg.timeframe;
-      const kind = ev.sig === 1 ? 'MUA' : 'BÁN';
+      const kind = ev.sig === 1 ? (ev.early ? 'MUA SỚM' : 'MUA') : 'BÁN';
       const pos = this.state.positions[symbol];
       const htf = await this.htfSnapshot(symbol);
       const ups = htf.filter(h => h.trend === 1).length, known = htf.filter(h => h.trend !== undefined).length;

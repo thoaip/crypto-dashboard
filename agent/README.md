@@ -1,6 +1,6 @@
 # WTT paper agent (GitHub Actions)
 
-Paper-trading agent for **Waves Trend Toolkit [CR] v2.3.0**, run by `.github/workflows/wtt-agent.yml` every 15 minutes.
+Paper-trading agent for **Waves Trend Toolkit [CR] v2.5.0**, run by `.github/workflows/wtt-agent.yml` every 15 minutes.
 Paper money only: this workflow never receives exchange API keys and always runs with `MODE=paper`.
 
 - Code: `trading-agent/src` (same engine as the backtest: `backtest/engine.cjs`)

@@ -95,7 +95,9 @@ function prepare(rows) {
   // ActionWave
   { const L = 55, lag = Math.max(1, Math.floor((L - 1) / 2));
     const awA = ema(hlc3.map((x, i) => x + (x - shift(hlc3, lag, i))), L), awB = ema(awA, Math.floor(L / 3));
-    D.awDir = awA.map((x, i) => (x >= awB[i] ? 1 : -1)); }
+    D.awDir = awA.map((x, i) => (x >= awB[i] ? 1 : -1));
+    const awAtr = atr(h, l, c, L);
+    D.awWeak = awA.map((x, i) => Math.abs(x - shift(awA, 3, i)) / Math.max(awAtr[i], 1e-12) < 0.12); }
   // Voltix midline direction
   { const mid = alma(c, 40, 0.85, 6); D.vxDir = mid.map((x, i) => (x >= shift(mid, 1, i) ? 1 : -1)); }
   // EMA200 distance in ATR(100) units: >0 above, <0 below.
@@ -137,7 +139,27 @@ function vectorShift(D, mode, sens) {
     age = flip[i] ? 0 : age + 1;
   }
   const r = D.rsi.map(x => (isNa(x) ? 50 : x));
-  return (D.vsCache[key] = { vs, dir, flip, atr: a, len, rsiLo: lowest(r, len), rsiHi: highest(r, len) });
+  // Basis slope over len/4 bars in ATR units: low = VectorShift is flat (range) - the original toolkit's "avoid entries" state.
+  const m = Math.max(2, Math.floor(len / 4));
+  const slope = basis.map((x, i) => Math.abs(x - shift(basis, m, i)) / Math.max(a[i], 1e-12));
+  const prevFlip = new Array(D.n).fill(-1e9); // index of the previous flip (before bar i)
+  for (let i = 1, last = -1e9; i < D.n; i++) { prevFlip[i] = last; if (flip[i]) last = i; }
+  return (D.vsCache[key] = { vs, dir, flip, atr: a, len, slope, prevFlip, rsiLo: lowest(r, len), rsiHi: highest(r, len) });
+}
+
+// Descending trend line through the last two confirmed pivot highs (P bars each side, strictly highest),
+// as known at each bar - no look-ahead: a pivot at k is only known from bar k + P. NaN while the last two highs are not falling.
+function downtrendLine(h, P) {
+  const out = new Array(h.length).fill(NA);
+  let a = -1, b = -1;
+  for (let i = 2 * P; i < h.length; i++) {
+    const k = i - P;
+    let ok = true;
+    for (let j = 1; j <= P && ok; j++) if (!(h[k - j] < h[k]) || !(h[k + j] < h[k])) ok = false;
+    if (ok) { a = b; b = k; }
+    if (a >= 0 && h[b] < h[a]) out[i] = h[a] + (h[b] - h[a]) * (i - a) / (b - a);
+  }
+  return out;
 }
 
 // ── Strategy simulation ────────────────────────────────────────────────────────
@@ -149,8 +171,23 @@ function signals(D, p) {
   const filt = { None: null, FlowTrend: D.flowDir, ActionWave: D.awDir, TrendMagnet: mag, 'Voltix Mid': D.vxDir }[p.filter];
   if (filt === undefined) throw new Error(`Unknown filter: ${p.filter}`);
   const E = p.ema || {};
-  const sig = new Array(D.n).fill(0), power = new Array(D.n).fill(false), skipped = new Array(D.n).fill(0);
+  const N = p.noise || {};
+  const sig = new Array(D.n).fill(0), power = new Array(D.n).fill(false), skipped = new Array(D.n).fill(0), noisy = new Array(D.n).fill(0);
+  const early = new Array(D.n).fill(false);
+  // v2.5 early BUY: close breaks the pivot downtrend line while VectorShift is still down but close to flipping.
+  // Until VectorShift turns up, the long's stop is the lowest low of the last P bars.
+  const X = p.early, P = X ? X.pivot : 0;
+  const dl = X ? downtrendLine(D.h, P) : null, lowP = X ? lowest(D.l, P + 1) : null;
+  const stop = V.vs.map((v, i) => (X && V.dir[i] === -1 ? lowP[i] : v));
   for (let i = 1; i < D.n; i++) {
+    if (X && V.dir[i] === -1 && !V.flip[i] && D.c[i] > dl[i] && !(D.c[i - 1] > dl[i - 1])) {
+      const z = D.z200[i], maxZ = (p.ema || {}).maxZ;
+      if ((maxZ == null || isNa(z) || z < maxZ) && D.c[i] > D.ema200[i] && (V.vs[i] - D.c[i]) / V.atr[i] < X.near) {
+        sig[i] = 1; early[i] = true;
+        power[i] = V.rsiLo[i] < 30 || (D.adx[i] > 25 && D.relVol[i] > 1.3);
+      }
+      continue;
+    }
     if (!V.flip[i]) continue;
     const d = V.dir[i], z = D.z200[i];
     if (filt && filt[i] !== d) continue;
@@ -160,10 +197,22 @@ function signals(D, p) {
     if (E.maxZ != null && !isNa(z) && !(d * z < E.maxZ)) ok = false;          // skip entries already stretched from EMA200
     if (E.minZ != null && !isNa(z) && !(d * z <= E.minZ)) ok = false;         // mean-reversion: only enter when stretched the other way
     if (!ok) { skipped[i] = d; continue; }
+    const pw = (d === 1 ? V.rsiLo[i] < 30 : V.rsiHi[i] > 70) || (D.adx[i] > 25 && D.relVol[i] > 1.3);
+    // v2.4 noise filters - entries only: in Long Only a SELL is an exit and must never be filtered away.
+    if ((d === 1 || !p.longOnly) && !noiseOk(D, V, N, i, d)) { noisy[i] = d; continue; }
     sig[i] = d;
-    power[i] = (d === 1 ? V.rsiLo[i] < 30 : V.rsiHi[i] > 70) || (D.adx[i] > 25 && D.relVol[i] > 1.3);
+    power[i] = pw;
   }
-  return { sig, power, skipped, vs: V.vs, dir: V.dir, atr: V.atr, len: V.len, z: D.z200, ema200: D.ema200, flowDir: D.flowDir };
+  return { sig, power, skipped, noisy, early, stop, vs: V.vs, dir: V.dir, atr: V.atr, len: V.len, z: D.z200, ema200: D.ema200, flowDir: D.flowDir };
+}
+
+// N: { flat, cooldown, aw, adxMin } - each one optional, off when falsy. Chosen per timeframe in defaultParams.
+function noiseOk(D, V, N, i, d) {
+  if (N.flat && !(V.slope[i] >= N.flat)) return false;               // VectorShift basis flat = range
+  if (N.cooldown && i - V.prevFlip[i] < N.cooldown) return false;     // whipsaw: previous flip too recent
+  if (N.aw && (D.awDir[i] !== d || D.awWeak[i])) return false;        // ActionWave against or stalling
+  if (N.adxMin && !(D.adx[i] >= N.adxMin)) return false;              // no trend strength
+  return true;
 }
 
 function simulate(D, p) {
@@ -201,15 +250,17 @@ function simulate(D, p) {
     if (t && E.exitZ && !isNa(z) && t.dir * z >= E.exitZ) closeRest(i, c, 'Stretch');
     // 2) signal at close (shared with the live agent via signals())
     const d = S.sig[i];
-    if (d !== 0) {
+    if (d === -1 && p.longOnly) { if (t) closeRest(i, c, 'Sell'); }
+    else if (d !== 0 && t && t.dir === d) { /* same-direction signal while in a trade (VectorShift confirming an early BUY, or a filtered SELL in between): keep it, like the Pine script and the live agent */ }
+    else if (d !== 0) {
       if (t) closeRest(i, c, 'Reverse');
       const power = S.power[i];
       const tps = [];
       if (p.tp.mode === 'Dynamic') for (let k = 1; k <= p.tp.count; k++) tps.push({ px: c + d * V.atr[i] * p.tp.step * k, frac: (p.tp.share ?? 1) / p.tp.count, hit: false });
-      t = { dir: d, entry: c, entryIdx: i, atr: V.atr[i], power, tps, filled: 0, pnl: 0, mfe: 0, sl: p.sl === 'Trailing' ? V.vs[i] : NA };
+      t = { dir: d, entry: c, entryIdx: i, atr: V.atr[i], power, tps, filled: 0, pnl: 0, mfe: 0, sl: p.sl === 'Trailing' ? (d === 1 ? S.stop[i] : V.vs[i]) : NA, early: S.early[i] };
     }
     // 3) trail the stop for the next bar
-    if (t && p.sl === 'Trailing' && i > t.entryIdx) t.sl = t.dir === 1 ? Math.max(t.sl, V.vs[i]) : Math.min(t.sl, V.vs[i]);
+    if (t && p.sl === 'Trailing' && i > t.entryIdx) t.sl = t.dir === 1 ? Math.max(t.sl, S.stop[i]) : Math.min(t.sl, V.vs[i]);
   }
   if (t && p.includeOpen) trades.push({ ...t, open: true }); // still-open trade (dashboard), off for backtests
   return trades;
@@ -226,9 +277,30 @@ function stats(trades) {
   return { n, net: eq * 100, pf: gl > 0 ? gp / gl : gp > 0 ? 99 : 0, win: (100 * w) / n, dd: dd * 100, exp: (eq / n) * 100 };
 }
 
-// Waves Trend Toolkit [CR] v2.3.0 default parameters per timeframe (Long Only defaults; see the Pine script).
-const TF_SECONDS = { '4h': 14400, '8h': 28800, '12h': 43200, '1d': 86400, '3d': 259200, '1w': 604800 };
-function defaultParams(tf, { btc8h = false } = {}) {
+// v2.4 noise filter per timeframe (Auto), from a long-only backtest on BTC + 10 coins (noise_sweep / noise_coins):
+//   below 8H : VectorShift flat filter 0.5 ATR   (BTC 4H PF 2.09 -> 2.55, 37% fewer trades; 11/11 coins profitable)
+//   8H       : cooldown 12 bars + ADX >= 15       (BTC 8H PF 2.20 -> 3.48, DD 23% -> 10%)
+//   12H, 1D  : ActionWave must agree, not stalling (12H PF 2.34 -> 2.75, 1D 2.14 -> 2.43 across 11 coins)
+//   3D and up: off - too few signals to filter, every filter made it worse
+function noiseFor(tf) {
+  const sec = TF_SECONDS[tf];
+  if (sec < 28800) return { flat: 0.5 };
+  if (sec === 28800) return { cooldown: 12, adxMin: 15 };
+  if (sec <= 86400) return { aw: true };
+  return {};
+}
+
+// v2.5 early BUY per timeframe (Auto): pivot-10 downtrend-line break + VectorShift within 1.5 ATR + close above EMA200.
+// Fires a median 3 bars before the VectorShift BUY. BTC 4H PF 2.55 -> 3.32, net 171% -> 263%; 11 coins: PF flat,
+// net +10-40% (early.cjs .. early4.cjs). Off on 8H (BTC out-of-sample PF fell) and from 3D up (almost never fires).
+function earlyFor(tf) {
+  const sec = TF_SECONDS[tf];
+  return sec === 28800 || sec >= 259200 ? null : { pivot: 10, near: 1.5 };
+}
+
+// Waves Trend Toolkit [CR] v2.5.0 default parameters per timeframe (Long Only defaults; see the Pine script).
+const TF_SECONDS = { '1h': 3600, '2h': 7200, '4h': 14400, '6h': 21600, '8h': 28800, '12h': 43200, '1d': 86400, '3d': 259200, '1w': 604800 };
+function defaultParams(tf, { btc8h = false, noise = true, early = true } = {}) {
   const sec = TF_SECONDS[tf];
   if (!sec) throw new Error(`Unsupported timeframe ${tf}`);
   const preset = btc8h && tf === '8h';
@@ -240,11 +312,14 @@ function defaultParams(tf, { btc8h = false } = {}) {
     tp: { mode: 'Dynamic', count: 2, step: 2, share: 0.5 },
     sl: 'Trailing',
     ema: maxZ == null ? {} : { maxZ },
+    longOnly: true,
+    noise: noise ? noiseFor(tf) : {},
+    early: early ? earlyFor(tf) : null,
   };
 }
 
 // Works in Node (require) and in the browser (window.WTTEngine) - the dashboard loads this exact file.
-const WTT_ENGINE = { prepare, signals, simulate, stats, defaultParams, TF_SECONDS, VERSION: '2.3.0' };
+const WTT_ENGINE = { prepare, signals, simulate, stats, defaultParams, noiseFor, earlyFor, TF_SECONDS, VERSION: '2.5.0' };
 if (typeof module !== 'undefined' && module.exports) module.exports = WTT_ENGINE;
 else globalThis.WTTEngine = WTT_ENGINE;
 
