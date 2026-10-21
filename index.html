@@ -68,6 +68,12 @@
   .chip{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);cursor:pointer;transition:.15s}
   .chip:hover{color:var(--text);border-color:var(--cyan)}
   .chip.on{background:rgba(34,211,238,.16);color:var(--cyan);border-color:var(--cyan)}
+  .fsbtn{margin-left:auto}
+  /* Chế độ toàn màn hình của khung biểu đồ: card phủ kín viewport, chart giãn hết phần còn lại */
+  #chartCard.max{position:fixed;inset:0;z-index:1000;border-radius:0;display:flex;flex-direction:column;overflow:hidden;background:var(--surface)}
+  #chartCard.max #tv_chart,#chartCard.max #qqe_chart{flex:1 1 auto;height:auto!important;min-height:0}
+  #chartCard.max .tvnote{display:none}
+  body.chartmax{overflow:hidden}
   /* Council */
   .tiers{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
   .pill{flex:1;min-width:84px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:7px 9px;text-align:center}
@@ -207,9 +213,9 @@
   <div id="bottomBanner" class="bbanner"></div>
 
   <div class="grid">
-    <div class="card">
+    <div class="card" id="chartCard">
       <h3>📈 Biểu đồ realtime · TradingView <span style="color:var(--faint);text-transform:none;letter-spacing:0">(đổi khung/chỉ báo ngay trên chart)</span></h3>
-      <div class="chips-row"><span class="chips-lbl">🖼 Chế độ:</span><span id="modeChips"></span></div>
+      <div class="chips-row"><span class="chips-lbl">🖼 Chế độ:</span><span id="modeChips"></span><button class="chip fsbtn" id="fsBtn" type="button" title="Phóng to biểu đồ toàn màn hình (Esc để thoát)">⛶ Toàn màn hình</button></div>
       <div class="chips-row" id="studyRow"><span class="chips-lbl">📌 Chỉ báo lưu sẵn:</span><span id="chips"></span></div>
       <div id="tv_chart"></div>
       <div id="qqe_chart" style="display:none;height:520px"></div>
@@ -272,8 +278,11 @@ const dirBg=(d)=> d==="LONG"?"bg-g":d==="SHORT"?"bg-r":"bg-y";
 const arrow=(s)=> s===1?"↑":s===-1?"↓":"→";
 
 const STUDY_IDS = { EMA:"MAExp@tv-basicstudies", MA:"MASimple@tv-basicstudies", RSI:"RSI@tv-basicstudies", MACD:"MACD@tv-basicstudies", BB:"BB@tv-basicstudies", Stoch:"Stochastic@tv-basicstudies", Vol:"Volume@tv-basicstudies" };
+// Bộ mặc định khi trình duyệt chưa lưu lựa chọn: EMA + BB chồng lên nến, rồi các pane Vol → RSI → MACD
+// (thứ tự mảng = thứ tự pane). Ai đã bấm chip thì giữ lựa chọn riêng trong localStorage.
+const DEFAULT_STUDIES = [STUDY_IDS.EMA, STUDY_IDS.BB, STUDY_IDS.Vol, STUDY_IDS.RSI, STUDY_IDS.MACD];
 let savedStudies; try{ savedStudies = JSON.parse(localStorage.getItem("dash-studies")); }catch(e){}
-const state = { coin:"BTC", theme: localStorage.getItem("dash-theme")||"dark", studies: Array.isArray(savedStudies)?savedStudies:["Volume@tv-basicstudies"], data:null };
+const state = { coin:"BTC", theme: localStorage.getItem("dash-theme")||"dark", studies: Array.isArray(savedStudies)?savedStudies:DEFAULT_STUDIES.slice(), data:null };
 document.documentElement.dataset.theme = state.theme;
 $("themeBtn").textContent = state.theme==="dark"?"🌙":"☀️";
 
@@ -649,6 +658,32 @@ function renderPaperLive(price){
       liqEl.innerHTML=`⚠️ Thanh lý $${fp(p.liq)} <span style="color:var(--faint)">(cách ${dl.toFixed(2)}%)</span>`; }
   }
 }
+// ── Toàn màn hình cho khung biểu đồ ──
+// Dùng Fullscreen API thật khi trình duyệt cho phép; iPhone Safari không hỗ trợ trên <div>
+// nên rơi về lớp CSS .max (phủ kín viewport). Cả TV widget lẫn lightweight-charts đều autosize.
+const chartCard = $("chartCard"), fsBtn = $("fsBtn");
+const fsSupported = !!(chartCard.requestFullscreen || chartCard.webkitRequestFullscreen);
+const fsElement = () => document.fullscreenElement || document.webkitFullscreenElement;
+function setChartMax(on){
+  chartCard.classList.toggle("max", on);
+  document.body.classList.toggle("chartmax", on);
+  fsBtn.textContent = on ? "✕ Thoát toàn màn hình" : "⛶ Toàn màn hình";
+  fsBtn.classList.toggle("on", on);
+}
+fsBtn.onclick = () => {
+  const on = !chartCard.classList.contains("max");
+  if(!fsSupported){ setChartMax(on); return; }
+  if(on){
+    const req = chartCard.requestFullscreen || chartCard.webkitRequestFullscreen;
+    Promise.resolve(req.call(chartCard)).catch(() => setChartMax(true)); // bị chặn → vẫn phóng bằng CSS
+  } else if(fsElement()){
+    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  } else setChartMax(false);
+};
+["fullscreenchange","webkitfullscreenchange"].forEach(ev =>
+  document.addEventListener(ev, () => setChartMax(fsElement() === chartCard)));
+document.addEventListener("keydown", e => { if(e.key==="Escape" && chartCard.classList.contains("max") && !fsElement()) setChartMax(false); });
+
 // ── Cỡ chữ (zoom toàn dashboard, nhớ localStorage) ──
 const FONT_ORDER=["Nhỏ","Vừa","To","Rất to"], FONT_SCALE={"Nhỏ":0.9,"Vừa":1,"To":1.15,"Rất to":1.3};
 state.font=localStorage.getItem("dash-font")||"Vừa";
