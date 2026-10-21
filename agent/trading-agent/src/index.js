@@ -11,14 +11,16 @@ const { Notifier } = require('./notifier');
 const { Commentator } = require('./ai');
 const { Agent, fmtPx } = require('./agent');
 const { evaluate } = require('./strategy');
+const { registerSecrets, redact } = require('./security');
 
+// Every line is redacted before it reaches stdout or disk; data files are owner-only (0700/0600 on POSIX).
 function makeLogger(dir) {
-  fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(dir, { recursive: true, mode: 0o700 });
   const file = path.join(dir, 'agent.log');
   return msg => {
-    const line = `${new Date().toISOString()} ${msg}`;
+    const line = `${new Date().toISOString()} ${redact(msg)}`;
     process.stdout.write(line + '\n');
-    fs.appendFileSync(file, line + '\n');
+    fs.appendFileSync(file, line + '\n', { mode: 0o600 });
   };
 }
 
@@ -44,6 +46,7 @@ async function report(cfg, log) {
 async function main() {
   loadEnvFile();
   const cfg = loadConfig();
+  registerSecrets([cfg.exchange.apiKey, cfg.exchange.secret, cfg.telegram.token, process.env.ANTHROPIC_API_KEY, process.env.ANTHROPIC_AUTH_TOKEN]);
   const log = makeLogger(cfg.dataDir);
 
   if (process.argv.includes('--once')) return report(cfg, log);
@@ -57,7 +60,7 @@ async function main() {
     : new ExchangeBroker({ apiKey: cfg.exchange.apiKey, secret: cfg.exchange.secret, sandbox: cfg.mode === 'testnet', stopLimitBuffer: cfg.stopLimitBuffer });
   await broker.init();
 
-  const notifier = new Notifier({ token: cfg.telegram.token, chatId: cfg.telegram.chatId, log });
+  const notifier = new Notifier({ token: cfg.telegram.token, chatId: cfg.telegram.chatId, allowedUserIds: cfg.telegram.allowedUserIds, log });
   const ai = new Commentator({ enabled: cfg.ai.enabled, model: cfg.ai.model, effort: cfg.ai.effort, keySet: cfg.anthropicKeySet, log });
   const agent = new Agent({ cfg, broker, market, notifier, ai, store, state, log });
   await agent.start(); // reconcile stored positions with the exchange balance
@@ -94,6 +97,6 @@ async function main() {
 }
 
 main().catch(err => {
-  process.stderr.write(`${err.stack || err.message}\n`);
+  process.stderr.write(`${redact(err.stack || err.message)}\n`);
   process.exit(1);
 });

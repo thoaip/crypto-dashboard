@@ -1,13 +1,15 @@
 {
   "name": "wtt-trading-agent",
-  "version": "1.0.0",
-  "description": "Trading agent for Waves Trend Toolkit [CR] v2.3.0 signals: Binance spot, long only, Telegram alerts, Claude commentary.",
+  "version": "1.1.0",
+  "description": "Trading agent for Waves Trend Toolkit [CR] signals: Binance spot, long only, Telegram alerts, Claude commentary. SDL-hardened.",
   "private": true,
   "type": "commonjs",
   "scripts": {
     "start": "node src/index.js",
     "once": "node src/index.js --once",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "audit": "npm audit --omit=dev",
+    "verify": "npm test && npm audit --omit=dev"
   },
   "engines": {
     "node": ">=22"

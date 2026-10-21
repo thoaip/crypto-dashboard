@@ -15,6 +15,7 @@ const { strategyParams, TIMEFRAMES } = require('./config');
 const { evaluate } = require('./strategy');
 const { utcDay } = require('./state');
 const { EST_FEE } = require('./broker');
+const { cleanErr } = require('./security'); // redacted, length-bounded error text (no signed URLs / keys)
 
 const TP_COUNT = 2, TP_STEP_ATR = 2, TP_SHARE = 0.5;
 const FRESH_FRACTION = 0.25;     // on first sight of a symbol, act only if its last candle closed within 25% of a bar
@@ -35,8 +36,6 @@ const BACKTEST_NOTE = {
 const fmtPx = n => (!Number.isFinite(n) ? 'n/a' : n >= 100 ? n.toFixed(2) : n >= 1 ? n.toFixed(4) : n.toPrecision(5));
 const fmtPct = n => `${n >= 0 ? '+' : ''}${n.toFixed(2)}%`;
 const arrow = d => (d === 1 ? '▲' : d === -1 ? '▼' : '■');
-// Error text may contain signed request URLs; never forward query strings to Telegram/logs.
-const cleanErr = err => String(err?.message || err).replace(/\?[^\s"']*/g, '?…').slice(0, 300);
 
 class Agent {
   constructor({ cfg, broker, market, notifier, ai, store, state, log, now = () => Date.now(), evaluateFn = evaluate, fsImpl = fs }) {
