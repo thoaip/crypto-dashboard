@@ -5,11 +5,12 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "start": "node src/index.js",
-    "once": "node src/index.js --once",
+    "start": "node --use-system-ca src/index.js",
+    "once": "node --use-system-ca src/index.js --once",
     "test": "node --test test/*.test.js",
     "audit": "npm audit --omit=dev",
-    "verify": "npm test && npm audit --omit=dev"
+    "verify": "npm test && npm audit --omit=dev",
+    "net-check": "node scripts/net-check.cjs && node --use-system-ca scripts/net-check.cjs"
   },
   "engines": {
     "node": ">=22"

@@ -15,7 +15,9 @@ async function getJson(path, { retries = 2, timeoutMs = 15000 } = {}) {
         if (!res.ok) throw new Error(`HTTP ${res.status} from ${host}${path.split('?')[0]}`);
         return await res.json();
       } catch (err) {
-        lastErr = err;
+        // "fetch failed" alone is useless; keep the network/TLS cause code (e.g. UNABLE_TO_VERIFY_LEAF_SIGNATURE
+        // when an antivirus intercepts HTTPS - run Node with --use-system-ca, see `npm run net-check`).
+        lastErr = err.cause?.code ? new Error(`${err.message} (${err.cause.code})`) : err;
         if (/HTTP 4\d\d/.test(err.message)) break; // 451/403 etc: try the next host, don't retry
         if (attempt < retries) await new Promise(r => setTimeout(r, 1000 * attempt));
       }
