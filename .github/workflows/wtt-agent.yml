@@ -1,15 +1,14 @@
-# Waves Trend Toolkit [CR] v2.3.0 - PAPER trading agent, one cycle every 15 minutes.
+# Waves Trend Toolkit [CR] - PAPER trading agent, one cycle per manual run.
+# PAUSED since 2026-10-21: the agent now runs continuously on the owner's machine (GitHub cron was up to ~2h late).
+# Re-enable by restoring the schedule below - but never run both at once on the same paper account.
+#   schedule:
+#     - cron: '7,22,37,52 * * * *'
 # Paper only: MODE is hard-coded and no exchange API key is ever passed to this job.
 # State lives on the `agent-state` branch so it never mixes with the dashboard files on main.
 name: WTT paper agent
 
 on:
-  schedule:
-    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ['agent/**', '.github/workflows/wtt-agent.yml']
 
 permissions:
   contents: write
