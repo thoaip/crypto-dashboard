@@ -102,6 +102,14 @@
   .keo-live.sl{color:var(--red)} .keo-live.tp{color:var(--green)}
   .livetag{font-family:var(--mono);font-size:11px;color:var(--red);font-weight:700}
   .keo.zone-hit{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan) inset}
+  /* TradingAgents paper */
+  .tadec{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:12px}
+  .tadec .tasig{font-family:var(--mono);font-weight:800;font-size:15px;padding:2px 10px;border-radius:7px;margin-right:8px}
+  .tasig.buy,.tasig.overweight{color:var(--green);background:rgba(34,197,94,.14)}
+  .tasig.sell,.tasig.underweight{color:var(--red);background:rgba(239,68,68,.14)}
+  .tasig.hold,.tasig.review{color:var(--amber);background:rgba(245,158,11,.14)}
+  .tadec .tareason{margin-top:8px;font-size:12.5px;color:var(--muted);white-space:pre-wrap;line-height:1.5;max-height:9em;overflow:auto}
+  .tadec .taerr{color:var(--red);font-family:var(--mono);font-size:12px;margin-top:6px}
   /* Paper trading */
   .pthead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
   .pthead h3{text-transform:none!important;letter-spacing:0!important;font-size:15px!important;color:var(--text)!important}
@@ -246,6 +254,17 @@
     <div class="ptrecent" id="paperRecent"></div>
     <div class="ptpolicy">📌 <b>Từ 31/07/2026:</b> paper CHỈ mở kèo <b>SWING</b> (Hội đồng 4H + Fib pullback) — đã dừng hẳn <b>Scalp</b> &amp; <b>Day</b> sau khi A/B cho thấy chúng kéo lùi hiệu suất (net-âm). Từ 25/09/2026 tắt thêm phía <b>SHORT</b> (chỉ còn Swing LONG). ⚠️ <b>Swing CHƯA được chứng minh có edge:</b> backtest cũ báo Swing dương là do lỗi nhìn trước (khớp lệnh từ lúc nến 4h MỞ); sửa lỗi xong, LONG còn ≈ +0.15R/lệnh với khoảng tin cậy 95% chứa 0, và forward paper đến nay đang âm. Đây là thử nghiệm, không phải chiến lược đã kiểm chứng. Số liệu tổng/lịch sử bên dưới còn lẫn giai đoạn thử nghiệm cũ (đa khung, trước 31/07) cho tới khi trôi khỏi 100 lệnh gần nhất — không phải hiệu suất của chính sách hiện hành.</div>
     <div class="ptnote">🔬 <b>A/B đòn bẩy:</b> 3 tài khoản (30x · 10x · Risk 1.5%/lệnh) chạy song song trên CÙNG kèo hội đồng — chỉ khác đòn bẩy/sizing → so hiệu quả &amp; rủi ro (maxDD, cháy) để rút <b>SL/TP hợp lý</b>. "Risk 1.5%" = size theo SL sao cho chạm SL chỉ mất ~1.5% vốn (gần như không cháy). 📐 <b>SL/TP theo Fibonacci:</b> entry vùng vàng 0.5–0.618, SL ngoài 0.786, TP <b>chốt 3 phần đều</b> (1/3 mỗi mức, từ 25/09/2026; trước đó 40/30/30%) tại 38.2% → đỉnh/đáy cũ → mở rộng 161.8%, R:R≥2. Chạm TP1 → dời SL hòa vốn. Mô phỏng thanh lý thật · uPnL realtime · không phải khuyến nghị.</div>
+  </div>
+
+  <div class="card" id="tauricCard" style="margin-top:16px;display:none">
+    <div class="pthead">
+      <h3 style="margin:0">🤖 Paper Trading · TradingAgents (Claude) <span class="ptsym">BTC</span></h3>
+      <span class="ptmeta" id="tauricMeta"></span>
+    </div>
+    <div class="ptab" id="tauricCmp"></div>
+    <div class="tadec" id="tauricLast"></div>
+    <div class="ptrecent" id="tauricRecent"></div>
+    <div class="ptnote">🧪 <b>Chạy song song, độc lập với Hội đồng:</b> mỗi ngày sau khi nến ngày (UTC) đóng, khung đa tác tử <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">TradingAgents</a> (Apache-2.0) dùng Claude phân tích kỹ thuật · cảm xúc · tin tức → tranh luận Bull/Bear → Trader → tranh luận rủi ro → Portfolio Manager ra xếp hạng 5 bậc. Xếp hạng đổi thành tỉ trọng BTC spot: Buy 100% · Overweight 75% · Hold giữ nguyên · Underweight 25% · Sell 0%, phí 0.1%/chiều, không đòn bẩy, không short. Không backtest được trung thực (LLM đã biết giá quá khứ) nên chỉ chấm forward · không phải khuyến nghị.</div>
   </div>
 
   <div class="row3">
@@ -445,6 +464,7 @@ function renderPanels(){
        ${k.rr?`<div class="lvl">R:R <b>${k.rr}</b></div>`:""}
        <div class="keo-live" id="live-${key}">— chờ giá live —</div></div>`;
   $("keos").innerHTML=keo("scalp","⚡ Scalp",c.expert?.scalp)+keo("day","☀️ Day",c.expert?.day)+keo("swing","📈 Swing",c.expert?.swing);
+  renderTauric(); // paper TradingAgents (Claude), chạy song song Hội đồng
   renderPaper();  // panel paper-trade (BTC) — cấu trúc snapshot; uPnL do pollPrice cập nhật live
   pollPrice();  // cập nhật trạng thái live ngay sau khi render
   // indicators
@@ -607,6 +627,35 @@ function renderPaper(){
     ? `<div class="ptbklbl">Chất lượng tín hiệu hội đồng · tài khoản ${prim.desc}</div>`+bkChip("Scalp (cũ)",an.byStyle.scalp)+bkChip("Day (cũ)",an.byStyle.day)+bkChip("Swing ★",an.byStyle.swing)+bkChip("Long",an.byDir.LONG)+bkChip("Short",an.byDir.SHORT)
     : "";
   renderPaperHistory(pp, prim);
+}
+// 🤖 Paper TradingAgents (Claude) — chữ do LLM viết nên LUÔN escape trước khi đưa vào innerHTML.
+const escHtml = v => String(v==null?"":v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function renderTauric(){
+  const ta=state.data&&state.data.tauric, card=$("tauricCard"); if(!card) return;
+  if(!ta){ card.style.display="none"; return; } card.style.display="";
+  const pct=v=>((v/ta.startCapital-1)*100);
+  const fmtPct=v=>`${v>=0?'+':''}${v.toFixed(1)}%`;
+  $("tauricMeta").textContent=`vốn $${fp(ta.startCapital)} · từ ${String(ta.startedAt).slice(0,10)} · ${ta.runs} lần chạy`+(ta.errors?` · ${ta.errors} lỗi`:"");
+  const rows=[["TradingAgents (Claude)",ta.equity],["Giữ BTC từ ngày bắt đầu",ta.buyHold]];
+  if(ta.council!=null) rows.push(["Hội đồng · tài khoản risk 1.5%",ta.council]);
+  $("tauricCmp").innerHTML=`<table class="abtab"><thead><tr><th>So sánh cùng kỳ</th><th>Equity</th><th>Net</th></tr></thead><tbody>`+
+    rows.map(([l,v],i)=>`<tr class="${i===0?'abprim':''}"><td class="ablbl">${l}</td><td class="num">$${fp(Math.round(v))}</td><td class="num ${v>=ta.startCapital?'g':'r'}">${fmtPct(pct(v))}</td></tr>`).join("")+
+    `</tbody></table>`;
+  const d=ta.last;
+  if(!d){ $("tauricLast").innerHTML=`<div class="ptempty">Chưa chạy lần nào.</div>`; }
+  else {
+    const sig=d.signal||"LỖI", cls=String(d.signal||"review").toLowerCase();
+    const expo=d.exposureAfter!=null?` · tỉ trọng BTC ${Math.round(d.exposureBefore*100)}% → <b>${Math.round(d.exposureAfter*100)}%</b>`:"";
+    $("tauricLast").innerHTML=`<div><span class="tasig ${escHtml(cls)}">${escHtml(sig)}</span><span class="mut">ngày ${escHtml(d.tradeDate)} · giá $${fp(Math.round(d.price))}${expo}</span></div>`+
+      (d.error?`<div class="taerr">⚠️ ${escHtml(d.error)} — vị thế giữ nguyên.</div>`:"")+
+      (d.reason?`<div class="tareason">${escHtml(d.reason)}</div>`:"");
+  }
+  const rec=(ta.recent||[]).filter(x=>x.signal);
+  $("tauricRecent").innerHTML=rec.length?`<div class="pthistwrap"><table class="pthist"><thead><tr><th>Ngày</th><th>Xếp hạng</th><th>Giá</th><th>Tỉ trọng</th><th>Lệnh</th><th>Equity</th></tr></thead><tbody>`+
+    rec.map(x=>`<tr><td class="mut">${escHtml(x.tradeDate)}</td><td><span class="tasig ${escHtml(String(x.signal).toLowerCase())}">${escHtml(x.signal)}</span></td><td class="num">$${fp(Math.round(x.price))}</td>`+
+      `<td class="num">${Math.round(x.exposureBefore*100)}% → ${Math.round(x.exposureAfter*100)}%</td>`+
+      `<td class="mut">${x.order?`${x.order.side} $${fp(Math.round(x.order.usd))}`:"—"}</td><td class="num">$${fp(Math.round(x.equity))}</td></tr>`).join("")+
+    `</tbody></table></div>`:"";
 }
 // 📒 Lịch sử ĐẦY ĐỦ lệnh đã đóng + tổng PnL (dữ liệu rút kinh nghiệm) + xuất CSV (backup).
 function renderPaperHistory(pp, prim){
