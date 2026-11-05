@@ -162,11 +162,20 @@
   .tx-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1;text-align:center;pointer-events:none}
   .tx-core .r{font-size:34px;font-weight:900;letter-spacing:3px;color:var(--c,#fff);text-shadow:0 0 24px var(--c,#fff)}
   .tx-core .m{font-size:10px;color:var(--tx-dim);letter-spacing:1px;margin-top:2px;white-space:nowrap}
-  .tx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-  .tx-chip{all:unset;cursor:pointer;font-size:10.5px;padding:3px 9px;border-radius:5px;border:1px solid var(--tx-line2);color:#cfe1ff;
-    border-left:3px solid var(--c);background:rgba(7,12,20,.8);transition:box-shadow .15s,border-color .15s}
-  .tx-chip:hover,.tx-chip:focus-visible{border-color:var(--c);box-shadow:0 0 12px -4px var(--c)}
-  .tx-chip.sel{border-color:var(--c);box-shadow:0 0 0 1px var(--c) inset,0 0 14px -4px var(--c);color:#fff}
+  .tx-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-top:10px}
+  .tx-card{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:4px;padding:8px 10px;border-radius:7px;
+    background:rgba(7,12,20,.85);border:1px solid var(--tx-line2);border-left:3px solid var(--c);transition:box-shadow .15s,border-color .15s;min-width:0}
+  .tx-card:hover,.tx-card:focus-visible{border-color:var(--c);box-shadow:0 0 14px -5px var(--c)}
+  .tx-card.sel{border-color:var(--c);box-shadow:0 0 0 1px var(--c) inset,0 0 16px -5px var(--c)}
+  .tx-card .hd{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:11px;font-weight:800;color:#fff;letter-spacing:.3px}
+  .tx-card .bd{font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:4px;color:var(--b);background:color-mix(in srgb,var(--b) 15%,transparent);white-space:nowrap}
+  .tx-card .role{font-size:9.5px;color:var(--tx-dim);line-height:1.35}
+  .tx-card .sm{font-size:10.5px;color:#cfe1ff;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .tx-card .sm.empty{color:var(--tx-dim);font-style:italic}
+  .tx-card .ft{font-size:9px;color:var(--tx-dim);margin-top:auto;display:flex;justify-content:space-between;gap:6px}
+  .tx-card .new{color:var(--tx-neon);font-weight:800}
+  .tx-detail ul{margin:6px 0 0;padding-left:18px} .tx-detail li{margin:2px 0}
+  .tx-detail details{margin-top:6px;color:var(--tx-dim)} .tx-detail summary{cursor:pointer}
   @media(max-width:860px){.tx-shell{height:380px}.tx-core .r{font-size:24px}}
   .tx-detail{margin-top:10px;border-top:1px dashed var(--tx-line2);padding-top:8px;font-size:11.5px;line-height:1.55;color:#b9cbe6;min-height:3.2em}
   .tx-detail b{color:#fff}
@@ -936,28 +945,56 @@ const TX_STAGES = [
   ["⑦ Xếp hạng 5 bậc", [["pm","core"]]],
 ];
 const TX_STAGE_SEC = 2.2;
+// Vai trò cố định của từng tác tử — luôn hiện, kể cả khi lượt chạy chưa có nhận định
+const TX_ROLE = {
+  market:"Phân tích kỹ thuật: xu hướng, MA, RSI, MACD, Bollinger, vùng giá.",
+  sentiment:"Cảm xúc thị trường: mạng xã hội, Reddit/StockTwits, tâm lý đám đông.",
+  news:"Tin tức vĩ mô & crypto: chính sách, ETF, sự kiện tác động BTC.",
+  bull:"Phe MUA: dựng luận điểm tăng giá từ các báo cáo phân tích.",
+  bear:"Phe BÁN: chỉ ra rủi ro, phản biện luận điểm của Bull.",
+  manager:"Trọng tài tranh luận Bull/Bear, chốt kế hoạch đầu tư.",
+  trader:"Biến kế hoạch thành đề xuất giao dịch: vào/thoát, khối lượng.",
+  aggressive:"Rủi ro · Tấn công: ưu tiên lợi nhuận, chấp nhận rủi ro cao.",
+  conservative:"Rủi ro · Thận trọng: ưu tiên bảo toàn vốn, hạn chế sụt giảm.",
+  neutral:"Rủi ro · Trung lập: cân bằng hai phía tấn công và thận trọng.",
+  pm:"Quyết định cuối: xếp hạng 5 bậc Buy → Sell và tỉ trọng.",
+};
+const TX_STANCE_COL = {"Tăng":"#3dff8f","Giảm":"#ff4d6d","Trung lập":"#ffc23d","Phân vân":"#a98bff"};
 Object.assign(tx, { rotY: -0.35, rotX: -0.42, drag: null, hover: null, proj: {}, stage: 0 });
 
 function txShell(err){
   const by=Object.fromEntries(tx.agents.map(a=>[a.key,a]));
   if(!by[tx.selKey]) tx.selKey=tx.agents.length?tx.agents[tx.agents.length-1].key:"pm";
+  const src=tx.data.lastOk||tx.data.last||{}, upd=src.tradeDate||"", fresh=tx.agents.length>0;
   $("txIn").innerHTML=TX_NODES.map(([k,lab,col])=>{ const a=by[k], c=a&&a.rating?txCol(a.rating):col;
-    return `<button type="button" class="tx-chip${k===tx.selKey?' sel':''}" style="--c:${c}" data-k="${k}">${escHtml(lab)}${a&&a.rating?` · ${escHtml(a.rating)}`:""}</button>`; }).join("");
-  $("txIn").querySelectorAll(".tx-chip").forEach(b=>b.onclick=()=>txSelect(b.dataset.k));
+    const badge=a&&a.rating?[a.rating,txCol(a.rating)]:a&&a.stance?[a.stance,TX_STANCE_COL[a.stance]||col]:null;
+    const sum=a&&(a.summary||a.text);
+    return `<button type="button" class="tx-card${k===tx.selKey?' sel':''}" style="--c:${c}" data-k="${k}">`+
+      `<span class="hd"><span>${escHtml(TX_LABEL[k])}</span>${badge?`<span class="bd" style="--b:${badge[1]}">${escHtml(badge[0])}</span>`:""}</span>`+
+      `<span class="role">${escHtml(TX_ROLE[k])}</span>`+
+      `<span class="sm${sum?"":" empty"}">${sum?escHtml(sum):"Chưa có nhận định — cập nhật ở lần chạy tới."}</span>`+
+      `<span class="ft"><span>${a?`cập nhật ${escHtml(upd)}`:"—"}</span>${a&&fresh&&src===tx.data.last?`<span class="new">● MỚI</span>`:""}</span></button>`; }).join("");
+  $("txIn").querySelectorAll(".tx-card").forEach(b=>b.onclick=()=>txSelect(b.dataset.k));
   const d=tx.data.lastOk||tx.data.last;
   $("txCore").innerHTML=d?`<div class="r" style="--c:${txCol(d.signal)}">${escHtml((d.signal||"—").toUpperCase())}</div>`+
     `<div class="m">PM · ${escHtml(d.tradeDate||"")} · SPOT ${Math.round((d.exposureAfter||0)*100)}%${tx.data.perp?` · PERP ${tx.data.perp.side}`:""}</div>`:"";
-  $("txShellMeta").textContent=tx.agents.length?`· kéo để xoay · bấm nút để đọc`:"· kéo để xoay";
+  $("txShellMeta").textContent=tx.agents.length?`· kéo để xoay · bấm nút hoặc thẻ để đọc tóm tắt`:"· kéo để xoay";
   tx.err=err; txDetail();
 }
 function txSelect(k){
-  tx.selKey=k; $("txIn").querySelectorAll(".tx-chip").forEach(b=>b.classList.toggle("sel",b.dataset.k===k)); txDetail();
+  tx.selKey=k; $("txIn").querySelectorAll(".tx-card").forEach(b=>b.classList.toggle("sel",b.dataset.k===k)); txDetail();
   if(txReduce) txFrame(performance.now());
 }
 function txDetail(){
   const a=tx.agents.find(x=>x.key===tx.selKey), lab=TX_LABEL[tx.selKey]||tx.selKey;
-  if(a){ $("txDetail").innerHTML=`<b>${escHtml(a.label||lab)}</b> · <span style="color:${txCol(a.rating)}">${escHtml(a.rating||"không nêu xếp hạng")}</span>`+
-    ` <span class="tx-dim">· ${a.chars||0} ký tự gốc, hiển thị đoạn đầu</span><br>${escHtml(a.text)}`; return; }
+  if(a){
+    const st=a.stance?` · lập trường <b style="color:${TX_STANCE_COL[a.stance]||"#fff"}">${escHtml(a.stance)}</b>`:"";
+    $("txDetail").innerHTML=`<b>${escHtml(a.label||lab)}</b> · <span style="color:${txCol(a.rating)}">${escHtml(a.rating||"không nêu xếp hạng")}</span>${st}`+
+      ` <span class="tx-dim">· ${escHtml(TX_ROLE[tx.selKey]||"")}</span>`+
+      (a.summary?`<div style="margin-top:6px;color:#e8f1ff">${escHtml(a.summary)}</div>`:"")+
+      (Array.isArray(a.points)&&a.points.length?`<ul>${a.points.map(p=>`<li>${escHtml(p)}</li>`).join("")}</ul>`:"")+
+      (a.text?`<details><summary>Trích báo cáo gốc (EN · ${a.chars||0} ký tự)</summary>${escHtml(a.text)}…</details>`:"");
+    return; }
   $("txDetail").innerHTML=tx.err?`<b style="color:#ff4d6d">Lần chạy gần nhất lỗi [${escHtml(tx.err.stage||"run")}]:</b> ${escHtml(tx.err.error)}`
     :`<b>${escHtml(lab)}</b> · <span class="tx-dim">nhận định riêng của từng tác tử có từ lần chạy kế tiếp (bản ghi hiện tại chưa lưu).</span>`;
 }
