@@ -102,14 +102,96 @@
   .keo-live.sl{color:var(--red)} .keo-live.tp{color:var(--green)}
   .livetag{font-family:var(--mono);font-size:11px;color:var(--red);font-weight:700}
   .keo.zone-hit{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan) inset}
-  /* TradingAgents paper */
-  .tadec{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:12px}
-  .tadec .tasig{font-family:var(--mono);font-weight:800;font-size:15px;padding:2px 10px;border-radius:7px;margin-right:8px}
-  .tasig.buy,.tasig.overweight{color:var(--green);background:rgba(34,197,94,.14)}
-  .tasig.sell,.tasig.underweight{color:var(--red);background:rgba(239,68,68,.14)}
-  .tasig.hold,.tasig.review{color:var(--amber);background:rgba(245,158,11,.14)}
-  .tadec .tareason{margin-top:8px;font-size:12.5px;color:var(--muted);white-space:pre-wrap;line-height:1.5;max-height:9em;overflow:auto}
-  .tadec .taerr{color:var(--red);font-family:var(--mono);font-size:12px;margin-top:6px}
+  /* TradingAgents paper — giao diện "terminal" riêng (cố ý luôn nền tối ở cả 2 theme) */
+  .tx{--tx-bg:#04070c;--tx-panel:#070c14;--tx-line:#142238;--tx-line2:#1d3352;--tx-text:#cfe1ff;--tx-dim:#5f7695;
+    --tx-neon:#3dff8f;--tx-amber:#ffc23d;--tx-cyan:#3de1ff;--tx-red:#ff4d6d;--tx-violet:#a98bff;
+    margin-top:16px;background:radial-gradient(1200px 500px at 50% -10%,rgba(61,225,255,.07),transparent 60%),var(--tx-bg);
+    border:1px solid var(--tx-line2);border-radius:var(--r);padding:12px;color:var(--tx-text);font-family:var(--mono);
+    box-shadow:0 0 0 1px rgba(61,225,255,.04) inset,0 20px 60px -30px rgba(61,225,255,.25)}
+  .tx *{box-sizing:border-box}
+  .tx-dim{color:var(--tx-dim);font-weight:500;letter-spacing:0}
+  .tx-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:4px 4px 10px}
+  .tx-logo{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;font-weight:900;font-size:14px;color:#04070c;
+    background:linear-gradient(135deg,var(--tx-cyan),var(--tx-neon));box-shadow:0 0 18px rgba(61,255,143,.35)}
+  .tx-kicker{font-size:10px;letter-spacing:1.4px;color:var(--tx-neon)}
+  .tx-title{margin:2px 0 0!important;font-size:16px!important;letter-spacing:1.5px!important;color:#fff!important;text-transform:none!important;font-weight:900}
+  .tx-title span{color:var(--tx-cyan)}
+  .tx-sub{font-size:10.5px;color:var(--tx-dim);letter-spacing:.6px;margin-top:2px}
+  .tx-stats{display:flex;gap:16px;margin-left:auto;flex-wrap:wrap}
+  .tx-stat{display:flex;flex-direction:column;gap:2px;min-width:70px}
+  .tx-stat i{font-style:normal;font-size:9.5px;letter-spacing:1px;color:var(--tx-dim)}
+  .tx-stat b{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+  .tx-clock{display:flex;flex-direction:column;align-items:flex-end;padding-left:12px;border-left:1px solid var(--tx-line2)}
+  .tx-clock b{font-size:20px;font-weight:800;letter-spacing:1px;font-variant-numeric:tabular-nums}
+  .tx-clock span{font-size:9.5px;color:var(--tx-red);letter-spacing:1px}
+  .tx-tape{display:flex;align-items:center;gap:10px;border-top:1px solid var(--tx-line);border-bottom:1px solid var(--tx-line);padding:6px 4px;overflow:hidden}
+  .tx-live{flex:none;font-size:10.5px;font-weight:800;color:#fff;background:var(--tx-red);padding:2px 8px;border-radius:4px;letter-spacing:1px;animation:pulse 1.6s infinite}
+  .tx-marq{overflow:hidden;flex:1;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+  .tx-marq-in{display:inline-flex;gap:28px;white-space:nowrap;font-size:11.5px;animation:txMarq 60s linear infinite}
+  .tx-marq-in em{font-style:normal;color:var(--tx-dim)}
+  @keyframes txMarq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .tx-grid{display:grid;grid-template-columns:1.05fr 1.3fr 1.3fr 1.25fr;gap:10px;margin-top:10px}
+  .tx-grid2{display:grid;grid-template-columns:1.45fr 1.15fr 1fr;gap:10px;margin-top:10px}
+  @media(max-width:1100px){.tx-grid2{grid-template-columns:1fr 1fr}.tx-grid2>:first-child{grid-column:1/-1}}
+  .tx-side{font-weight:900;font-size:13px;padding:2px 10px;border-radius:5px;letter-spacing:1px;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent);box-shadow:0 0 12px -4px var(--c)}
+  .tx-ptr{display:flex;justify-content:space-between;gap:8px;font-size:10.5px;padding:3px 0;border-top:1px solid var(--tx-line);color:#9fb6d6}
+  @media(max-width:1100px){.tx-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:700px){.tx-grid,.tx-grid2{grid-template-columns:1fr}.tx-clock{display:none}.tx-stats{margin-left:0}}
+  .tx-p{background:linear-gradient(180deg,rgba(61,225,255,.025),transparent 40%),var(--tx-panel);border:1px solid var(--tx-line);border-radius:10px;padding:10px;min-width:0;position:relative}
+  .tx-h{font-size:10px;letter-spacing:1.3px;color:var(--tx-cyan);font-weight:800;margin-bottom:8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .tx-h::before{content:"◆";color:var(--tx-neon);font-size:8px}
+  .tx-eq{font-size:34px;font-weight:900;letter-spacing:-1px;line-height:1.05;font-variant-numeric:tabular-nums}
+  .tx-eq.up{color:var(--tx-neon);text-shadow:0 0 18px rgba(61,255,143,.45)}
+  .tx-eq.dn{color:var(--tx-red);text-shadow:0 0 18px rgba(255,77,109,.4)}
+  .tx-kv{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:10px}
+  .tx-kv div{display:flex;flex-direction:column;gap:1px}
+  .tx-kv i{font-style:normal;font-size:9.5px;letter-spacing:.8px;color:var(--tx-dim)}
+  .tx-kv b{font-size:13.5px;font-variant-numeric:tabular-nums}
+  .tx-cv{width:100%;height:170px;display:block}
+  .tx-leg{display:flex;gap:12px;font-size:10.5px;color:var(--tx-dim);margin-top:4px;flex-wrap:wrap}
+  .tx-leg b{display:inline-block;width:10px;height:3px;border-radius:2px;margin-right:4px;vertical-align:middle}
+  .tx-wire{margin:0;height:170px;overflow:auto;font-size:10.5px;line-height:1.55;color:#9fb6d6;white-space:pre-wrap;word-break:break-word}
+  .tx-wire .ok{color:var(--tx-neon)} .tx-wire .er{color:var(--tx-red)} .tx-wire .ts{color:var(--tx-dim)} .tx-wire .am{color:var(--tx-amber)}
+  .tx-neural{margin-top:10px}
+  .tx-shell{position:relative;display:grid;grid-template-columns:minmax(150px,210px) 1fr minmax(150px,210px);gap:10px;min-height:400px}
+  .tx-shell canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .tx-col{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;gap:7px}
+  .tx-ag{all:unset;cursor:pointer;display:block;background:rgba(7,12,20,.86);border:1px solid var(--tx-line2);border-left:3px solid var(--c,var(--tx-dim));
+    border-radius:7px;padding:6px 8px;font-size:10.5px;transition:border-color .15s,transform .15s,box-shadow .15s}
+  .tx-out .tx-ag{border-left-width:1px;border-right:3px solid var(--c,var(--tx-dim))}
+  .tx-ag:hover,.tx-ag:focus-visible{border-color:var(--c,var(--tx-cyan));transform:translateY(-1px);box-shadow:0 0 14px -4px var(--c,var(--tx-cyan))}
+  .tx-ag.sel{box-shadow:0 0 0 1px var(--c,var(--tx-cyan)) inset,0 0 16px -4px var(--c,var(--tx-cyan))}
+  .tx-ag b{display:flex;justify-content:space-between;gap:6px;color:#fff;font-size:10.5px;letter-spacing:.4px}
+  .tx-ag b span{color:var(--c,var(--tx-dim))}
+  .tx-ag small{display:block;color:var(--tx-dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tx-core{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none}
+  .tx-core .r{font-size:38px;font-weight:900;letter-spacing:3px;color:var(--c,#fff);text-shadow:0 0 24px var(--c,#fff)}
+  .tx-core .m{font-size:10.5px;color:var(--tx-dim);letter-spacing:1px;margin-top:4px}
+  .tx-detail{margin-top:10px;border-top:1px dashed var(--tx-line2);padding-top:8px;font-size:11.5px;line-height:1.55;color:#b9cbe6;min-height:3.2em}
+  .tx-detail b{color:#fff}
+  @media(max-width:860px){.tx-shell{grid-template-columns:1fr;min-height:0}.tx-shell canvas{position:relative;height:240px;order:-1}
+    .tx-core{position:absolute;top:0;left:0;right:0;height:240px}.tx-col{flex-direction:row;flex-wrap:wrap}.tx-ag{flex:1 1 140px}}
+  .tx-exec{width:100%;border-collapse:collapse;font-size:11px;font-variant-numeric:tabular-nums}
+  .tx-exec th{color:var(--tx-dim);font-weight:600;font-size:9.5px;letter-spacing:1px;text-align:left;padding:4px 6px;border-bottom:1px solid var(--tx-line2)}
+  .tx-exec td{padding:5px 6px;border-bottom:1px solid var(--tx-line);white-space:nowrap}
+  .tx-exec td.n{text-align:right}
+  .tx-tapewrap{max-height:230px;overflow:auto}
+  .tx-rt{font-weight:800;padding:1px 7px;border-radius:4px;font-size:10.5px;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent)}
+  .tx-bar{display:grid;grid-template-columns:92px 1fr 28px;align-items:center;gap:8px;font-size:11px;margin-bottom:7px}
+  .tx-bar .tr{height:9px;border-radius:5px;background:var(--tx-line)}
+  .tx-bar .fl{height:100%;border-radius:5px;background:var(--c);box-shadow:0 0 10px -2px var(--c)}
+  .tx-gauge{margin-top:12px;font-size:10.5px;color:var(--tx-dim)}
+  .tx-gauge .tr{height:12px;border-radius:6px;background:linear-gradient(90deg,var(--tx-line),var(--tx-line2));margin-top:5px;position:relative;overflow:hidden}
+  .tx-gauge .fl{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--tx-cyan),var(--tx-neon));box-shadow:0 0 12px rgba(61,255,143,.5)}
+  .tx-tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px}
+  @media(max-width:860px){.tx-tiles{grid-template-columns:repeat(2,1fr)}}
+  .tx-tile{border:1px solid var(--c,var(--tx-line2));border-radius:9px;padding:8px 10px;background:var(--tx-panel)}
+  .tx-tile i{font-style:normal;display:block;font-size:9.5px;letter-spacing:1px;color:var(--tx-dim)}
+  .tx-tile b{display:block;font-size:17px;font-weight:800;color:var(--c,#fff);margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tx-note{font-size:11px;color:var(--tx-dim);line-height:1.6;margin:10px 4px 2px;font-family:inherit}
+  .tx-note a{color:var(--tx-cyan)}
+  .tx-empty{color:var(--tx-dim);font-size:11.5px;padding:8px 0}
+  @media(prefers-reduced-motion:reduce){.tx-marq-in,.tx-live{animation:none}}
   /* Paper trading */
   .pthead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
   .pthead h3{text-transform:none!important;letter-spacing:0!important;font-size:15px!important;color:var(--text)!important}
@@ -256,16 +338,42 @@
     <div class="ptnote">🔬 <b>A/B đòn bẩy:</b> 3 tài khoản (30x · 10x · Risk 1.5%/lệnh) chạy song song trên CÙNG kèo hội đồng — chỉ khác đòn bẩy/sizing → so hiệu quả &amp; rủi ro (maxDD, cháy) để rút <b>SL/TP hợp lý</b>. "Risk 1.5%" = size theo SL sao cho chạm SL chỉ mất ~1.5% vốn (gần như không cháy). 📐 <b>SL/TP theo Fibonacci:</b> entry vùng vàng 0.5–0.618, SL ngoài 0.786, TP <b>chốt 3 phần đều</b> (1/3 mỗi mức, từ 25/09/2026; trước đó 40/30/30%) tại 38.2% → đỉnh/đáy cũ → mở rộng 161.8%, R:R≥2. Chạm TP1 → dời SL hòa vốn. Mô phỏng thanh lý thật · uPnL realtime · không phải khuyến nghị.</div>
   </div>
 
-  <div class="card" id="tauricCard" style="margin-top:16px;display:none">
-    <div class="pthead">
-      <h3 style="margin:0">🤖 Paper Trading · TradingAgents (Claude) <span class="ptsym">BTC</span></h3>
-      <span class="ptmeta" id="tauricMeta"></span>
+  <section class="tx" id="tauricCard" style="display:none" aria-labelledby="txTitle">
+    <div class="tx-top">
+      <div class="tx-logo" aria-hidden="true">TA</div>
+      <div>
+        <div class="tx-kicker">● MỖI NGÀY 07:23 · SPOT LONG-ONLY · TÁI CÂN BẰNG THEO XẾP HẠNG</div>
+        <h3 class="tx-title" id="txTitle">TRADINGAGENTS <span>//</span> CLAUDE PAPER BOT</h3>
+        <div class="tx-sub" id="txSub"></div>
+      </div>
+      <div class="tx-stats" id="txStats"></div>
+      <div class="tx-clock"><b id="txClock">--:--:--</b><span>GMT+7</span></div>
     </div>
-    <div class="ptab" id="tauricCmp"></div>
-    <div class="tadec" id="tauricLast"></div>
-    <div class="ptrecent" id="tauricRecent"></div>
-    <div class="ptnote">🧪 <b>Chạy song song, độc lập với Hội đồng:</b> mỗi ngày sau khi nến ngày (UTC) đóng, khung đa tác tử <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">TradingAgents</a> (Apache-2.0) dùng Claude phân tích kỹ thuật · cảm xúc · tin tức → tranh luận Bull/Bear → Trader → tranh luận rủi ro → Portfolio Manager ra xếp hạng 5 bậc. Xếp hạng đổi thành tỉ trọng BTC spot: Buy 100% · Overweight 75% · Hold giữ nguyên · Underweight 25% · Sell 0%, phí 0.1%/chiều, không đòn bẩy, không short. Không backtest được trung thực (LLM đã biết giá quá khứ) nên chỉ chấm forward · không phải khuyến nghị.</div>
-  </div>
+    <div class="tx-tape"><span class="tx-live">● LIVE FEED</span><div class="tx-marq"><div class="tx-marq-in" id="txMarq"></div></div></div>
+    <div class="tx-grid">
+      <div class="tx-p"><div class="tx-h">WALLET · PAPER</div><div id="txWallet"></div></div>
+      <div class="tx-p"><div class="tx-h">BTC SPOT · 4H <span class="tx-dim">▲▼ = quyết định</span></div><canvas id="txSpot" class="tx-cv"></canvas></div>
+      <div class="tx-p"><div class="tx-h">EQUITY RACE</div><canvas id="txRace" class="tx-cv" style="height:150px"></canvas><div class="tx-leg" id="txRaceLeg"></div></div>
+      <div class="tx-p"><div class="tx-h">WIRE INSPECTOR · NHẬT KÝ</div><pre class="tx-wire" id="txWire"></pre></div>
+    </div>
+    <div class="tx-p tx-neural">
+      <div class="tx-h">AGENT SHELL · PHÂN TÍCH → TRANH LUẬN → TRADER → RỦI RO → PM <span class="tx-dim" id="txShellMeta"></span></div>
+      <div class="tx-shell" id="txShell">
+        <canvas id="txTorus" aria-hidden="true"></canvas>
+        <div class="tx-col tx-in" id="txIn"></div>
+        <div class="tx-core" id="txCore"></div>
+        <div class="tx-col tx-out" id="txOut"></div>
+      </div>
+      <div class="tx-detail" id="txDetail" aria-live="polite"></div>
+    </div>
+    <div class="tx-grid2">
+      <div class="tx-p"><div class="tx-h">EXECUTION TAPE · XẾP HẠNG &amp; LỆNH</div><div class="tx-tapewrap" id="txExec"></div></div>
+      <div class="tx-p"><div class="tx-h">PERP · BTCUSDT.P <span class="tx-dim" id="txPerpMeta"></span></div><div id="txPerp"></div></div>
+      <div class="tx-p"><div class="tx-h">RATING FUNNEL</div><div id="txFunnel"></div></div>
+    </div>
+    <div class="tx-tiles" id="txTiles"></div>
+    <p class="tx-note">🧪 <b>Chạy song song, độc lập với Hội đồng.</b> Mỗi ngày sau khi nến ngày (UTC) đóng, khung đa tác tử <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">TradingAgents</a> (Apache-2.0) dùng Claude: phân tích kỹ thuật · cảm xúc · tin tức → tranh luận Bull/Bear → Research Manager → Trader → tranh luận rủi ro → Portfolio Manager ra xếp hạng 5 bậc. Tài khoản <b>SPOT</b>: Buy 100% · Overweight 75% · Hold giữ · Underweight 25% · Sell 0% BTC, phí 0.1%/chiều. Tài khoản <b>PERP BTCUSDT.P</b> (paper, cùng xếp hạng): Buy LONG 1× · Overweight LONG 0.5× · Hold giữ · Underweight SHORT 0.5× · Sell SHORT 1× (× đòn bẩy), giá + funding thật từ OKX (dự phòng Bybit/Binance), phí taker 0.05%, có thanh lý — KHÔNG đặt lệnh thật. Bấm từng tác tử để đọc nhận định. Không backtest được trung thực (LLM đã biết giá quá khứ) → chỉ chấm forward · không phải khuyến nghị.</p>
+  </section>
 
   <div class="row3">
     <div class="card"><h3>📊 Chỉ báo đa khung</h3><table id="ind"></table></div>
@@ -541,7 +649,7 @@ async function pollPrice(){
   // paper-trade uPnL realtime (luôn theo giá BTC, độc lập coin đang xem)
   let btcP = state.coin==="BTC" ? p : null;
   if(btcP==null){ const bl=await fetchLive("BTC"); if(bl) btcP=bl.price; }
-  if(btcP!=null) renderPaperLive(btcP);
+  if(btcP!=null){ renderPaperLive(btcP); renderTauricLive(btcP); }
   if(!c.expert) return;
   for(const [key,k] of [["scalp",c.expert.scalp],["day",c.expert.day],["swing",c.expert.swing]]){
     const el=document.getElementById("live-"+key); if(!el) continue;
@@ -628,35 +736,266 @@ function renderPaper(){
     : "";
   renderPaperHistory(pp, prim);
 }
-// 🤖 Paper TradingAgents (Claude) — chữ do LLM viết nên LUÔN escape trước khi đưa vào innerHTML.
+// 🤖 Paper TradingAgents (Claude) — giao diện terminal. Chữ do LLM viết LUÔN đi qua escHtml.
 const escHtml = v => String(v==null?"":v).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const TX_COL = { Buy:"#3dff8f", Overweight:"#8dffb8", Hold:"#ffc23d", Underweight:"#ff8fa3", Sell:"#ff4d6d", REVIEW:"#a98bff" };
+const txCol = r => TX_COL[r] || "#5f7695";
+const TX_IN = ["market","sentiment","news","bull","bear"];            // cột trái: đầu vào + tranh luận
+const TX_OUT = ["manager","trader","aggressive","conservative","neutral","pm"]; // cột phải: quyết định
+const TX_RUN_UTC = { h:0, m:23 };                                     // cron tradingagents.yml
+const txReduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const tx = { data:null, livePrice:null, selKey:"pm", agents:[], anchors:[], raf:0, visible:false, pts:null, t0:performance.now() };
+const txPct = (v,base) => base ? (v/base-1)*100 : 0;
+const txSgn = v => `${v>=0?"+":""}${v.toFixed(2)}%`;
+const txUsd = v => (v<0?"−":"")+"$"+fp(Math.abs(Math.round(v*100)/100));
+const txIso = s => String(s||"").replace("T"," ").slice(5,16);
+
+function txCanvas(cv){
+  const dpr=Math.min(2,window.devicePixelRatio||1), w=cv.clientWidth, h=cv.clientHeight;
+  if(!w||!h) return null;
+  cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  const ctx=cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h);
+  return {ctx,w,h};
+}
+
 function renderTauric(){
   const ta=state.data&&state.data.tauric, card=$("tauricCard"); if(!card) return;
-  if(!ta){ card.style.display="none"; return; } card.style.display="";
-  const pct=v=>((v/ta.startCapital-1)*100);
-  const fmtPct=v=>`${v>=0?'+':''}${v.toFixed(1)}%`;
-  $("tauricMeta").textContent=`vốn $${fp(ta.startCapital)} · từ ${String(ta.startedAt).slice(0,10)} · ${ta.runs} lần chạy`+(ta.errors?` · ${ta.errors} lỗi`:"");
-  const rows=[["TradingAgents (Claude)",ta.equity],["Giữ BTC từ ngày bắt đầu",ta.buyHold]];
-  if(ta.council!=null) rows.push(["Hội đồng · tài khoản risk 1.5%",ta.council]);
-  $("tauricCmp").innerHTML=`<table class="abtab"><thead><tr><th>So sánh cùng kỳ</th><th>Equity</th><th>Net</th></tr></thead><tbody>`+
-    rows.map(([l,v],i)=>`<tr class="${i===0?'abprim':''}"><td class="ablbl">${l}</td><td class="num">$${fp(Math.round(v))}</td><td class="num ${v>=ta.startCapital?'g':'r'}">${fmtPct(pct(v))}</td></tr>`).join("")+
-    `</tbody></table>`;
-  const d=ta.last;
-  if(!d){ $("tauricLast").innerHTML=`<div class="ptempty">Chưa chạy lần nào.</div>`; }
-  else {
-    const sig=d.signal||"LỖI", cls=String(d.signal||"review").toLowerCase();
-    const expo=d.exposureAfter!=null?` · tỉ trọng BTC ${Math.round(d.exposureBefore*100)}% → <b>${Math.round(d.exposureAfter*100)}%</b>`:"";
-    $("tauricLast").innerHTML=`<div><span class="tasig ${escHtml(cls)}">${escHtml(sig)}</span><span class="mut">ngày ${escHtml(d.tradeDate)}${d.price!=null?` · giá $${fp(Math.round(d.price))}`:""}${expo}</span></div>`+
-      (d.error?`<div class="taerr">⚠️ ${d.stage?`[${escHtml(d.stage)}] `:""}${escHtml(d.error)} — vị thế giữ nguyên.</div>`:"")+
-      (d.reason?`<div class="tareason">${escHtml(d.reason)}</div>`:"");
-  }
-  const rec=(ta.recent||[]).filter(x=>x.signal);
-  $("tauricRecent").innerHTML=rec.length?`<div class="pthistwrap"><table class="pthist"><thead><tr><th>Ngày</th><th>Xếp hạng</th><th>Giá</th><th>Tỉ trọng</th><th>Lệnh</th><th>Equity</th></tr></thead><tbody>`+
-    rec.map(x=>`<tr><td class="mut">${escHtml(x.tradeDate)}</td><td><span class="tasig ${escHtml(String(x.signal).toLowerCase())}">${escHtml(x.signal)}</span></td><td class="num">$${fp(Math.round(x.price))}</td>`+
-      `<td class="num">${Math.round(x.exposureBefore*100)}% → ${Math.round(x.exposureAfter*100)}%</td>`+
-      `<td class="mut">${x.order?`${x.order.side} $${fp(Math.round(x.order.usd))}`:"—"}</td><td class="num">$${fp(Math.round(x.equity))}</td></tr>`).join("")+
-    `</tbody></table></div>`:"";
+  if(!ta){ card.style.display="none"; return; }
+  card.style.display=""; tx.data=ta;
+  const d=ta.lastOk||ta.last, err=ta.last&&ta.last.error?ta.last:null;
+  tx.agents=(d&&Array.isArray(d.agents))?d.agents:[];
+  $("txSub").textContent=`BTC SPOT · VỐN $${fp(ta.startCapital)} · TỪ ${String(ta.startedAt).slice(0,10)} · ${ta.runs} LẦN CHẠY`+(ta.errors?` · ${ta.errors} LỖI`:"")+(d&&d.deepModel?` · ${d.deepModel.toUpperCase()} / ${String(d.quickModel||"").toUpperCase()}`:"");
+  txStats(); txWallet(); txWire(); txExec(); txPerp(); txFunnel(); txTiles(); txMarquee(); txShell(err);
+  requestAnimationFrame(()=>{ txSpot(); txRace(); txLayout(); txFrame(performance.now()); });
+  txStartLoop();
 }
+
+// Mark-to-market theo giá BTC live (cash + qty × giá) — snapshot chỉ cập nhật 1 lần/ngày
+function txEquity(){ const ta=tx.data; if(!ta) return 0; return tx.livePrice&&ta.qty>0 ? ta.cash+ta.qty*tx.livePrice : ta.equity; }
+function renderTauricLive(price){ if(!tx.data) return; tx.livePrice=price; txStats(); txWallet(); txPerp(); txTiles(); txMarquee(); }
+// PERP mark-to-market: ví + qty × (giá − entry); giá live là BTC spot (lệch perp vài $, đủ cho hiển thị)
+function txPerpEq(){ const p=tx.data&&tx.data.perp; if(!p) return null; return tx.livePrice&&p.qty?p.wallet+p.qty*(tx.livePrice-p.entry):p.equity; }
+function txPerp(){
+  const p=tx.data.perp, box=$("txPerp"); if(!box) return;
+  if(!p){ $("txPerpMeta").textContent=""; box.innerHTML=`<div class="tx-empty">Tài khoản perp mở từ lần chạy kế tiếp.</div>`; return; }
+  const px=tx.livePrice||p.entry||0, eq=txPerpEq(), net=txPct(eq,p.startCapital), up=net>=0;
+  const sc={LONG:"#3dff8f",SHORT:"#ff4d6d",FLAT:"#5f7695"}[p.side]||"#5f7695";
+  const upnl=p.qty&&tx.livePrice?p.qty*(tx.livePrice-p.entry):0;
+  $("txPerpMeta").textContent=`· ${String(p.venue||"okx").toUpperCase()} · ${p.leverage}×`;
+  box.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="tx-side" style="--c:${sc}">${p.side}</span>`+
+    `<span class="tx-eq ${up?'up':'dn'}" style="font-size:24px">${txSgn(net)}</span></div>`+
+    `<div class="tx-kv"><div><i>EQUITY · MTM</i><b>$${fp(Math.round(eq))}</b></div><div><i>uPnL</i><b style="color:${upnl>=0?'#3dff8f':'#ff4d6d'}">${txUsd(upnl)}</b></div>`+
+    `<div><i>KÍCH THƯỚC</i><b>${(+p.qty||0).toFixed(4)} BTC</b></div><div><i>NOTIONAL</i><b>$${fp(Math.round(Math.abs(p.qty||0)*px))}</b></div>`+
+    `<div><i>ENTRY</i><b>${p.entry?"$"+fp(Math.round(p.entry)):"—"}</b></div><div><i>THANH LÝ</i><b style="color:#ffc23d">${p.liq&&p.liq>1000?"$"+fp(Math.round(p.liq)):"xa / —"}</b></div>`+
+    `<div><i>FUNDING ĐÃ TRẢ</i><b>${txUsd(-p.funding)}</b></div><div><i>PHÍ · THANH LÝ</i><b>$${fp(Math.round(p.fees))} · ${p.liquidations}</b></div></div>`+
+    (p.lastError?`<div class="tx-empty" style="color:#ff4d6d">⚠️ ${escHtml(p.lastError)}</div>`:"")+
+    `<div style="margin-top:8px">`+(p.trades||[]).slice(0,5).map(t=>`<div class="tx-ptr"><span class="tx-dim">${escHtml(txIso(t.at))}</span><span style="color:${t.kind==="LIQUIDATION"?"#ff4d6d":t.side==="BUY"?"#3dff8f":"#ff4d6d"}">${t.kind==="LIQUIDATION"?"LIQ":t.side} ${(+t.qty).toFixed(4)}</span><span>$${fp(Math.round(t.price))}</span><span class="tx-dim">${t.realized?txUsd(t.realized):"—"}</span></div>`).join("")+`</div>`;
+}
+
+function txStats(){
+  const ta=tx.data, d=ta.lastOk||ta.last, eq=txEquity(), expo=ta.qty>0&&tx.livePrice?ta.qty*tx.livePrice/eq:(d?d.exposureAfter||0:0);
+  const it=[["BTC SPOT",tx.livePrice?"$"+fp(tx.livePrice):"—","#fff"],["XẾP HẠNG",d&&d.signal||"—",txCol(d&&d.signal)],
+    ["TỈ TRỌNG BTC",Math.round(expo*100)+"%","#3de1ff"],["PERP",ta.perp?ta.perp.side+" "+ta.perp.leverage+"×":"—",ta.perp?({LONG:"#3dff8f",SHORT:"#ff4d6d"}[ta.perp.side]||"#5f7695"):"#5f7695"],["VS GIỮ BTC",txSgn(txPct(eq,txHold())),eq>=txHold()?"#3dff8f":"#ff4d6d"]];
+  $("txStats").innerHTML=it.map(([k,v,c])=>`<div class="tx-stat"><i>${k}</i><b style="color:${c}">${escHtml(v)}</b></div>`).join("");
+}
+function txHold(){ const ta=tx.data; return tx.livePrice&&ta.startPrice ? ta.startCapital*tx.livePrice/ta.startPrice : ta.buyHold; }
+
+function txWallet(){
+  const ta=tx.data, eq=txEquity(), pnl=eq-ta.startCapital, up=pnl>=0, hold=txHold();
+  $("txWallet").innerHTML=`<div class="tx-dim" style="font-size:10px;letter-spacing:1px">ALL-TIME PNL</div>`+
+    `<div class="tx-eq ${up?'up':'dn'}">${up?'+':'−'}$${fp(Math.abs(Math.round(pnl*100)/100))}</div>`+
+    `<div class="tx-kv">`+
+    `<div><i>EQUITY</i><b>$${fp(Math.round(eq))}</b></div>`+
+    `<div><i>NET</i><b style="color:${up?'#3dff8f':'#ff4d6d'}">${txSgn(txPct(eq,ta.startCapital))}</b></div>`+
+    `<div><i>GIỮ BTC</i><b>${txSgn(txPct(hold,ta.startCapital))}</b></div>`+
+    `<div><i>HỘI ĐỒNG (RISK)</i><b>${ta.council!=null?txSgn(txPct(ta.council,ta.startCapital)):"—"}</b></div>`+
+    `<div><i>TIỀN MẶT</i><b>$${fp(Math.round(ta.cash))}</b></div>`+
+    `<div><i>BTC</i><b>${(+ta.qty||0).toFixed(5)}</b></div></div>`;
+}
+
+function txWire(){
+  const ta=tx.data, rows=(ta.recent||[]).slice(0,40);
+  if(!rows.length){ $("txWire").innerHTML=`<span class="ts">chưa có lần chạy nào</span>`; return; }
+  $("txWire").innerHTML=rows.map(x=>{
+    const ts=`<span class="ts">${escHtml(txIso(x.at))}Z</span>`;
+    if(x.error) return `${ts} <span class="er">ERR</span> <span class="am">[${escHtml(x.stage||"run")}]</span> ${escHtml(x.tradeDate)} ${escHtml(String(x.error).slice(0,160))}`;
+    const o=x.order?`${x.order.side} $${fp(Math.round(x.order.usd))}`:"no-order";
+    const pp=x.perpSide?` · PERP <b style="color:${x.perpSide==="LONG"?"#3dff8f":x.perpSide==="SHORT"?"#ff4d6d":"#5f7695"}">${x.perpSide}</b>${x.perpOrder?` ${x.perpOrder.side} ${(+x.perpOrder.qty).toFixed(4)}`:""}`:"";
+    return `${ts} <span class="ok">RUN</span> ${escHtml(x.tradeDate)} <b style="color:${txCol(x.signal)}">${escHtml(x.signal)}</b> px ${fp(x.price)} expo ${Math.round((x.exposureBefore||0)*100)}→${Math.round((x.exposureAfter||0)*100)}% ${o}${pp}`;
+  }).join("\n");
+}
+
+function txExec(){
+  const rec=(tx.data.recent||[]).filter(x=>x.signal);
+  if(!rec.length){ $("txExec").innerHTML=`<div class="tx-empty">Chưa có quyết định nào.</div>`; return; }
+  $("txExec").innerHTML=`<table class="tx-exec"><thead><tr><th>NGÀY</th><th>XẾP HẠNG</th><th>GIÁ</th><th>TỈ TRỌNG</th><th>LỆNH</th><th class="n">EQUITY</th></tr></thead><tbody>`+
+    rec.map(x=>`<tr><td class="tx-dim">${escHtml(x.tradeDate)}</td><td><span class="tx-rt" style="--c:${txCol(x.signal)}">${escHtml(x.signal)}</span></td>`+
+      `<td>$${fp(Math.round(x.price))}</td><td>${Math.round((x.exposureBefore||0)*100)}% → ${Math.round((x.exposureAfter||0)*100)}%</td>`+
+      `<td>${x.order?`<span style="color:${x.order.side==="BUY"?"#3dff8f":"#ff4d6d"}">${x.order.side}</span> $${fp(Math.round(x.order.usd))}`:`<span class="tx-dim">—</span>`}</td>`+
+      `<td class="n">$${fp(Math.round(x.equity))}</td></tr>`).join("")+`</tbody></table>`;
+}
+
+function txFunnel(){
+  const c=tx.data.signalCounts||{}, keys=["Buy","Overweight","Hold","Underweight","Sell","REVIEW"], mx=Math.max(1,...keys.map(k=>c[k]||0));
+  const eq=txEquity(), expo=tx.data.qty>0&&tx.livePrice?tx.data.qty*tx.livePrice/eq:((tx.data.lastOk||{}).exposureAfter||0);
+  $("txFunnel").innerHTML=keys.map(k=>`<div class="tx-bar" style="--c:${txCol(k)}"><span>${k}</span><div class="tr"><div class="fl" style="width:${(c[k]||0)/mx*100}%"></div></div><b style="text-align:right">${c[k]||0}</b></div>`).join("")+
+    `<div class="tx-gauge">TỈ TRỌNG BTC HIỆN TẠI · <b style="color:#fff">${Math.round(expo*100)}%</b><div class="tr"><div class="fl" style="width:${Math.round(expo*100)}%"></div></div></div>`;
+}
+
+function txNextRun(){
+  const n=new Date(), t=new Date(Date.UTC(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate(),TX_RUN_UTC.h,TX_RUN_UTC.m));
+  if(t<=n) t.setUTCDate(t.getUTCDate()+1);
+  const s=Math.max(0,Math.round((t-n)/1000)), h=Math.floor(s/3600), m=Math.floor(s%3600/60), sec=s%60;
+  return `${h}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`;
+}
+function txTiles(){
+  const ta=tx.data, d=ta.lastOk, o=d&&d.order, eq=txEquity();
+  const t=[["LẦN KHỚP CUỐI",o?`${o.side} $${fp(Math.round(o.usd))}`:"chưa có lệnh",o?(o.side==="BUY"?"#3dff8f":"#ff4d6d"):"#5f7695"],
+    ["EQUITY · MTM","$"+fp(Math.round(eq)),"#3de1ff"],["CHẠY LẦN TỚI",txNextRun(),"#ffc23d"],
+    ["LẦN CHẠY / LỖI",`${ta.runs} / ${ta.errors}`,ta.errors?"#ff4d6d":"#cfe1ff"],["THỜI GIAN 1 LƯỢT",d&&d.secs?Math.round(d.secs)+"s":"—","#a98bff"]];
+  $("txTiles").innerHTML=t.map(([k,v,c],i)=>`<div class="tx-tile" style="--c:${c}"><i>${k}</i><b${i===2?' id="txNext"':''}>${escHtml(v)}</b></div>`).join("");
+}
+
+function txMarquee(){
+  const ta=tx.data, d=ta.lastOk||ta.last, eq=txEquity();
+  const items=[`<em>BTC</em> ${tx.livePrice?"$"+fp(tx.livePrice):"—"}`,`<em>RATING</em> <b style="color:${txCol(d&&d.signal)}">${escHtml(d&&d.signal||"—")}</b>`,
+    `<em>EQUITY</em> $${fp(Math.round(eq))}`,`<em>VS HOLD</em> ${txSgn(txPct(eq,txHold()))}`,
+    ...(ta.perp?[`<em>PERP</em> <b style="color:${ta.perp.side==="LONG"?"#3dff8f":ta.perp.side==="SHORT"?"#ff4d6d":"#5f7695"}">${ta.perp.side} ${ta.perp.leverage}×</b> $${fp(Math.round(txPerpEq()))}`]:[]),
+    ...(ta.recent||[]).slice(0,8).map(x=>x.error?`<em>${escHtml(x.tradeDate)}</em> <span style="color:#ff4d6d">LỖI ${escHtml(x.stage||"")}</span>`
+      :`<em>${escHtml(x.tradeDate)}</em> <b style="color:${txCol(x.signal)}">${escHtml(x.signal)}</b> @ $${fp(Math.round(x.price))}`)];
+  const one=items.map(s=>`<span>${s}</span>`).join("");
+  $("txMarq").innerHTML=one+one; // nhân đôi để cuộn liền mạch (translateX −50%)
+}
+
+// ── Biểu đồ giá BTC 4H (nến từ khối QQE của engine) + đánh dấu ngày ra quyết định ──
+function txSpot(){
+  const cv=$("txSpot"), g=txCanvas(cv); if(!g) return; const {ctx,w,h}=g;
+  const btc=state.data&&state.data.coins&&state.data.coins.BTC, k=btc&&btc.qqe&&btc.qqe.candles;
+  if(!k||k.length<2){ ctx.fillStyle="#5f7695"; ctx.font="11px ui-monospace,monospace"; ctx.fillText("chưa có nến BTC",8,20); return; }
+  const c=k.slice(-120), lo=Math.min(...c.map(x=>x[3])), hi=Math.max(...c.map(x=>x[2])), pad=14;
+  const X=i=>pad+i*(w-pad*2)/(c.length-1), Y=v=>h-pad-(v-lo)/(hi-lo||1)*(h-pad*2);
+  ctx.strokeStyle="#142238"; ctx.lineWidth=1;
+  for(let i=1;i<4;i++){ const y=pad+i*(h-pad*2)/4; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
+  const bw=Math.max(1,(w-pad*2)/c.length*.6);
+  c.forEach((x,i)=>{ const up=x[4]>=x[1]; ctx.strokeStyle=ctx.fillStyle=up?"#3dff8f":"#ff4d6d";
+    ctx.beginPath(); ctx.moveTo(X(i),Y(x[2])); ctx.lineTo(X(i),Y(x[3])); ctx.stroke();
+    const y1=Y(Math.max(x[1],x[4])), y2=Y(Math.min(x[1],x[4])); ctx.fillRect(X(i)-bw/2,y1,bw,Math.max(1,y2-y1)); });
+  const t0=c[0][0], t1=c[c.length-1][0]+4*3600e3;
+  for(const d of (tx.data.recent||[]).filter(x=>x.signal&&x.at)){
+    const t=Date.parse(d.at); if(!(t>=t0&&t<=t1)) continue;
+    const i=Math.min(c.length-1,Math.floor((t-t0)/(4*3600e3))), x=X(i), col=txCol(d.signal);
+    const up=d.signal==="Buy"||d.signal==="Overweight", dn=d.signal==="Sell"||d.signal==="Underweight";
+    const y=dn?Y(c[i][2])-8:Y(c[i][3])+8;
+    ctx.fillStyle=col; ctx.shadowColor=col; ctx.shadowBlur=10; ctx.beginPath();
+    if(up){ ctx.moveTo(x,y-6); ctx.lineTo(x-5,y+3); ctx.lineTo(x+5,y+3); }
+    else if(dn){ ctx.moveTo(x,y+6); ctx.lineTo(x-5,y-3); ctx.lineTo(x+5,y-3); }
+    else ctx.arc(x,y,4,0,Math.PI*2);
+    ctx.fill(); ctx.shadowBlur=0;
+  }
+  ctx.fillStyle="#5f7695"; ctx.font="10px ui-monospace,monospace"; ctx.textAlign="right";
+  ctx.fillText("$"+fp(Math.round(hi)),w-2,pad-3); ctx.fillText("$"+fp(Math.round(lo)),w-2,h-2); ctx.textAlign="left";
+}
+
+// ── Đường equity: TradingAgents vs giữ BTC vs Hội đồng (từ equityLog, mỗi lần chạy 1 điểm) ──
+function txRace(){
+  const cv=$("txRace"), g=txCanvas(cv); if(!g) return; const {ctx,w,h}=g;
+  const L=(tx.data.equityLog||[]).filter(p=>p&&p.equity!=null);
+  const S=[["TA spot","equity","#3dff8f"],["TA perp","perp","#ff5cf0"],["Giữ BTC","buyHold","#ffc23d"],["Hội đồng","council","#3de1ff"]];
+  $("txRaceLeg").innerHTML=S.map(([n,,c])=>`<span><b style="background:${c}"></b>${n}</span>`).join("");
+  const base=tx.data.startCapital, vals=L.flatMap(p=>S.map(([,k])=>p[k]).filter(v=>v!=null)).concat([base]);
+  const lo=Math.min(...vals), hi=Math.max(...vals), pad=12, span=(hi-lo)||base*0.01;
+  const X=i=>L.length<2?w/2:pad+i*(w-pad*2)/(L.length-1), Y=v=>h-pad-(v-(lo-span*.1))/(span*1.2)*(h-pad*2);
+  ctx.strokeStyle="#1d3352"; ctx.setLineDash([3,4]); ctx.beginPath(); ctx.moveTo(0,Y(base)); ctx.lineTo(w,Y(base)); ctx.stroke(); ctx.setLineDash([]);
+  for(const [,k,c] of S){
+    const pts=L.map((p,i)=>p[k]!=null?[X(i),Y(p[k])]:null).filter(Boolean); if(!pts.length) continue;
+    ctx.strokeStyle=ctx.fillStyle=c; ctx.lineWidth=2; ctx.shadowColor=c; ctx.shadowBlur=8; ctx.beginPath();
+    pts.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y)); ctx.stroke();
+    const [lx,ly]=pts[pts.length-1]; ctx.beginPath(); ctx.arc(lx,ly,3.5,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+  }
+  if(L.length<2){ ctx.fillStyle="#5f7695"; ctx.font="10.5px ui-monospace,monospace"; ctx.fillText("cần ≥ 2 lần chạy để vẽ đường",8,14); }
+}
+
+// ── AGENT SHELL: hình xuyến hạt + đường nối từ từng tác tử vào lõi và từ lõi ra quyết định ──
+function txAgentBtn(a){
+  return `<button type="button" class="tx-ag${a.key===tx.selKey?' sel':''}" style="--c:${txCol(a.rating)}" data-k="${escHtml(a.key)}">`+
+    `<b>${escHtml(a.label)}<span>${escHtml(a.rating||"—")}</span></b><small>${escHtml(a.text)}</small></button>`;
+}
+function txShell(err){
+  const by=Object.fromEntries(tx.agents.map(a=>[a.key,a]));
+  const fill=keys=>keys.map(k=>by[k]).filter(Boolean).map(txAgentBtn).join("");
+  if(!tx.agents.length){
+    $("txIn").innerHTML=$("txOut").innerHTML="";
+    $("txDetail").innerHTML=err?`<b style="color:#ff4d6d">Lần chạy gần nhất lỗi [${escHtml(err.stage||"run")}]:</b> ${escHtml(err.error)}`
+      :`Chi tiết từng tác tử hiện từ lần chạy kế tiếp (bản ghi cũ chưa lưu nhận định riêng của từng tác tử).`;
+  } else {
+    $("txIn").innerHTML=fill(TX_IN); $("txOut").innerHTML=fill(TX_OUT);
+    if(!by[tx.selKey]) tx.selKey=tx.agents[tx.agents.length-1].key;
+    txDetail();
+  }
+  const d=tx.data.lastOk||tx.data.last;
+  $("txCore").innerHTML=d?`<div class="r" style="--c:${txCol(d.signal)}">${escHtml((d.signal||"—").toUpperCase())}</div>`+
+    `<div class="m">PM · ${escHtml(d.tradeDate||"")} · SPOT ${Math.round((d.exposureAfter||0)*100)}%${tx.data.perp?` · PERP ${tx.data.perp.side}`:""}</div>`:"";
+  $("txShellMeta").textContent=tx.agents.length?`· ${tx.agents.length} tác tử · bấm để đọc`:"";
+  $("txShell").querySelectorAll(".tx-ag").forEach(b=>b.onclick=()=>{ tx.selKey=b.dataset.k;
+    $("txShell").querySelectorAll(".tx-ag").forEach(x=>x.classList.toggle("sel",x===b)); txDetail(); });
+}
+function txDetail(){
+  const a=tx.agents.find(x=>x.key===tx.selKey); if(!a) return;
+  $("txDetail").innerHTML=`<b>${escHtml(a.label)}</b> · <span style="color:${txCol(a.rating)}">${escHtml(a.rating||"không nêu xếp hạng")}</span>`+
+    ` <span class="tx-dim">· ${a.chars||0} ký tự gốc, hiển thị đoạn đầu</span><br>${escHtml(a.text)}`;
+}
+function txLayout(){
+  const sh=$("txShell"), cv=$("txTorus"); if(!sh||!cv) return;
+  const dpr=Math.min(2,window.devicePixelRatio||1), r=sh.getBoundingClientRect(), cr=cv.getBoundingClientRect();
+  cv.width=Math.round(cr.width*dpr); cv.height=Math.round(cr.height*dpr);
+  tx.dpr=dpr; tx.W=cr.width; tx.H=cr.height; tx.mobile=window.innerWidth<=860;
+  tx.anchors=[...sh.querySelectorAll(".tx-ag")].map(b=>{ const q=b.getBoundingClientRect(), left=b.closest(".tx-in")!==null;
+    return { x:(left?q.right:q.left)-cr.left, y:q.top+q.height/2-cr.top, left, col:getComputedStyle(b).getPropertyValue("--c").trim()||"#5f7695", ph:Math.random() }; });
+  if(!tx.pts){ tx.pts=[]; for(let i=0;i<2600;i++) tx.pts.push([Math.random()*Math.PI*2,Math.random()*Math.PI*2]); }
+}
+function txFrame(now){
+  const cv=$("txTorus"); if(!cv||!tx.W) return;
+  const ctx=cv.getContext("2d"), W=tx.W, H=tx.H, t=(now-tx.t0)/1000;
+  ctx.setTransform(tx.dpr,0,0,tx.dpr,0,0); ctx.clearRect(0,0,W,H);
+  const cx=W/2, cy=H/2, sc=Math.min(W*(tx.mobile?.36:.22),H*.42), R=1, r=.36, tilt=1.12, spin=txReduce?0.6:t*.18;
+  const d=tx.data&&(tx.data.lastOk||tx.data.last), core=txCol(d&&d.signal);
+  const ct=Math.cos(tilt), st=Math.sin(tilt);
+  ctx.globalCompositeOperation="lighter";
+  for(const [u0,v] of tx.pts){
+    const u=u0+spin, cr=R+r*Math.cos(v), x=cr*Math.cos(u), y=r*Math.sin(v), z=cr*Math.sin(u);
+    const y2=y*ct-z*st, z2=y*st+z*ct, p=3/(3+z2), sx=cx+x*sc*p, sy=cy+y2*sc*p;
+    const outer=(Math.cos(v)+1)/2, a=.3+.6*(1-(z2+1.4)/2.8);
+    ctx.fillStyle=outer>.55?core:"#3de1ff"; ctx.globalAlpha=Math.max(.1,Math.min(.95,a));
+    ctx.fillRect(sx,sy,2*p,2*p);
+  }
+  ctx.globalAlpha=1;
+  if(!tx.mobile){
+    for(const an of tx.anchors){
+      const tx2=an.left?cx-sc*1.05:cx+sc*1.05, ty=cy+(an.y-cy)*.35;
+      const c1x=an.left?an.x+60:an.x-60;
+      ctx.strokeStyle=an.col; ctx.globalAlpha=.35; ctx.lineWidth=1.2; ctx.beginPath();
+      ctx.moveTo(an.x,an.y); ctx.bezierCurveTo(c1x,an.y,tx2+(an.left?-50:50),ty,tx2,ty); ctx.stroke();
+      // xung chạy dọc đường: vào lõi ở cột trái, ra khỏi lõi ở cột phải
+      const f=txReduce?.5:((t*.35+an.ph)%1), s=an.left?f:1-f, m=1-s;
+      const px=m*m*m*an.x+3*m*m*s*c1x+3*m*s*s*(tx2+(an.left?-50:50))+s*s*s*tx2;
+      const py=m*m*m*an.y+3*m*m*s*an.y+3*m*s*s*ty+s*s*s*ty;
+      ctx.globalAlpha=.95; ctx.fillStyle=an.col; ctx.shadowColor=an.col; ctx.shadowBlur=12;
+      ctx.beginPath(); ctx.arc(px,py,2.6,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+    }
+  }
+  ctx.globalAlpha=1; ctx.globalCompositeOperation="source-over";
+}
+function txLoop(now){ tx.raf=0; if(!tx.visible||document.hidden) return; txFrame(now); tx.raf=requestAnimationFrame(txLoop); }
+function txStartLoop(){
+  if(txReduce||tx.obs) return;
+  tx.obs=new IntersectionObserver(es=>{ tx.visible=es[0].isIntersecting; if(tx.visible&&!tx.raf) tx.raf=requestAnimationFrame(txLoop); });
+  tx.obs.observe($("txShell"));
+  document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&tx.visible&&!tx.raf) tx.raf=requestAnimationFrame(txLoop); });
+}
+let txRz=0;
+window.addEventListener("resize",()=>{ clearTimeout(txRz); txRz=setTimeout(()=>{ if(!tx.data) return; txSpot(); txRace(); txLayout(); txFrame(performance.now()); },150); });
+setInterval(()=>{ const c=$("txClock"); if(c) c.textContent=new Date().toLocaleTimeString("en-GB",{timeZone:"Asia/Ho_Chi_Minh",hour12:false});
+  const n=$("txNext"); if(n) n.textContent=txNextRun(); },1000);
 // 📒 Lịch sử ĐẦY ĐỦ lệnh đã đóng + tổng PnL (dữ liệu rút kinh nghiệm) + xuất CSV (backup).
 function renderPaperHistory(pp, prim){
   const hist=pp.history||pp.recent||[], tot=pp.historyTotal||{trades:hist.length,pnlUsd:hist.reduce((s,t)=>s+(t.pnlUsd||0),0)};
