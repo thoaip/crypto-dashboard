@@ -646,8 +646,8 @@ function renderTauric(){
   else {
     const sig=d.signal||"LỖI", cls=String(d.signal||"review").toLowerCase();
     const expo=d.exposureAfter!=null?` · tỉ trọng BTC ${Math.round(d.exposureBefore*100)}% → <b>${Math.round(d.exposureAfter*100)}%</b>`:"";
-    $("tauricLast").innerHTML=`<div><span class="tasig ${escHtml(cls)}">${escHtml(sig)}</span><span class="mut">ngày ${escHtml(d.tradeDate)} · giá $${fp(Math.round(d.price))}${expo}</span></div>`+
-      (d.error?`<div class="taerr">⚠️ ${escHtml(d.error)} — vị thế giữ nguyên.</div>`:"")+
+    $("tauricLast").innerHTML=`<div><span class="tasig ${escHtml(cls)}">${escHtml(sig)}</span><span class="mut">ngày ${escHtml(d.tradeDate)}${d.price!=null?` · giá $${fp(Math.round(d.price))}`:""}${expo}</span></div>`+
+      (d.error?`<div class="taerr">⚠️ ${d.stage?`[${escHtml(d.stage)}] `:""}${escHtml(d.error)} — vị thế giữ nguyên.</div>`:"")+
       (d.reason?`<div class="tareason">${escHtml(d.reason)}</div>`:"");
   }
   const rec=(ta.recent||[]).filter(x=>x.signal);
