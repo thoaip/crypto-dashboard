@@ -133,6 +133,20 @@
   .tx-grid{display:grid;grid-template-columns:1.05fr 1.3fr 1.3fr 1.25fr;gap:10px;margin-top:10px}
   .tx-grid2{display:grid;grid-template-columns:1.45fr 1.15fr 1fr;gap:10px;margin-top:10px}
   .tx-grid2.no-perp{grid-template-columns:1.6fr 1fr}
+  .tx-hedge{display:grid;grid-template-columns:1fr 1.25fr;gap:10px;margin-top:10px}
+  .tx-hedge .tx-rainp{grid-column:1/-1}
+  .tx-chainw{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center}
+  .tx-planew{display:grid;grid-template-columns:1.15fr 1fr;gap:10px;align-items:start}
+  @media(max-width:1100px){.tx-hedge{grid-template-columns:1fr}}
+  @media(max-width:620px){.tx-chainw,.tx-planew{grid-template-columns:1fr}}
+  .tx-tm{border-collapse:collapse;font-size:10px;width:100%;margin-bottom:8px}
+  .tx-tm th{font-weight:700;padding:3px;color:var(--tx-dim);font-size:9px}
+  .tx-tm td{text-align:center;padding:4px;border:1px solid var(--tx-line);color:#fff;font-variant-numeric:tabular-nums}
+  .tx-sdist .tx-bar{grid-template-columns:52px 1fr 36px;font-size:10px;margin-bottom:5px}
+  .tx-arc{position:relative;text-align:center;margin-bottom:6px}
+  .tx-arc svg{width:140px;height:80px;display:block;margin:0 auto}
+  .tx-arc b{position:absolute;left:0;right:0;top:34px;font-size:20px;color:#ffc23d;text-shadow:0 0 12px rgba(255,194,61,.5)}
+  .tx-arc i{display:block;font-style:normal;font-size:9px;letter-spacing:1px;color:var(--tx-dim)}
   .tx-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:0 4px 10px}
   .tx-tab{all:unset;cursor:pointer;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:7px 14px;border-radius:7px;color:var(--tx-dim);
     border:1px solid var(--tx-line2);background:var(--tx-panel);transition:color .15s,border-color .15s,box-shadow .15s}
@@ -389,13 +403,21 @@
       <div class="tx-chips" id="txIn" aria-label="Chọn tác tử để đọc nhận định"></div>
       <div class="tx-detail" id="txDetail" aria-live="polite"></div>
     </div>
+    <div class="tx-hedge" id="txHedge" style="display:none">
+      <div class="tx-p"><div class="tx-h">SET CHAIN · FLAT → LONG / SHORT → HEDGE <span class="tx-dim">chuyển trạng thái sổ giữa các lần chạy</span></div>
+        <div class="tx-chainw"><canvas id="txChain" class="tx-cv" style="height:220px" role="img" aria-label="Sơ đồ chuyển trạng thái sổ phòng hộ"></canvas><div id="txChainM"></div></div></div>
+      <div class="tx-p"><div class="tx-h">INVENTORY PLANE · CHÂN LONG × CHÂN SHORT</div>
+        <div class="tx-planew"><canvas id="txPlane" class="tx-cv" style="height:220px" role="img" aria-label="Kích thước hai chân qua các lần chạy"></canvas><div id="txPlaneS"></div></div></div>
+      <div class="tx-p tx-rainp"><div class="tx-h">FILL RAIN · 2 CHÂN THEO THỜI GIAN <span class="tx-dim">xanh = long · đỏ = short · vàng = ròng</span></div>
+        <canvas id="txRain" class="tx-cv" style="height:130px" role="img" aria-label="Hai chân và vị thế ròng theo từng lần chạy"></canvas></div>
+    </div>
     <div class="tx-grid2" id="txGrid2">
       <div class="tx-p"><div class="tx-h">EXECUTION TAPE · XẾP HẠNG &amp; LỆNH</div><div class="tx-tapewrap" id="txExec"></div></div>
       <div class="tx-p" id="txPerpBox"><div class="tx-h">PERP · BTCUSDT.P <span class="tx-dim" id="txPerpMeta"></span></div><div id="txPerp"></div></div>
       <div class="tx-p"><div class="tx-h">RATING FUNNEL</div><div id="txFunnel"></div></div>
     </div>
     <div class="tx-tiles" id="txTiles"></div>
-    <p class="tx-note">🧪 <b>Chạy song song, độc lập với Hội đồng.</b> Mỗi ngày sau khi nến ngày (UTC) đóng, khung đa tác tử <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">TradingAgents</a> (Apache-2.0) dùng Claude: phân tích kỹ thuật · cảm xúc · tin tức → tranh luận Bull/Bear → Research Manager → Trader → tranh luận rủi ro → Portfolio Manager ra xếp hạng 5 bậc. Hai tài khoản <b>tách biệt</b>, mỗi tài khoản một lượt Claude riêng với điều lệ riêng. <b>SPOT · DÀI HẠN</b> (đánh giá mỗi tuần, khung nhiều tháng → năm, long-only): Buy 100% · Overweight 75% · Hold giữ · Underweight 25% · Sell 0% BTC, phí 0.1%/chiều. <b>PERP · ĐA KHUNG L/S</b> (mỗi ngày, BTCUSDT.P, khung 4H/1D/1W kèm số liệu đa khung thật): Buy LONG 1× · Overweight LONG 0.5× · Hold giữ · Underweight SHORT 0.5× · Sell SHORT 1× (× đòn bẩy), giá + funding thật từ OKX (dự phòng Bybit/Binance), phí taker 0.05%, có thanh lý — KHÔNG đặt lệnh thật. Bấm từng tác tử để đọc nhận định. Không backtest được trung thực (LLM đã biết giá quá khứ) → chỉ chấm forward · không phải khuyến nghị.</p>
+    <p class="tx-note">🧪 <b>Chạy song song, độc lập với Hội đồng.</b> Mỗi ngày sau khi nến ngày (UTC) đóng, khung đa tác tử <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">TradingAgents</a> (Apache-2.0) dùng Claude: phân tích kỹ thuật · cảm xúc · tin tức → tranh luận Bull/Bear → Research Manager → Trader → tranh luận rủi ro → Portfolio Manager ra xếp hạng 5 bậc. Hai tài khoản <b>tách biệt</b>, mỗi tài khoản một lượt Claude riêng với điều lệ riêng. <b>SPOT · DÀI HẠN</b> (đánh giá mỗi tuần, khung nhiều tháng → năm, long-only): Buy 100% · Overweight 75% · Hold giữ · Underweight 25% · Sell 0% BTC, phí 0.1%/chiều. <b>PERP · ĐA KHUNG L/S</b> (mỗi ngày, BTCUSDT.P, khung 4H/1D/1W kèm số liệu đa khung thật): sổ phòng hộ 2 chân — Buy long 100% · Overweight long 75%/short 25% · Hold giữ · Underweight long 25%/short 75% · Sell short 100% (× đòn bẩy; hai chân bù trừ, rủi ro/funding/thanh lý theo vị thế ròng), giá + funding thật từ OKX (dự phòng Bybit/Binance), phí taker 0.05%, có thanh lý — KHÔNG đặt lệnh thật. Bấm từng tác tử để đọc nhận định. Không backtest được trung thực (LLM đã biết giá quá khứ) → chỉ chấm forward · không phải khuyến nghị.</p>
   </section>
 
   <div class="row3">
@@ -803,7 +825,7 @@ function renderTauric(){
   $("txSub").textContent=`VỐN $${fp(ta.startCapital)} · TỪ ${String(ta.startedAt).slice(0,10)} · ${ta.runs} LẦN CHẠY`+(ta.errors?` · ${ta.errors} LỖI`:"")+(d&&d.deepModel?` · ${d.deepModel.toUpperCase()} / ${String(d.quickModel||"").toUpperCase()}`:"");
   $("txPerpBox").style.display=txIsPerp()?"":"none";
   $("txGrid2").classList.toggle("no-perp",!txIsPerp());
-  txStats(); txWallet(); txWire(); txExec(); txPerp(); txFunnel(); txTiles(); txMarquee(); txShell(err);
+  txStats(); txWallet(); txWire(); txExec(); txPerp(); txFunnel(); txTiles(); txMarquee(); txShell(err); txHedge();
   requestAnimationFrame(()=>{ txSpot(); txRace(); txLayout(); txFrame(performance.now()); });
   txStartLoop();
 }
@@ -821,7 +843,7 @@ function txExposure(){
   if(ta.qty&&px&&eq) return ta.qty*px/eq;
   const d=ta.lastOk||{}; return txIsPerp()?0:(d.exposureAfter||0);
 }
-function renderTauricLive(price){ if(!tx.data) return; tx.livePrice=price; txStats(); txWallet(); txPerp(); txTiles(); txMarquee(); txFunnel(); }
+function renderTauricLive(price){ if(!tx.data) return; tx.livePrice=price; txStats(); txWallet(); txPerp(); txTiles(); txMarquee(); txFunnel(); if(txIsPerp()) txHedgeStats(); }
 function txPerpEq(){ return txEquity(); }
 function txPerp(){
   const p=tx.data.perp, box=$("txPerp"); if(!box) return;
@@ -981,6 +1003,93 @@ function txRace(){
     const [lx,ly]=pts[pts.length-1]; ctx.beginPath(); ctx.arc(lx,ly,3.5,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
   }
   if(L.length<2){ ctx.fillStyle="#5f7695"; ctx.font="10.5px ui-monospace,monospace"; ctx.fillText("cần ≥ 2 lần chạy để vẽ đường",8,14); }
+}
+
+// ── SỔ PHÒNG HỘ 2 CHÂN (chỉ tab PERP): set chain trạng thái · inventory plane long×short · fill rain ──
+const TX_HSTATE = { FLAT:"#cfe1ff", LONG:"#3dff8f", SHORT:"#ff4d6d", BOTH:"#ffc23d" };
+const TX_HLABEL = { FLAT:"FLAT", LONG:"LONG", SHORT:"SHORT", BOTH:"HEDGE" };
+// Tỉ lệ mỗi chân theo vốn (×) — dùng equity của chính lần chạy đó
+const txLegFrac = h => { const k=h.price&&h.equity?h.price/h.equity:0; return { l:(h.long||0)*k, s:(h.short||0)*k }; };
+
+function txHedge(){
+  const box=$("txHedge"); if(!box) return;
+  const p=txIsPerp()&&tx.data.perp; box.style.display=p?"":"none"; if(!p) return;
+  const H=p.history||[], states=["FLAT","SHORT","LONG","BOTH"], idx=Object.fromEntries(states.map((s,i)=>[s,i]));
+  // ma trận chuyển trạng thái giữa các lần chạy liên tiếp
+  const M=states.map(()=>states.map(()=>0)); for(let i=1;i<H.length;i++) M[idx[H[i-1].state]][idx[H[i].state]]++;
+  const cnt=Object.fromEntries(states.map(s=>[s,H.filter(h=>h.state===s).length])), n=Math.max(1,H.length);
+  const mx=Math.max(1,...M.flat());
+  $("txChainM").innerHTML=`<table class="tx-tm"><tr><th>từ \\ tới</th>${states.map(s=>`<th style="color:${TX_HSTATE[s]}">${TX_HLABEL[s]}</th>`).join("")}</tr>`+
+    states.map((a,i)=>`<tr><th style="color:${TX_HSTATE[a]}">${TX_HLABEL[a]}</th>`+M[i].map(v=>`<td style="background:rgba(61,225,255,${(0.08+0.6*v/mx).toFixed(2)})">${v}</td>`).join("")+`</tr>`).join("")+`</table>`+
+    `<div class="tx-sdist">`+states.map(s=>`<div class="tx-bar" style="--c:${TX_HSTATE[s]}"><span>${TX_HLABEL[s]}</span><div class="tr"><div class="fl" style="width:${100*cnt[s]/n}%"></div></div><b>${Math.round(100*cnt[s]/n)}%</b></div>`).join("")+`</div>`;
+  tx.hedgeM=M; tx.hedgeCur=H.length?H[H.length-1].state:"FLAT";
+  txHedgeStats(); txChain(); txPlane(); txRain();
+}
+function txHedgeStats(){
+  const p=tx.data.perp; if(!p||!$("txPlaneS")) return;
+  const px=tx.livePrice||(p.history&&p.history.length?p.history[p.history.length-1].price:0);
+  const L=p.legs.long, S=p.legs.short, ul=L.qty&&px?L.qty*(px-L.entry):0, us=S.qty&&px?S.qty*(S.entry-px):0;
+  const hr=Math.max(L.qty,S.qty)>0?Math.min(L.qty,S.qty)/Math.max(L.qty,S.qty):0;
+  $("txPlaneS").innerHTML=
+    `<div class="tx-arc"><svg viewBox="0 0 120 70" aria-hidden="true"><path d="M10 64 A50 50 0 0 1 110 64" fill="none" stroke="#1d3352" stroke-width="10"/>`+
+    `<path d="M10 64 A50 50 0 0 1 110 64" fill="none" stroke="#ffc23d" stroke-width="10" stroke-dasharray="${(157*hr).toFixed(1)} 200"/></svg>`+
+    `<b>${(hr*100).toFixed(1)}%</b><i>TỈ LỆ PHÒNG HỘ HIỆN TẠI</i></div>`+
+    `<div class="tx-kv">`+
+    `<div><i>CHÂN LONG</i><b style="color:#3dff8f">${(+L.qty||0).toFixed(4)} BTC</b></div><div><i>CHÂN SHORT</i><b style="color:#ff4d6d">${(+S.qty||0).toFixed(4)} BTC</b></div>`+
+    `<div><i>GIÁ VÀO LONG</i><b>${L.entry?"$"+fp(Math.round(L.entry)):"—"}</b></div><div><i>GIÁ VÀO SHORT</i><b>${S.entry?"$"+fp(Math.round(S.entry)):"—"}</b></div>`+
+    `<div><i>uPnL LONG</i><b style="color:${ul>=0?'#3dff8f':'#ff4d6d'}">${txUsd(ul)}</b></div><div><i>uPnL SHORT</i><b style="color:${us>=0?'#3dff8f':'#ff4d6d'}">${txUsd(us)}</b></div>`+
+    `<div><i>% LẦN CHẠY GIỮ 2 CHÂN</i><b style="color:#ffc23d">${(+p.bothShare||0).toFixed(1)}%</b></div><div><i>LÃI/LỖ ĐÃ CHỐT</i><b>${txUsd(p.realized||0)}</b></div></div>`+
+    `<div class="tx-dim" style="font-size:9.5px;margin-top:6px">Hai chân cùng hợp đồng bù trừ nhau: rủi ro, funding, thanh lý tính trên vị thế RÒNG; phí tính trên thay đổi ròng.</div>`;
+}
+// Set chain: 4 trạng thái hình thoi (như ảnh tham chiếu), cạnh dày theo số lần chuyển, nút hiện tại phát sáng
+function txChain(){
+  const cv=$("txChain"), g=txCanvas(cv); if(!g) return; const {ctx,w,h}=g;
+  const cx=w/2, cy=h/2, r=Math.min(w,h)*.36, pos={FLAT:[cx,cy-r],SHORT:[cx-r,cy],LONG:[cx+r,cy],BOTH:[cx,cy+r]};
+  const S=["FLAT","SHORT","LONG","BOTH"], M=tx.hedgeM||S.map(()=>S.map(()=>0)), mx=Math.max(1,...M.flat());
+  ctx.strokeStyle="#1d3352"; ctx.lineWidth=1; ctx.beginPath(); ctx.ellipse(cx,cy,r,r*.42,0,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx,cy-r); ctx.lineTo(cx,cy+r); ctx.stroke();
+  S.forEach((a,i)=>S.forEach((b,j)=>{ if(i===j||!M[i][j]) return;
+    const [x1,y1]=pos[a],[x2,y2]=pos[b], mxp=(x1+x2)/2+(y2-y1)*.18, myp=(y1+y2)/2-(x2-x1)*.18;
+    ctx.strokeStyle=TX_HSTATE[b]; ctx.globalAlpha=.25+.6*M[i][j]/mx; ctx.lineWidth=1+3*M[i][j]/mx;
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.quadraticCurveTo(mxp,myp,x2,y2); ctx.stroke(); }));
+  ctx.globalAlpha=1;
+  for(const s of S){ const [x,y]=pos[s], cur=s===tx.hedgeCur, c=TX_HSTATE[s], rad=cur?20:14;
+    ctx.shadowColor=c; ctx.shadowBlur=cur?24:8; ctx.strokeStyle=c; ctx.lineWidth=cur?3:2;
+    ctx.fillStyle="#04070c"; ctx.beginPath(); ctx.arc(x,y,rad,0,Math.PI*2); ctx.fill(); ctx.stroke(); ctx.shadowBlur=0;
+    ctx.fillStyle=c; ctx.font=`bold ${cur?10:9}px ui-monospace,Menlo,monospace`; ctx.textAlign="center"; ctx.fillText(TX_HLABEL[s],x,y+3.5); }
+  ctx.textAlign="left";
+}
+// Inventory plane: mỗi lần chạy là 1 điểm (chân long × chân short, theo vốn); đường chéo = phòng hộ hoàn toàn (ròng 0)
+function txPlane(){
+  const cv=$("txPlane"), g=txCanvas(cv); if(!g) return; const {ctx,w,h}=g;
+  const p=tx.data.perp, H=p.history||[], lev=p.leverage||1, pad=26, X=v=>pad+v/lev*(w-pad-8), Y=v=>h-pad-v/lev*(h-pad-8);
+  ctx.strokeStyle="#142238"; ctx.lineWidth=1;
+  for(let k=0;k<=4;k++){ const f=k/4*lev; ctx.beginPath(); ctx.moveTo(X(f),Y(0)); ctx.lineTo(X(f),Y(lev)); ctx.moveTo(X(0),Y(f)); ctx.lineTo(X(lev),Y(f)); ctx.stroke(); }
+  ctx.strokeStyle="#ffc23d"; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(X(0),Y(0)); ctx.lineTo(X(lev),Y(lev)); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle="#5f7695"; ctx.font="9.5px ui-monospace,monospace";
+  ctx.fillText("CHÂN LONG ×vốn →",X(lev*.45),h-6); ctx.save(); ctx.translate(10,Y(lev*.3)); ctx.rotate(-Math.PI/2); ctx.fillText("CHÂN SHORT ×vốn →",0,0); ctx.restore();
+  ctx.fillStyle="#ffc23d"; ctx.fillText("ròng 0 = phòng hộ đủ",X(lev*.52),Y(lev*.6));
+  const pts=H.map(txLegFrac);
+  ctx.strokeStyle="rgba(61,225,255,.35)"; ctx.beginPath(); pts.forEach((q,i)=>i?ctx.lineTo(X(q.l),Y(q.s)):ctx.moveTo(X(q.l),Y(q.s))); ctx.stroke();
+  pts.forEach((q,i)=>{ const t=pts.length>1?i/(pts.length-1):1, last=i===pts.length-1, c=last?TX_HSTATE[H[i].state]:`hsl(${200-150*t},90%,60%)`;
+    ctx.fillStyle=c; ctx.shadowColor=c; ctx.shadowBlur=last?16:4; ctx.beginPath(); ctx.arc(X(q.l),Y(q.s),last?6:3,0,Math.PI*2); ctx.fill(); });
+  ctx.shadowBlur=0;
+  if(!pts.length){ ctx.fillStyle="#5f7695"; ctx.fillText("chưa có lần chạy perp",pad+6,pad+6); }
+}
+// Fill rain: mỗi lần chạy 1 cột — xanh lên = chân long, đỏ xuống = chân short, vàng = vị thế ròng
+function txRain(){
+  const cv=$("txRain"), g=txCanvas(cv); if(!g) return; const {ctx,w,h}=g;
+  const p=tx.data.perp, H=p.history||[], lev=p.leverage||1, mid=h/2, sc=(h/2-10)/lev;
+  ctx.strokeStyle="#1d3352"; ctx.beginPath(); ctx.moveTo(0,mid); ctx.lineTo(w,mid); ctx.stroke();
+  if(!H.length){ ctx.fillStyle="#5f7695"; ctx.font="10.5px ui-monospace,monospace"; ctx.fillText("chưa có lần chạy perp",8,14); return; }
+  const n=Math.max(H.length,24), bw=Math.max(3,(w-20)/n*.7), X=i=>10+(i+.5)*(w-20)/n;
+  H.forEach((hh,i)=>{ const q=txLegFrac(hh), x=X(i)-bw/2;
+    ctx.fillStyle="#3dff8f"; ctx.shadowColor="#3dff8f"; ctx.shadowBlur=6; ctx.fillRect(x,mid-q.l*sc,bw,q.l*sc);
+    ctx.fillStyle="#ff4d6d"; ctx.shadowColor="#ff4d6d"; ctx.fillRect(x,mid,bw,q.s*sc); });
+  ctx.shadowBlur=0; ctx.strokeStyle="#ffc23d"; ctx.lineWidth=2; ctx.beginPath();
+  H.forEach((hh,i)=>{ const q=txLegFrac(hh), y=mid-(q.l-q.s)*sc; i?ctx.lineTo(X(i),y):ctx.moveTo(X(i),y); }); ctx.stroke();
+  ctx.fillStyle="#5f7695"; ctx.font="9.5px ui-monospace,monospace";
+  ctx.fillText(`+${lev}× LONG`,4,12); ctx.fillText(`−${lev}× SHORT`,4,h-4);
 }
 
 // ── AGENT SHELL 3D: 11 tác tử là nút phát sáng trong không gian, xếp vòng quanh lõi hình xuyến.
@@ -1164,7 +1273,7 @@ function txStartLoop(){
   document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&tx.visible&&!tx.raf) tx.raf=requestAnimationFrame(txLoop); });
 }
 let txRz=0;
-window.addEventListener("resize",()=>{ clearTimeout(txRz); txRz=setTimeout(()=>{ if(!tx.data) return; txSpot(); txRace(); txLayout(); txFrame(performance.now()); },150); });
+window.addEventListener("resize",()=>{ clearTimeout(txRz); txRz=setTimeout(()=>{ if(!tx.data) return; txSpot(); txRace(); txLayout(); txFrame(performance.now()); if(txIsPerp()){ txChain(); txPlane(); txRain(); } },150); });
 setInterval(()=>{ const c=$("txClock"); if(c) c.textContent=new Date().toLocaleTimeString("en-GB",{timeZone:"Asia/Ho_Chi_Minh",hour12:false});
   const n=$("txNext"); if(n) n.textContent=txNextRun(); },1000);
 // 📒 Lịch sử ĐẦY ĐỦ lệnh đã đóng + tổng PnL (dữ liệu rút kinh nghiệm) + xuất CSV (backup).
