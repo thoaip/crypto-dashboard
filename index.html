@@ -163,6 +163,15 @@
   @media(max-width:1100px){.tx-grid2,.tx-grid2.no-perp{grid-template-columns:1fr 1fr}.tx-grid2>:first-child{grid-column:1/-1}}
   .tx-side{font-weight:900;font-size:13px;padding:2px 10px;border-radius:5px;letter-spacing:1px;color:var(--c);background:color-mix(in srgb,var(--c) 15%,transparent);box-shadow:0 0 12px -4px var(--c)}
   .tx-ptr{display:flex;justify-content:space-between;gap:8px;font-size:10.5px;padding:3px 0;border-top:1px solid var(--tx-line);color:#9fb6d6}
+  .tx-ords{margin-top:10px;border:1px solid var(--tx-line);border-radius:8px;padding:8px 10px;background:rgba(255,194,61,.03)}
+  .tx-ords .tx-h{margin-bottom:6px}
+  .tx-ord{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:baseline;padding:6px 0;border-top:1px dashed var(--tx-line);font-size:11px}
+  .tx-ord:first-of-type{border-top:0}
+  .tx-ord .k{font-size:9.5px;font-weight:700;letter-spacing:.8px;color:var(--c);border:1px solid var(--c);border-radius:4px;padding:1px 6px;white-space:nowrap}
+  .tx-ord .px{font-variant-numeric:tabular-nums;color:#fff;font-weight:700;text-align:right}
+  .tx-ord .px i{display:block;font-style:normal;font-weight:400;font-size:9.5px;color:var(--tx-dim)}
+  .tx-ord q{grid-column:2/-1;quotes:none;color:var(--tx-dim);font-size:9.5px;font-style:italic}
+  .tx-ord.done{opacity:.72}
   @media(max-width:1100px){.tx-grid{grid-template-columns:1fr 1fr}}
   @media(max-width:700px){.tx-grid,.tx-grid2{grid-template-columns:1fr}.tx-clock{display:none}.tx-stats{margin-left:0}}
   .tx-p{background:linear-gradient(180deg,rgba(61,225,255,.025),transparent 40%),var(--tx-panel);border:1px solid var(--tx-line);border-radius:10px;padding:10px;min-width:0;position:relative}
@@ -417,7 +426,7 @@
       <div class="tx-p"><div class="tx-h">RATING FUNNEL</div><div id="txFunnel"></div></div>
     </div>
     <div class="tx-tiles" id="txTiles"></div>
-    <p class="tx-note">🧪 <b>Chạy song song, độc lập với Hội đồng.</b> Mỗi ngày sau khi nến ngày (UTC) đóng, khung đa tác tử <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">TradingAgents</a> (Apache-2.0) dùng Claude: phân tích kỹ thuật · cảm xúc · tin tức → tranh luận Bull/Bear → Research Manager → Trader → tranh luận rủi ro → Portfolio Manager ra xếp hạng 5 bậc. Hai tài khoản <b>tách biệt</b>, mỗi tài khoản một lượt Claude riêng với điều lệ riêng. <b>SPOT · DÀI HẠN</b> (đánh giá mỗi tuần, khung nhiều tháng → năm, long-only): Buy 100% · Overweight 75% · Hold giữ · Underweight 25% · Sell 0% BTC, phí 0.1%/chiều. <b>PERP · ĐA KHUNG L/S</b> (mỗi ngày, BTCUSDT.P, khung 4H/1D/1W kèm số liệu đa khung thật): sổ phòng hộ 2 chân — Buy long 100% · Overweight long 75%/short 25% · Hold giữ · Underweight long 25%/short 75% · Sell short 100% (× đòn bẩy; hai chân bù trừ, rủi ro/funding/thanh lý theo vị thế ròng), giá + funding thật từ OKX (dự phòng Bybit/Binance), phí taker 0.05%, có thanh lý — KHÔNG đặt lệnh thật. Bấm từng tác tử để đọc nhận định. Không backtest được trung thực (LLM đã biết giá quá khứ) → chỉ chấm forward · không phải khuyến nghị.</p>
+    <p class="tx-note">🧪 <b>Chạy song song, độc lập với Hội đồng.</b> Mỗi ngày sau khi nến ngày (UTC) đóng, khung đa tác tử <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">TradingAgents</a> (Apache-2.0) dùng Claude: phân tích kỹ thuật · cảm xúc · tin tức → tranh luận Bull/Bear → Research Manager → Trader → tranh luận rủi ro → Portfolio Manager ra xếp hạng 5 bậc. Hai tài khoản <b>tách biệt</b>, mỗi tài khoản một lượt Claude riêng với điều lệ riêng. <b>SPOT · DÀI HẠN</b> (đánh giá mỗi tuần, khung nhiều tháng → năm, long-only): Buy 100% · Overweight 75% · Hold giữ · Underweight 25% · Sell 0% BTC, phí 0.1%/chiều. <b>PERP · ĐA KHUNG L/S</b> (mỗi ngày, BTCUSDT.P, khung 4H/1D/1W kèm số liệu đa khung thật): sổ phòng hộ 2 chân — Buy long 100% · Overweight long 75%/short 25% · Hold giữ · Underweight long 25%/short 75% · Sell short 100% (× đòn bẩy; hai chân bù trừ, rủi ro/funding/thanh lý theo vị thế ròng), giá + funding thật từ OKX (dự phòng Bybit/Binance), phí taker 0.05%, có thanh lý; mức stop / chốt lời / huỷ kịch bản PM nêu rõ giá được đặt thành lệnh chờ và khớp theo nến 1H (chỉ nến sau lúc đặt, gap khớp ở giá mở) — KHÔNG đặt lệnh thật. Bấm từng tác tử để đọc nhận định. Không backtest được trung thực (LLM đã biết giá quá khứ) → chỉ chấm forward · không phải khuyến nghị.</p>
   </section>
 
   <div class="row3">
@@ -861,7 +870,29 @@ function txPerp(){
     (mtf.length?`<div class="tx-mtf">`+mtf.map(m=>{ const c={up:"#3dff8f",down:"#ff4d6d"}[m.trend]||"#ffc23d";
       return `<span style="--c:${c}"><b>${escHtml(m.tf)}</b> ${m.trend==="up"?"▲":m.trend==="down"?"▼":"◆"} RSI ${m.rsi14}</span>`; }).join("")+`</div>`:"")+
     (p.lastError?`<div class="tx-empty" style="color:#ff4d6d">⚠️ ${escHtml(p.lastError)}</div>`:"")+
-    `<div style="margin-top:8px">`+(p.trades||[]).slice(0,5).map(t=>`<div class="tx-ptr"><span class="tx-dim">${escHtml(txIso(t.at))}</span><span style="color:${t.kind==="LIQUIDATION"?"#ff4d6d":t.side==="BUY"?"#3dff8f":"#ff4d6d"}">${t.kind==="LIQUIDATION"?"LIQ":t.side} ${(+t.qty).toFixed(4)}</span><span>$${fp(Math.round(t.price))}</span><span class="tx-dim">${t.realized?txUsd(t.realized):"—"}</span></div>`).join("")+`</div>`;
+    txOrders(p,px)+
+    `<div style="margin-top:8px">`+(p.trades||[]).slice(0,5).map(t=>{ const k=TX_ORD[String(t.kind||"").toLowerCase()];
+      return `<div class="tx-ptr"><span class="tx-dim">${escHtml(txIso(t.at))}</span><span style="color:${t.kind==="LIQUIDATION"?"#ff4d6d":t.side==="BUY"?"#3dff8f":"#ff4d6d"}">${t.kind==="LIQUIDATION"?"LIQ":k?k.tag:t.side} ${t.leg?escHtml(t.leg)+" ":""}${(+t.qty).toFixed(4)}</span><span>$${fp(Math.round(t.price))}</span><span class="tx-dim">${t.realized?txUsd(t.realized):"—"}</span></div>`; }).join("")+`</div>`;
+}
+
+// Lệnh chờ PM (tauric/orders.py): stop / chốt lời / huỷ kịch bản / vào thêm — khớp theo nến 1H ở lần chạy sau
+const TX_ORD = { stop_loss:{tag:"STOP",vn:"Cắt lỗ",c:"#ff4d6d"}, take_profit:{tag:"TP",vn:"Chốt lời",c:"#3dff8f"},
+  invalidation:{tag:"HUỶ KB",vn:"Huỷ kịch bản",c:"#ffc23d"}, add:{tag:"ADD",vn:"Vào thêm",c:"#3de1ff"} };
+function txOrdTxt(o){
+  const leg=o.leg==="long"?"chân long":o.leg==="short"?"chân short":"cả 2 chân";
+  const act={reduce_leg:`giảm ${leg} ${(+o.qty).toFixed(4)} BTC`,close_leg:`đóng ${leg}`,flatten:"đóng cả 2 chân",add_to_leg:`thêm ${(+o.qty).toFixed(4)} BTC vào ${leg}`}[o.action]||o.action;
+  const cond=o.trigger==="daily_close"?`nến ngày đóng ${o.direction==="above"?"trên":"dưới"}`:`giá ${o.direction==="above"?"≥":"≤"}`;
+  return `${act} khi ${cond}`;
+}
+function txOrders(p,px){
+  const live=p.orders||[], done=(p.orderLog||[]).filter(o=>o.status==="filled").slice(0,3);
+  const row=(o,fin)=>{ const k=TX_ORD[o.type]||{tag:o.type,c:"#cfe1ff"}, dist=px?(o.price/px-1)*100:null;
+    return `<div class="tx-ord${fin?" done":""}" style="--c:${k.c}"><span class="k">${escHtml(k.tag)}</span><span>${escHtml(txOrdTxt(o))}</span>`+
+      `<span class="px">$${fp(Math.round(fin?o.fill:o.price))}<i>${fin?"đã khớp":dist!=null?`${dist>=0?"+":""}${dist.toFixed(1)}% từ giá`:""}</i></span>`+
+      (fin?`<q>${escHtml(txIso(o.closedAt))} · lãi/lỗ chốt ${txUsd(o.realized||0)}</q>`:o.quote?`<q>“${escHtml(o.quote)}”</q>`:"")+`</div>`; };
+  return `<div class="tx-ords"><div class="tx-h">LỆNH CHỜ · PORTFOLIO MANAGER <span class="tx-dim">${live.length} đang chờ · khớp theo nến 1H</span></div>`+
+    (live.length?live.map(o=>row(o,false)).join(""):`<div class="tx-dim" style="font-size:10.5px">PM chưa đặt mức stop / chốt lời nào.</div>`)+
+    done.map(o=>row(o,true)).join("")+`</div>`;
 }
 
 function txStats(){
@@ -962,7 +993,10 @@ function txSpot(){
   const cv=$("txSpot"), g=txCanvas(cv); if(!g) return; const {ctx,w,h}=g;
   const btc=state.data&&state.data.coins&&state.data.coins.BTC, k=btc&&btc.qqe&&btc.qqe.candles;
   if(!k||k.length<2){ ctx.fillStyle="#5f7695"; ctx.font="11px ui-monospace,monospace"; ctx.fillText("chưa có nến BTC",8,20); return; }
-  const c=k.slice(-120), lo=Math.min(...c.map(x=>x[3])), hi=Math.max(...c.map(x=>x[2])), pad=14;
+  const c=k.slice(-120), last=c[c.length-1][4], pad=14;
+  // tab PERP: mức lệnh chờ PM gần giá (±12%) kéo giãn trục để thấy được đường stop / chốt lời
+  const ords=(txIsPerp()&&tx.data.perp&&tx.data.perp.orders||[]).filter(o=>Math.abs(o.price/last-1)<=0.12);
+  const lo=Math.min(...c.map(x=>x[3]),...ords.map(o=>o.price)), hi=Math.max(...c.map(x=>x[2]),...ords.map(o=>o.price));
   const X=i=>pad+i*(w-pad*2)/(c.length-1), Y=v=>h-pad-(v-lo)/(hi-lo||1)*(h-pad*2);
   ctx.strokeStyle="#142238"; ctx.lineWidth=1;
   for(let i=1;i<4;i++){ const y=pad+i*(h-pad*2)/4; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.stroke(); }
@@ -982,6 +1016,11 @@ function txSpot(){
     else ctx.arc(x,y,4,0,Math.PI*2);
     ctx.fill(); ctx.shadowBlur=0;
   }
+  ctx.font="9.5px ui-monospace,monospace";
+  for(const o of ords){ const k=TX_ORD[o.type]||{tag:o.type,c:"#cfe1ff"}, y=Y(o.price);
+    ctx.strokeStyle=k.c; ctx.globalAlpha=.85; ctx.setLineDash(o.trigger==="daily_close"?[2,3]:[6,4]); ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(w-pad,y); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
+    ctx.fillStyle=k.c; ctx.fillText(`${k.tag} ${fp(Math.round(o.price))}${o.trigger==="daily_close"?" (đóng D)":""}`,pad+2,y-3); }
   ctx.fillStyle="#5f7695"; ctx.font="10px ui-monospace,monospace"; ctx.textAlign="right";
   ctx.fillText("$"+fp(Math.round(hi)),w-2,pad-3); ctx.fillText("$"+fp(Math.round(lo)),w-2,h-2); ctx.textAlign="left";
 }
