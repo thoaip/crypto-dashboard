@@ -388,7 +388,7 @@
       <div class="tx-logo" aria-hidden="true">TA</div>
       <div>
         <div class="tx-kicker" id="txKicker"></div>
-        <h3 class="tx-title" id="txTitle">TRADINGAGENTS <span>//</span> CLAUDE PAPER BOT</h3>
+        <h3 class="tx-title" id="txTitle">TRADINGAGENTS <span>//</span> AI PAPER BOT</h3>
         <div class="tx-sub" id="txSub"></div>
       </div>
       <div class="tx-stats" id="txStats"></div>
@@ -426,7 +426,7 @@
       <div class="tx-p"><div class="tx-h">RATING FUNNEL</div><div id="txFunnel"></div></div>
     </div>
     <div class="tx-tiles" id="txTiles"></div>
-    <p class="tx-note">🧪 <b>Chạy song song, độc lập với Hội đồng.</b> Mỗi ngày sau khi nến ngày (UTC) đóng, khung đa tác tử <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">TradingAgents</a> (Apache-2.0) dùng Claude: phân tích kỹ thuật · cảm xúc · tin tức → tranh luận Bull/Bear → Research Manager → Trader → tranh luận rủi ro → Portfolio Manager ra xếp hạng 5 bậc. Hai tài khoản <b>tách biệt</b>, mỗi tài khoản một lượt Claude riêng với điều lệ riêng. <b>SPOT · DÀI HẠN</b> (đánh giá mỗi tuần, khung nhiều tháng → năm, long-only): Buy 100% · Overweight 75% · Hold giữ · Underweight 25% · Sell 0% BTC, phí 0.1%/chiều. <b>PERP · ĐA KHUNG L/S</b> (mỗi ngày, BTCUSDT.P, khung 4H/1D/1W kèm số liệu đa khung thật): sổ phòng hộ 2 chân — Buy long 100% · Overweight long 75%/short 25% · Hold giữ · Underweight long 25%/short 75% · Sell short 100% (× đòn bẩy; hai chân bù trừ, rủi ro/funding/thanh lý theo vị thế ròng), giá + funding thật từ OKX (dự phòng Bybit/Binance), phí taker 0.05%, có thanh lý; mức stop / chốt lời / huỷ kịch bản PM nêu rõ giá được đặt thành lệnh chờ và khớp theo nến 1H (chỉ nến sau lúc đặt, gap khớp ở giá mở) — KHÔNG đặt lệnh thật. Bấm từng tác tử để đọc nhận định. Không backtest được trung thực (LLM đã biết giá quá khứ) → chỉ chấm forward · không phải khuyến nghị.</p>
+    <p class="tx-note">🧪 <b>Chạy song song, độc lập với Hội đồng.</b> Mỗi ngày sau khi nến ngày (UTC) đóng, khung đa tác tử <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">TradingAgents</a> (Apache-2.0): phân tích kỹ thuật · cảm xúc · tin tức → tranh luận Bull/Bear → Research Manager → Trader → tranh luận rủi ro → Portfolio Manager ra xếp hạng 5 bậc. Hai tài khoản <b>tách biệt</b>, mỗi tài khoản một lượt chạy riêng với điều lệ riêng. <b>SPOT · DÀI HẠN</b> (đánh giá mỗi tuần, khung nhiều tháng → năm, long-only): Buy 100% · Overweight 75% · Hold giữ · Underweight 25% · Sell 0% BTC, phí 0.1%/chiều. <b>PERP · ĐA KHUNG L/S</b> (mỗi ngày, BTCUSDT.P, khung 4H/1D/1W kèm số liệu đa khung thật): sổ phòng hộ 2 chân — Buy long 100% · Overweight long 75%/short 25% · Hold giữ · Underweight long 25%/short 75% · Sell short 100% (× đòn bẩy; hai chân bù trừ, rủi ro/funding/thanh lý theo vị thế ròng), giá + funding thật từ OKX (dự phòng Bybit/Binance), phí taker 0.05%, có thanh lý; mức stop / chốt lời / huỷ kịch bản PM nêu rõ giá được đặt thành lệnh chờ và khớp theo nến 1H (chỉ nến sau lúc đặt, gap khớp ở giá mở) — KHÔNG đặt lệnh thật. Bấm từng tác tử để đọc nhận định. Không backtest được trung thực (LLM đã biết giá quá khứ) → chỉ chấm forward · không phải khuyến nghị.</p>
   </section>
 
   <div class="row3">
@@ -831,7 +831,7 @@ function renderTauric(){
       `${x&&x.lastOk?` <span style="color:${txCol(x.lastOk.signal)}">${escHtml(x.lastOk.signal)}</span>`:""}</button>`; }).join("");
   $("txTabs").querySelectorAll(".tx-tab").forEach(b=>b.onclick=()=>{ tx.acct=b.dataset.a; try{ localStorage.setItem("dash-tx-acct",tx.acct); }catch(e){} renderTauric(); });
   $("txKicker").textContent=A.kicker+(txIsPerp()&&ta.perp?` · ${ta.perp.leverage}×`:"");
-  $("txSub").textContent=`VỐN $${fp(ta.startCapital)} · TỪ ${String(ta.startedAt).slice(0,10)} · ${ta.runs} LẦN CHẠY`+(ta.errors?` · ${ta.errors} LỖI`:"")+(d&&d.deepModel?` · ${d.deepModel.toUpperCase()} / ${String(d.quickModel||"").toUpperCase()}`:"");
+  $("txSub").textContent=`VỐN $${fp(ta.startCapital)} · TỪ ${String(ta.startedAt).slice(0,10)} · ${ta.runs} LẦN CHẠY`+(ta.errors?` · ${ta.errors} LỖI`:"")+(d&&d.deepModel?` · ${txModel(d.deepModel)} / ${txModel(d.quickModel)}`:"");
   $("txPerpBox").style.display=txIsPerp()?"":"none";
   $("txGrid2").classList.toggle("no-perp",!txIsPerp());
   txStats(); txWallet(); txWire(); txExec(); txPerp(); txFunnel(); txTiles(); txMarquee(); txShell(err); txHedge();
@@ -854,6 +854,12 @@ function txExposure(){
 }
 function renderTauricLive(price){ if(!tx.data) return; tx.livePrice=price; txStats(); txWallet(); txPerp(); txTiles(); txMarquee(); txFunnel(); if(txIsPerp()) txHedgeStats(); }
 function txPerpEq(){ return txEquity(); }
+// "0.0335 BTC (2,527 USDT)" — quy đổi theo giá sàn truyền vào: giá khớp (lệnh), giá kích hoạt (lệnh chờ), giá live (vị thế)
+const txBtc = (q,px,d=4) => `${(+q||0).toFixed(d)} BTC`+(px&&+q?` (${fmt(Math.abs(q)*px)} USDT)`:"");
+// tên model hiển thị không kèm tên nhà cung cấp: "claude-opus-5-5" → "OPUS-5-5"
+// giá live; trước khi có giá live thì dùng giá của lần chạy gần nhất
+const txLivePx = () => tx.livePrice || (tx.data && (tx.data.lastOk||tx.data.last||{}).price) || 0;
+const txModel = m => String(m||"").replace(/^claude-/i,"").toUpperCase();
 function txPerp(){
   const p=tx.data.perp, box=$("txPerp"); if(!box) return;
   if(!txIsPerp()||!p){ $("txPerpMeta").textContent=""; box.innerHTML=""; return; }
@@ -864,7 +870,7 @@ function txPerp(){
   box.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="tx-side" style="--c:${txSideCol(p.side)}">${p.side}</span>`+
     `<span class="tx-eq ${up?'up':'dn'}" style="font-size:24px">${txSgn(net)}</span></div>`+
     `<div class="tx-kv"><div><i>EQUITY · MTM</i><b>$${fp(Math.round(eq))}</b></div><div><i>uPnL</i><b style="color:${upnl>=0?'#3dff8f':'#ff4d6d'}">${txUsd(upnl)}</b></div>`+
-    `<div><i>KÍCH THƯỚC</i><b>${(+p.qty||0).toFixed(4)} BTC</b></div><div><i>NOTIONAL</i><b>$${fp(Math.round(Math.abs(p.qty||0)*px))}</b></div>`+
+    `<div><i>KÍCH THƯỚC</i><b>${txBtc(p.qty,px)}</b></div><div><i>NOTIONAL</i><b>$${fp(Math.round(Math.abs(p.qty||0)*px))}</b></div>`+
     `<div><i>ENTRY</i><b>${p.entry?"$"+fp(Math.round(p.entry)):"—"}</b></div><div><i>THANH LÝ</i><b style="color:#ffc23d">${p.liq&&p.liq>1000?"$"+fp(Math.round(p.liq)):"xa / —"}</b></div>`+
     `<div><i>FUNDING (+ nhận / − trả)</i><b>${txUsd(-p.funding)}</b></div><div><i>PHÍ · THANH LÝ</i><b>$${fp(Math.round(p.fees))} · ${p.liquidations}</b></div></div>`+
     (mtf.length?`<div class="tx-mtf">`+mtf.map(m=>{ const c={up:"#3dff8f",down:"#ff4d6d"}[m.trend]||"#ffc23d";
@@ -872,7 +878,7 @@ function txPerp(){
     (p.lastError?`<div class="tx-empty" style="color:#ff4d6d">⚠️ ${escHtml(p.lastError)}</div>`:"")+
     txOrders(p,px)+
     `<div style="margin-top:8px">`+(p.trades||[]).slice(0,5).map(t=>{ const k=TX_ORD[String(t.kind||"").toLowerCase()];
-      return `<div class="tx-ptr"><span class="tx-dim">${escHtml(txIso(t.at))}</span><span style="color:${t.kind==="LIQUIDATION"?"#ff4d6d":t.side==="BUY"?"#3dff8f":"#ff4d6d"}">${t.kind==="LIQUIDATION"?"LIQ":k?k.tag:t.side} ${t.leg?escHtml(t.leg)+" ":""}${(+t.qty).toFixed(4)}</span><span>$${fp(Math.round(t.price))}</span><span class="tx-dim">${t.realized?txUsd(t.realized):"—"}</span></div>`; }).join("")+`</div>`;
+      return `<div class="tx-ptr"><span class="tx-dim">${escHtml(txIso(t.at))}</span><span style="color:${t.kind==="LIQUIDATION"?"#ff4d6d":t.side==="BUY"?"#3dff8f":"#ff4d6d"}">${t.kind==="LIQUIDATION"?"LIQ":k?k.tag:t.side} ${t.leg?escHtml(t.leg)+" ":""}${txBtc(t.qty,t.price)}</span><span>$${fp(Math.round(t.price))}</span><span class="tx-dim">${t.realized?txUsd(t.realized):"—"}</span></div>`; }).join("")+`</div>`;
 }
 
 // Lệnh chờ PM (tauric/orders.py): stop / chốt lời / huỷ kịch bản / vào thêm — khớp theo nến 1H ở lần chạy sau
@@ -880,7 +886,7 @@ const TX_ORD = { stop_loss:{tag:"STOP",vn:"Cắt lỗ",c:"#ff4d6d"}, take_profit
   invalidation:{tag:"HUỶ KB",vn:"Huỷ kịch bản",c:"#ffc23d"}, add:{tag:"ADD",vn:"Vào thêm",c:"#3de1ff"} };
 function txOrdTxt(o){
   const leg=o.leg==="long"?"chân long":o.leg==="short"?"chân short":"cả 2 chân";
-  const act={reduce_leg:`giảm ${leg} ${(+o.qty).toFixed(4)} BTC`,close_leg:`đóng ${leg}`,flatten:"đóng cả 2 chân",add_to_leg:`thêm ${(+o.qty).toFixed(4)} BTC vào ${leg}`}[o.action]||o.action;
+  const act={reduce_leg:`giảm ${leg} ${txBtc(o.qty,o.price)}`,close_leg:`đóng ${leg}`,flatten:"đóng cả 2 chân",add_to_leg:`thêm ${txBtc(o.qty,o.price)} vào ${leg}`}[o.action]||o.action;
   const cond=o.trigger==="daily_close"?`nến ngày đóng ${o.direction==="above"?"trên":"dưới"}`:`giá ${o.direction==="above"?"≥":"≤"}`;
   return `${act} khi ${cond}`;
 }
@@ -915,12 +921,12 @@ function txWallet(){
     `<div><i>NET</i><b style="color:${up?'#3dff8f':'#ff4d6d'}">${txSgn(txPct(eq,ta.startCapital))}</b></div>`+
     `<div><i>GIỮ BTC</i><b>${txSgn(txPct(hold,ta.startCapital))}</b></div>`+
     `<div><i>HỘI ĐỒNG (RISK)</i><b>${ta.council!=null?txSgn(txPct(ta.council,ta.startCapital)):"—"}</b></div>`+
-    (perp?`<div><i>VÍ KÝ QUỸ</i><b>$${fp(Math.round(ta.cash))}</b></div><div><i>VỊ THẾ BTC</i><b style="color:${txSideCol(ta.perp&&ta.perp.side)}">${(+ta.qty||0).toFixed(5)}</b></div>`
-      :`<div><i>TIỀN MẶT</i><b>$${fp(Math.round(ta.cash))}</b></div><div><i>BTC</i><b>${(+ta.qty||0).toFixed(5)}</b></div>`)+`</div>`;
+    (perp?`<div><i>VÍ KÝ QUỸ</i><b>$${fp(Math.round(ta.cash))}</b></div><div><i>VỊ THẾ BTC</i><b style="color:${txSideCol(ta.perp&&ta.perp.side)}">${txBtc(ta.qty,txLivePx(),5)}</b></div>`
+      :`<div><i>TIỀN MẶT</i><b>$${fp(Math.round(ta.cash))}</b></div><div><i>BTC</i><b>${txBtc(ta.qty,txLivePx(),5)}</b></div>`)+`</div>`;
 }
 
 // Lệnh: spot {side, qty, usd} · perp {side, qty(BTC), price, realized}
-const txOrderTxt = o => !o ? "" : o.usd!=null ? `${o.side} $${fp(Math.round(o.usd))}` : `${o.side} ${(+o.qty).toFixed(4)} BTC`;
+const txOrderTxt = o => !o ? "" : o.usd!=null ? `${o.side} ${(+o.qty).toFixed(4)} BTC (${fmt(o.usd)} USDT)` : `${o.side} ${txBtc(o.qty,o.price)}`;
 function txWire(){
   const ta=tx.data, rows=(ta.recent||[]).slice(0,40);
   if(!rows.length){ $("txWire").innerHTML=`<span class="ts">chưa có lần chạy nào</span>`; return; }
@@ -1074,7 +1080,7 @@ function txHedgeStats(){
     `<path d="M10 64 A50 50 0 0 1 110 64" fill="none" stroke="#ffc23d" stroke-width="10" stroke-dasharray="${(157*hr).toFixed(1)} 200"/></svg>`+
     `<b>${(hr*100).toFixed(1)}%</b><i>TỈ LỆ PHÒNG HỘ HIỆN TẠI</i></div>`+
     `<div class="tx-kv">`+
-    `<div><i>CHÂN LONG</i><b style="color:#3dff8f">${(+L.qty||0).toFixed(4)} BTC</b></div><div><i>CHÂN SHORT</i><b style="color:#ff4d6d">${(+S.qty||0).toFixed(4)} BTC</b></div>`+
+    `<div><i>CHÂN LONG</i><b style="color:#3dff8f">${txBtc(L.qty,px)}</b></div><div><i>CHÂN SHORT</i><b style="color:#ff4d6d">${txBtc(S.qty,px)}</b></div>`+
     `<div><i>GIÁ VÀO LONG</i><b>${L.entry?"$"+fp(Math.round(L.entry)):"—"}</b></div><div><i>GIÁ VÀO SHORT</i><b>${S.entry?"$"+fp(Math.round(S.entry)):"—"}</b></div>`+
     `<div><i>uPnL LONG</i><b style="color:${ul>=0?'#3dff8f':'#ff4d6d'}">${txUsd(ul)}</b></div><div><i>uPnL SHORT</i><b style="color:${us>=0?'#3dff8f':'#ff4d6d'}">${txUsd(us)}</b></div>`+
     `<div><i>% LẦN CHẠY GIỮ 2 CHÂN</i><b style="color:#ffc23d">${(+p.bothShare||0).toFixed(1)}%</b></div><div><i>LÃI/LỖ ĐÃ CHỐT</i><b>${txUsd(p.realized||0)}</b></div></div>`+
