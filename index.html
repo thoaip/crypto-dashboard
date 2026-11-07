@@ -211,6 +211,98 @@
   .tx-card .sm.empty{color:var(--tx-dim);font-style:italic}
   .tx-card .ft{font-size:9px;color:var(--tx-dim);margin-top:auto;display:flex;justify-content:space-between;gap:6px}
   .tx-card .new{color:var(--tx-neon);font-weight:800}
+  /* Chibi 3D — avatar động 11 tác tử */
+  .cb{display:block;overflow:visible;transition:transform .35s cubic-bezier(.2,1.4,.4,1);filter:drop-shadow(0 3px 4px rgba(0,0,0,.45))}
+  .cb .cb-bob{animation:cbBob 2.6s ease-in-out infinite var(--d,0s)}
+  .cb .cb-sh{animation:cbSh 2.6s ease-in-out infinite var(--d,0s);transform-origin:32px 69px}
+  .cb .cb-eyes{animation:cbBlink 4.4s infinite var(--d,0s);transform-origin:32px 34px}
+  .cb .cb-prop{animation:cbSwing 2.6s ease-in-out infinite var(--d,0s);transform-box:fill-box;transform-origin:50% 100%}
+  .cb .cb-float{animation:cbFloat 1.8s ease-in-out infinite var(--d,0s);transform-box:fill-box;transform-origin:center}
+  .cb .cb-flame{animation:cbFlame .55s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
+  @keyframes cbBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.6px)}}
+  @keyframes cbSh{0%,100%{transform:scaleX(1);opacity:.45}50%{transform:scaleX(.8);opacity:.28}}
+  @keyframes cbBlink{0%,91%,97%,100%{transform:scaleY(1)}94%{transform:scaleY(.08)}}
+  @keyframes cbSwing{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+  @keyframes cbFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.15)}}
+  @keyframes cbFlame{from{transform:scale(1,1) skewX(-3deg)}to{transform:scale(.92,1.12) skewX(3deg)}}
+  .tx-ava{flex:0 0 auto;width:40px;height:45px;perspective:220px;margin:-2px 2px -4px -2px}
+  .tx-card .hd .nm{flex:1;min-width:0}
+  .tx-card:hover .cb,.tx-card:focus-visible .cb{transform:rotateY(22deg) scale(1.1)}
+  .tx-card.sel .cb .cb-bob{animation-duration:1.1s}
+  .tx-dava{float:left;width:66px;height:74px;margin:0 12px 4px 0;perspective:260px}
+  .tx-dava .cb{transform:rotateY(-14deg)}
+  @media (prefers-reduced-motion:reduce){.cb *{animation:none!important}.cb{transition:none}}
+
+  /* Hướng dẫn vào lệnh Hedge theo PM trên từng sàn */
+  .tx-guide .gx-warn{margin:8px 0 0;padding:7px 10px;border-radius:7px;border:1px solid rgba(255,194,61,.45);background:rgba(255,194,61,.07);color:#ffe2a0;font-size:10.5px;line-height:1.5}
+  .gx-risk{font-size:10.5px;line-height:1.55;color:#ffd6dc;background:rgba(255,77,109,.07);border:1px solid rgba(255,77,109,.35);border-radius:8px;padding:8px 11px;margin-bottom:10px}
+  .gx-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-bottom:10px}
+  .gx-exs{display:flex;gap:6px}
+  .gx-ex{all:unset;cursor:pointer;font-size:11.5px;font-weight:800;letter-spacing:.4px;padding:7px 14px;border-radius:7px;border:1px solid var(--tx-line2);color:#cfe1ff;transition:.15s}
+  .gx-ex:hover,.gx-ex:focus-visible{border-color:var(--a)}
+  .gx-ex.on{background:var(--a);color:#111;border-color:var(--a);box-shadow:0 0 18px -4px var(--a)}
+  .gx-in{display:flex;flex-direction:column;gap:3px;font-size:9.5px;letter-spacing:.8px;color:var(--tx-dim)}
+  .gx-in input,.gx-in select{all:unset;box-sizing:border-box;width:120px;padding:6px 9px;border-radius:6px;border:1px solid var(--tx-line2);background:rgba(4,7,12,.8);color:#fff;font:600 12px ui-monospace,Menlo,monospace}
+  .gx-in input:focus-visible,.gx-in select:focus-visible{border-color:var(--tx-neon)}
+  .gx-sum{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:10px}
+  .gx-sum>div{background:rgba(7,12,20,.85);border:1px solid var(--tx-line2);border-radius:7px;padding:7px 9px;min-width:0}
+  .gx-sum i{display:block;font-style:normal;font-size:9px;letter-spacing:.8px;color:var(--tx-dim)}
+  .gx-sum b{display:block;font-size:13px;color:#fff;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .gx-sum em{font-style:normal;font-size:10px;color:var(--tx-dim)}
+  .gx-sum .gx-warn{grid-column:1/-1;margin:0}
+  .gx-wrap{display:grid;grid-template-columns:230px 1fr;gap:12px}
+  .gx-steps{display:flex;flex-direction:column;gap:4px}
+  .gx-st{all:unset;cursor:pointer;display:flex;gap:8px;align-items:center;font-size:10.5px;color:#9fb6d6;padding:6px 8px;border-radius:6px;border:1px solid transparent;line-height:1.3}
+  .gx-st em{flex:0 0 20px;height:20px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:10px;border:1px solid var(--tx-line2);color:#cfe1ff}
+  .gx-st:hover,.gx-st:focus-visible{border-color:var(--tx-line2);color:#fff}
+  .gx-st.on{border-color:var(--a);color:#fff;background:rgba(255,255,255,.03)}
+  .gx-st.on em{background:var(--a);border-color:var(--a);color:#111}
+  .gx-view{display:grid;grid-template-columns:1fr 300px;gap:14px;align-items:start;min-width:0}
+  .gx-txt{min-width:0}
+  .gx-n{font-size:9.5px;letter-spacing:1.4px;font-weight:800;color:var(--a)}
+  .gx-txt h4{margin:3px 0 6px;font-size:15px;color:#fff}
+  .gx-txt p{margin:0;font-size:11.5px;line-height:1.65;color:#cfe1ff}
+  .gx-nav{display:flex;gap:8px;margin-top:12px}
+  .gx-nav button{all:unset;cursor:pointer;font-size:11px;padding:6px 12px;border-radius:6px;border:1px solid var(--tx-line2);color:#cfe1ff}
+  .gx-nav button:hover:not(:disabled),.gx-nav button:focus-visible{border-color:var(--tx-neon);color:#fff}
+  .gx-nav button:disabled{opacity:.35;cursor:default}
+  /* khung lệnh mô phỏng */
+  .gx-mock{background:var(--bg);border:1px solid var(--ln);border-radius:10px;padding:10px;color:var(--t);font:12px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;
+    box-shadow:0 14px 30px -12px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.02) inset;transform:perspective(900px) rotateY(-4deg);transform-origin:left center}
+  .gx-top{display:flex;gap:8px;align-items:center;font-size:11px;padding-bottom:8px;border-bottom:1px solid var(--ln);margin-bottom:9px}
+  .gx-top b{color:var(--a);font-size:12.5px;letter-spacing:.3px}
+  .gx-top .gx-px{margin-left:auto;color:var(--buy);font-variant-numeric:tabular-nums}
+  .gx-tabs{display:flex;gap:16px;font-size:12px;color:var(--dm);margin-bottom:8px}
+  .gx-tabs span.on{color:var(--t);font-weight:700}
+  .gx-row{display:flex;gap:6px;margin-bottom:7px}
+  .gx-chip{font-size:11px;padding:4px 10px;border-radius:5px;background:var(--pn);color:var(--dm)}
+  .gx-chip.on{color:var(--t);font-weight:700}
+  .gx-f{display:flex;justify-content:space-between;background:var(--pn);border:1px solid var(--ln);border-radius:6px;padding:7px 9px;margin-bottom:6px}
+  .gx-f i{font-style:normal;color:var(--dm);font-size:11px}
+  .gx-f b{font-variant-numeric:tabular-nums}
+  .gx-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+  .gx-b{text-align:center;padding:8px 4px;border-radius:6px;font-weight:700;font-size:12px;color:#fff;opacity:.45}
+  .gx-b.buy{background:var(--buy)} .gx-b.sell{background:var(--sell)}
+  .gx-b.gx-hl{opacity:1}
+  .gx-crumbs{display:flex;flex-wrap:wrap;gap:4px;align-items:center;font-size:11.5px;padding:6px 0}
+  .gx-crumbs span{padding:4px 8px;border-radius:5px;background:var(--pn)}
+  .gx-crumbs em{font-style:normal;color:var(--dm)}
+  .gx-dlg{background:var(--pn);border:1px solid var(--ln);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:7px}
+  .gx-dlg label{display:flex;gap:8px;align-items:center;padding:7px 9px;border-radius:6px;border:1px solid var(--ln);color:var(--dm)}
+  .gx-dlg label i{width:12px;height:12px;border-radius:50%;border:2px solid var(--dm)}
+  .gx-dlg label.sel{color:var(--t)} .gx-dlg label.sel i{border-color:var(--a);background:radial-gradient(var(--a) 45%,transparent 50%)}
+  .gx-ok{align-self:flex-end;background:var(--a);color:#111;font-weight:700;padding:5px 16px;border-radius:5px;font-size:11.5px}
+  .gx-pos{font-size:11px}
+  .gx-pos>div{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:6px;padding:6px 7px;border-radius:5px;margin-bottom:4px}
+  .gx-pos .h{color:var(--dm)}
+  .gx-pos em{font-style:normal;font-size:9px;font-weight:800;color:#fff;border-radius:3px;padding:0 4px;margin-right:5px}
+  .gx-empty{color:var(--dm);padding:14px 0;text-align:center}
+  .gx-cap{margin-top:8px;font-size:9.5px;color:var(--dm);text-align:right}
+  .gx-hl{position:relative;outline:2px solid var(--a);outline-offset:2px;border-radius:6px;animation:gxPulse 1.6s ease-in-out infinite}
+  @keyframes gxPulse{0%,100%{outline-color:var(--a);box-shadow:0 0 0 0 transparent}50%{outline-color:transparent;box-shadow:0 0 14px 2px color-mix(in srgb,var(--a) 45%,transparent)}}
+  @media (prefers-reduced-motion:reduce){.gx-hl{animation:none}.gx-mock{transform:none}}
+  @media(max-width:1100px){.gx-view{grid-template-columns:1fr}.gx-mock{transform:none;max-width:340px}}
+  @media(max-width:760px){.gx-wrap{grid-template-columns:1fr}.gx-steps{flex-direction:row;overflow-x:auto;padding-bottom:4px}.gx-st{flex:0 0 auto;white-space:nowrap}.gx-sum{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .tx-detail ul{margin:6px 0 0;padding-left:18px} .tx-detail li{margin:2px 0}
   .tx-detail details{margin-top:6px;color:var(--tx-dim)} .tx-detail summary{cursor:pointer}
   @media(max-width:860px){.tx-shell{height:380px}.tx-core .r{font-size:24px}}
@@ -409,6 +501,7 @@
         <div class="tx-stage" id="txStage"></div>
         <div class="tx-core" id="txCore"></div>
       </div>
+      <svg id="txChibiDefs" width="0" height="0" style="position:absolute" aria-hidden="true"><defs></defs></svg>
       <div class="tx-chips" id="txIn" aria-label="Chọn tác tử để đọc nhận định"></div>
       <div class="tx-detail" id="txDetail" aria-live="polite"></div>
     </div>
@@ -419,6 +512,19 @@
         <div class="tx-planew"><canvas id="txPlane" class="tx-cv" style="height:220px" role="img" aria-label="Kích thước hai chân qua các lần chạy"></canvas><div id="txPlaneS"></div></div></div>
       <div class="tx-p tx-rainp"><div class="tx-h">FILL RAIN · 2 CHÂN THEO THỜI GIAN <span class="tx-dim">xanh = long · đỏ = short · vàng = ròng</span></div>
         <canvas id="txRain" class="tx-cv" style="height:130px" role="img" aria-label="Hai chân và vị thế ròng theo từng lần chạy"></canvas></div>
+    </div>
+    <div class="tx-p tx-guide" id="txGuide" style="display:none">
+      <div class="tx-h">HƯỚNG DẪN VÀO LỆNH HEDGE THEO PORTFOLIO MANAGER · BINANCE / OKX / BYBIT <span class="tx-dim">quy đổi sổ paper sang vốn của bạn</span></div>
+      <div class="gx-risk">⚠️ <b>Đây là hướng dẫn thao tác, không phải khuyến nghị đầu tư.</b> Sổ PM là paper mới chạy vài ngày, <b>chưa chứng minh có lợi thế</b>.
+        Trên sàn thật: phí tính trên <b>cả hai chân</b> (paper chỉ tính phần ròng), sàn có thể giữ ký quỹ cho cả hai chân, funding tính trên từng chân.
+        Hãy thử trước bằng <b id="txGxDemo">tài khoản demo</b> của sàn và chỉ dùng số tiền chấp nhận mất. Không nhập API key / mật khẩu vào trang này — trang chỉ tính toán.</div>
+      <div class="gx-bar">
+        <div class="gx-exs" id="txGxEx" role="group" aria-label="Chọn sàn"></div>
+        <label class="gx-in">VỐN CỦA BẠN (USDT)<input id="txGxCap" type="number" min="10" step="10" inputmode="decimal"></label>
+        <label class="gx-in">ĐÒN BẨY<select id="txGxLev"><option value="1">1×</option><option value="2">2×</option><option value="3">3×</option><option value="5">5×</option></select></label>
+      </div>
+      <div class="gx-sum" id="txGxSum"></div>
+      <div class="gx-wrap"><div class="gx-steps" id="txGxSteps"></div><div class="gx-view" id="txGxView"></div></div>
     </div>
     <div class="tx-grid2" id="txGrid2">
       <div class="tx-p"><div class="tx-h">EXECUTION TAPE · XẾP HẠNG &amp; LỆNH</div><div class="tx-tapewrap" id="txExec"></div></div>
@@ -801,6 +907,8 @@ const txPct = (v,base) => base ? (v/base-1)*100 : 0;
 const txSgn = v => `${v>=0?"+":""}${v.toFixed(2)}%`;
 const txUsd = v => (v<0?"−":"")+"$"+fp(Math.abs(Math.round(v*100)/100));
 const txIso = s => String(s||"").replace("T"," ").slice(5,16);
+// giờ Việt Nam "07/11 13:11" từ ISO UTC
+const txVn = s => { const t=Date.parse(s); if(!t) return ""; const d=new Date(t+7*3600e3).toISOString(); return `${d.slice(8,10)}/${d.slice(5,7)} ${d.slice(11,16)}`; };
 
 function txCanvas(cv){
   const dpr=Math.min(2,window.devicePixelRatio||1), w=cv.clientWidth, h=cv.clientHeight;
@@ -834,7 +942,7 @@ function renderTauric(){
   $("txSub").textContent=`VỐN $${fp(ta.startCapital)} · TỪ ${String(ta.startedAt).slice(0,10)} · ${ta.runs} LẦN CHẠY`+(ta.errors?` · ${ta.errors} LỖI`:"")+(d&&d.deepModel?` · ${txModel(d.deepModel)} / ${txModel(d.quickModel)}`:"");
   $("txPerpBox").style.display=txIsPerp()?"":"none";
   $("txGrid2").classList.toggle("no-perp",!txIsPerp());
-  txStats(); txWallet(); txWire(); txExec(); txPerp(); txFunnel(); txTiles(); txMarquee(); txShell(err); txHedge();
+  txStats(); txWallet(); txWire(); txExec(); txPerp(); txFunnel(); txTiles(); txMarquee(); txShell(err); txHedge(); txGuide();
   requestAnimationFrame(()=>{ txSpot(); txRace(); txLayout(); txFrame(performance.now()); });
   txStartLoop();
 }
@@ -852,7 +960,7 @@ function txExposure(){
   if(ta.qty&&px&&eq) return ta.qty*px/eq;
   const d=ta.lastOk||{}; return txIsPerp()?0:(d.exposureAfter||0);
 }
-function renderTauricLive(price){ if(!tx.data) return; tx.livePrice=price; txStats(); txWallet(); txPerp(); txTiles(); txMarquee(); txFunnel(); if(txIsPerp()) txHedgeStats(); }
+function renderTauricLive(price){ if(!tx.data) return; tx.livePrice=price; txStats(); txWallet(); txPerp(); txTiles(); txMarquee(); txFunnel(); if(txIsPerp()){ txHedgeStats(); if(tx.gPx&&Math.abs(price/tx.gPx-1)>0.002) txGuideRender(); } }
 function txPerpEq(){ return txEquity(); }
 // "0.0335 BTC (2,527 USDT)" — quy đổi theo giá sàn truyền vào: giá khớp (lệnh), giá kích hoạt (lệnh chờ), giá live (vị thế)
 const txBtc = (q,px,d=4) => `${(+q||0).toFixed(d)} BTC`+(px&&+q?` (${fmt(Math.abs(q)*px)} USDT)`:"");
@@ -1137,6 +1245,217 @@ function txRain(){
   ctx.fillText(`+${lev}× LONG`,4,12); ctx.fillText(`−${lev}× SHORT`,4,h-4);
 }
 
+// ── CHIBI 3D: avatar động cho 11 tác tử — SVG thuần (gradient tạo khối), CSS chạy nhún · chớp mắt · đạo cụ.
+// Không tải ảnh ngoài. Bản nhúng trong trang dùng chung <defs> #txChibiDefs; bản vẽ lên canvas tự mang defs.
+const TX_CHIBI = {   // [màu áo, màu tóc, đạo cụ]
+  market:["#1fb8d6","#24374f"], sentiment:["#ff7eb6","#7a3b5c"], news:["#4f8cff","#2a2f45"],
+  bull:["#2bd47a","#3b2a1a"], bear:["#e8505b","#5a3a28"], manager:["#9b7bff","#2b2440"],
+  trader:["#ffc23d","#1f2a3a"], aggressive:["#ff7a3d","#7a1f0f"], conservative:["#4aa8ff","#1d2f4a"],
+  neutral:["#b8c4d6","#3a3f4a"], pm:["#eef2ff","#1c1c28"],
+};
+const txMix = (hex, t) => { // t>0 pha trắng, t<0 pha đen
+  const n=parseInt(hex.slice(1),16), c=[n>>16,(n>>8)&255,n&255].map(v=>Math.round(t>0?v+(255-v)*t:v*(1+t)));
+  return "#"+c.map(v=>v.toString(16).padStart(2,"0")).join("");
+};
+function txChibiDefs(){
+  return `<radialGradient id="cbSkin" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="#fff3ea"/><stop offset=".6" stop-color="#ffd9c2"/><stop offset="1" stop-color="#e6a583"/></radialGradient>`+
+    `<linearGradient id="cbGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2a8"/><stop offset=".5" stop-color="#ffc23d"/><stop offset="1" stop-color="#c9850b"/></linearGradient>`+
+    `<linearGradient id="cbFlame" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff3d2e"/><stop offset=".55" stop-color="#ff9a1f"/><stop offset="1" stop-color="#fff07a"/></linearGradient>`+
+    `<radialGradient id="cbGloss" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>`+
+    Object.entries(TX_CHIBI).map(([k,[c,h]])=>
+      `<linearGradient id="cbB-${k}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${txMix(c,.35)}"/><stop offset=".55" stop-color="${c}"/><stop offset="1" stop-color="${txMix(c,-.35)}"/></linearGradient>`+
+      `<linearGradient id="cbH-${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${txMix(h,.3)}"/><stop offset="1" stop-color="${txMix(h,-.25)}"/></linearGradient>`).join("");
+}
+// Đạo cụ theo vai trò: [vẽ sau đầu (tai/sừng/tai nghe), vẽ trước (kính/vương miện/đồ cầm tay)]
+const TX_PROPS = {
+  market:["",`<g fill="none" stroke="#e8f1ff" stroke-width="1.3"><circle cx="25" cy="34" r="4.8"/><circle cx="39" cy="34" r="4.8"/><path d="M29.8 34h4.4"/></g>`+
+    `<g class="cb-prop"><rect x="44" y="45" width="17" height="13" rx="2" fill="#0b1a2a" stroke="#3de1ff"/><path d="M47 49v5M50 47v7M53 50v4M56 46v6" stroke="#3dff8f" stroke-width="1.6"/><path d="M46.5 55.5l4-4 3 2 5-6" stroke="#ffc23d" fill="none" stroke-width="1"/></g>`],
+  sentiment:["",`<path class="cb-float" d="M50 12c-1.6-2.6-5.6-1.2-4.6 1.8.8 2.2 4.6 4.9 4.6 4.9s3.8-2.7 4.6-4.9c1-3-3-4.4-4.6-1.8z" fill="#ff4f86"/>`+
+    `<path d="M41 18l5-3 1 5zM41 18l-1 5 5-2z" fill="#ff9cc4"/><g class="cb-prop"><rect x="43" y="47" width="17" height="10" rx="5" fill="#fff"/><path d="M47 57l-2 3 5-3" fill="#fff"/><text x="51.5" y="54.5" font-size="7" text-anchor="middle" fill="#ff4f86">♥</text></g>`],
+  news:["",`<ellipse cx="32" cy="15.5" rx="14" ry="4.2" fill="#4f8cff"/><circle cx="32" cy="11.5" r="2.2" fill="#2a5bd1"/>`+
+    `<g class="cb-prop"><rect x="21" y="50" width="22" height="14" rx="1.5" fill="#f4f6fb" stroke="#c9d1e0"/><rect x="23.5" y="52.5" width="7" height="5" fill="#4f8cff"/><path d="M32 53h8.5M32 56h8.5M23.5 60h17" stroke="#8a94a8" stroke-width="1.1"/></g>`],
+  bull:[`<path d="M16 22c-6-1-9-8-7-12 2 5 6 7 10 7z" fill="#f4ead2" stroke="#b9a678"/><path d="M48 22c6-1 9-8 7-12-2 5-6 7-10 7z" fill="#f4ead2" stroke="#b9a678"/>`,
+    `<path d="M21 27.5l6 2M43 27.5l-6 2" stroke="#3b2a1a" stroke-width="1.6" stroke-linecap="round"/><g class="cb-prop"><path d="M53 58V46M48 51l5-6 5 6" stroke="#3dff8f" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`],
+  bear:[`<circle cx="16.5" cy="17" r="6" fill="url(#cbH-bear)"/><circle cx="47.5" cy="17" r="6" fill="url(#cbH-bear)"/><circle cx="16.5" cy="17" r="3" fill="#e9b39a"/><circle cx="47.5" cy="17" r="3" fill="#e9b39a"/>`,
+    `<path d="M21 29.5l6-2M43 29.5l-6-2" stroke="#5a3a28" stroke-width="1.6" stroke-linecap="round"/><g class="cb-prop"><path d="M53 45v12M48 52l5 6 5-6" stroke="#ff4d6d" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`],
+  manager:["",`<path d="M32 49l-3 3.5 3 10 3-10z" fill="#ffc23d"/>`+
+    `<g class="cb-prop"><rect x="44" y="44" width="14" height="18" rx="2" fill="#c08a4a"/><rect x="46" y="47" width="10" height="13" rx="1" fill="#fff"/><rect x="48.5" y="42.5" width="5" height="3" rx="1" fill="#8a8f9c"/><path d="M48 51l1.5 1.5 3-3M48 56h6" stroke="#9b7bff" stroke-width="1.1" fill="none"/></g>`],
+  trader:[`<path d="M13 33a19 19 0 0 1 38 0" stroke="#1d2433" stroke-width="3.2" fill="none"/>`,
+    `<rect x="9.5" y="29" width="6" height="10" rx="3" fill="#1d2433"/><rect x="48.5" y="29" width="6" height="10" rx="3" fill="#1d2433"/><path d="M12.5 38c0 5 4 7 10 7" stroke="#1d2433" stroke-width="1.6" fill="none"/><circle cx="23" cy="45" r="1.8" fill="#ffc23d"/>`+
+    `<g class="cb-prop"><rect x="44" y="47" width="16" height="11" rx="1.5" fill="#0d1622" stroke="#ffc23d"/><text x="52" y="55" font-size="6.5" font-weight="700" text-anchor="middle" fill="#3dff8f">BUY</text></g>`],
+  aggressive:["",`<path class="cb-flame" d="M32 1c5 5 9 9 7 15-1 3-4 5-7 5s-7-2-7-6c0-4 4-6 3-10 2 2 3 3 3 5 1-3 1-6 1-9z" fill="url(#cbFlame)"/>`+
+    `<path d="M21 27.5l6 2.2M43 27.5l-6 2.2" stroke="#7a1f0f" stroke-width="1.7" stroke-linecap="round"/><g class="cb-prop"><path d="M50 62l3-16 5 6 2-8" stroke="#ff7a3d" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`],
+  conservative:["",`<g class="cb-prop"><path d="M5 46l9-3.5 9 3.5v7c0 5.5-4.5 9-9 10.5-4.5-1.5-9-5-9-10.5z" fill="#4aa8ff" stroke="#d8ecff" stroke-width="1.2"/><path d="M9.5 53l3 3 6-6.5" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round"/></g>`],
+  neutral:["",`<g class="cb-prop"><path d="M52 41v17M45 44h14" stroke="#c7d2e4" stroke-width="1.5"/><path d="M45 44l-3 7h6zM59 44l-3 7h6z" fill="#ffc23d" opacity=".9"/><rect x="48.5" y="57.5" width="7" height="3" rx="1" fill="#c7d2e4"/></g>`],
+  pm:["",`<path d="M20 17l4.5 5 7.5-9 7.5 9 4.5-5-2 10H22z" fill="url(#cbGold)" stroke="#b8860b" stroke-width=".8"/><circle cx="32" cy="16.5" r="1.6" fill="#ff4d6d"/>`+
+    `<g class="cb-prop"><rect x="45" y="49" width="15" height="11" rx="2" fill="#3a2a1a"/><rect x="49.5" y="46.5" width="6" height="3.5" rx="1" fill="none" stroke="#3a2a1a" stroke-width="1.4"/><rect x="45" y="53" width="15" height="1.6" fill="#ffc23d"/></g>`],
+};
+// 1 avatar chibi. standalone=true → SVG độc lập (có xmlns + defs riêng) để vẽ lên canvas.
+function txChibi(k, standalone){
+  const key = TX_CHIBI[k] ? k : "pm", [back, front] = TX_PROPS[key];
+  const grim = key==="bull"||key==="bear"||key==="aggressive";
+  const delay = (Object.keys(TX_CHIBI).indexOf(key) * 0.23).toFixed(2);
+  return `<svg class="cb" viewBox="0 0 64 72" style="--d:-${delay}s"${standalone?` xmlns="http://www.w3.org/2000/svg" width="128" height="144"`:` aria-hidden="true"`}>`+
+    (standalone?`<defs>${txChibiDefs()}</defs>`:"")+
+    `<ellipse class="cb-sh" cx="32" cy="69" rx="14" ry="2.6" fill="#000" opacity=".45"/>`+
+    `<g class="cb-bob">`+
+      `<ellipse cx="17.5" cy="58" rx="4.2" ry="5.8" fill="url(#cbB-${key})"/><ellipse cx="46.5" cy="58" rx="4.2" ry="5.8" fill="url(#cbB-${key})"/>`+
+      `<path d="M18 67c0-12 6-18 14-18s14 6 14 18z" fill="url(#cbB-${key})"/>`+
+      `<path d="M23 52c3-2 6-2.6 9-2.6" stroke="#fff" stroke-opacity=".35" stroke-width="2" fill="none" stroke-linecap="round"/>`+
+      back+
+      `<circle cx="32" cy="32" r="18" fill="url(#cbSkin)"/>`+
+      `<path d="M12.8 34C9.5 5 54.5 5 51.2 34c-1.6-6-5-10-9-11.6.6 2.2.3 4-1 5.3C38 23.4 31 21.8 24 24.3c.8 1.2 1.1 2.6.7 3.9C20.6 25.3 16.2 28.3 12.8 34z" fill="url(#cbH-${key})"/>`+
+      `<ellipse cx="25" cy="19.5" rx="6" ry="2.6" fill="url(#cbGloss)" transform="rotate(-18 25 19.5)"/>`+
+      `<g class="cb-eyes"><ellipse cx="25" cy="34" rx="3.1" ry="${grim?3.3:3.9}" fill="#1a1d2b"/><ellipse cx="39" cy="34" rx="3.1" ry="${grim?3.3:3.9}" fill="#1a1d2b"/>`+
+        `<circle cx="26.1" cy="32.6" r="1.2" fill="#fff"/><circle cx="40.1" cy="32.6" r="1.2" fill="#fff"/></g>`+
+      `<ellipse cx="20.5" cy="39.5" rx="3" ry="1.7" fill="#ff8fa3" opacity=".55"/><ellipse cx="43.5" cy="39.5" rx="3" ry="1.7" fill="#ff8fa3" opacity=".55"/>`+
+      `<path d="${grim?"M29 42.5h6":"M29 41.5q3 2.8 6 0"}" stroke="#7a3b3b" stroke-width="1.4" fill="none" stroke-linecap="round"/>`+
+      front+
+    `</g></svg>`;
+}
+// Ảnh chibi cho canvas Agent Shell (tạo 1 lần, vẽ lại mỗi khung hình)
+const txChibiImg = {};
+function txChibiImage(k){
+  if(!txChibiImg[k]){ const im=new Image(); im.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(txChibi(k,true)); txChibiImg[k]=im; }
+  return txChibiImg[k].complete ? txChibiImg[k] : null;
+}
+
+// ── HƯỚNG DẪN VÀO LỆNH HEDGE THEO PM trên Binance / OKX / Bybit (chỉ tab PERP) ──
+// Quy đổi sổ paper (2 chân theo % vốn) sang vốn + đòn bẩy người xem nhập, làm tròn theo bước khối lượng
+// THẬT của từng sàn (API public 11/2026), rồi dựng từng bước kèm khung lệnh mô phỏng giao diện sàn.
+// Không có logo/thương hiệu — chỉ tên sàn và màu gợi nhớ. Chữ do LLM viết (quote) luôn qua escHtml.
+const TX_EX = {
+  binance:{name:"Binance",acc:"#F0B90B",bg:"#181A20",pn:"#1E2329",ln:"#2B3139",tx:"#EAECEF",dim:"#848E9C",buy:"#2EBD85",sell:"#F6465D",
+    step:0.001,min:0.001,minUsd:50,demo:"Binance Futures Testnet",
+    path:"Futures → USDⓈ-M → BTCUSDT Perpetual",
+    modeAt:"biểu tượng ⚙ (Preferences) góc trên khung đặt lệnh → Position Mode",modeOff:"One-way Mode",modeOn:"Hedge Mode",
+    levAt:"2 nút “Cross” và “20x” ngay trên khung đặt lệnh",
+    openL:"Buy/Long",openS:"Sell/Short",closeL:"Close Long",closeS:"Close Short",cond:"Stop Market",tp:"Take Profit Market",
+    unit:"Ô Size: bấm đơn vị để chọn BTC. Tối thiểu 0.001 BTC, lệnh MỞ phải ≥ 50 USDT.",trig:"Mark Price"},
+  okx:{name:"OKX",acc:"#FFFFFF",bg:"#0B0B0B",pn:"#141414",ln:"#2A2A2A",tx:"#F5F5F5",dim:"#8A8A8A",buy:"#25A750",sell:"#E5414B",
+    step:0.0001,min:0.0001,minUsd:0,demo:"OKX Demo trading",
+    path:"Giao dịch → Hợp đồng (Futures) → BTCUSDT Perpetual",
+    modeAt:"biểu tượng ⚙ (Cài đặt) trên khung giao dịch → Position mode",modeOff:"Buy/sell mode",modeOn:"Long/short mode",
+    levAt:"ô chế độ ký quỹ (Cross) và ô đòn bẩy phía trên khung đặt lệnh — ở Long/short mode chỉnh đòn bẩy riêng cho Long và Short",
+    openL:"Open long",openS:"Open short",closeL:"Close long",closeS:"Close short",cond:"Trigger",tp:"TP/SL",
+    unit:"OKX tính theo HỢP ĐỒNG: 1 hợp đồng = 0.01 BTC (đổi đơn vị sang BTC được). Bước nhỏ nhất 0.01 hợp đồng = 0.0001 BTC.",trig:"Mark price"},
+  bybit:{name:"Bybit",acc:"#F7A600",bg:"#17181E",pn:"#1D1E25",ln:"#2C2D35",tx:"#EDEEF2",dim:"#81858C",buy:"#20B26C",sell:"#EF454A",
+    step:0.001,min:0.001,minUsd:5,demo:"Bybit Demo Trading",
+    path:"Derivatives → USDT Perpetual → BTCUSDT",
+    modeAt:"biểu tượng ⚙ / mục “Position Mode” trên khung đặt lệnh",modeOff:"One-Way Mode",modeOn:"Hedge Mode",
+    levAt:"ô “Cross” và ô đòn bẩy phía trên khung đặt lệnh (Hedge Mode có đòn bẩy riêng Long/Short)",
+    openL:"Open Long",openS:"Open Short",closeL:"Close Long",closeS:"Close Short",cond:"Conditional",tp:"TP/SL",
+    unit:"Ô Qty chọn đơn vị BTC. Tối thiểu 0.001 BTC, bước 0.001 BTC.",trig:"Mark Price"},
+};
+const txLs = (k,v) => { try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } };
+Object.assign(tx, { gEx: txLs("dash-gx-ex")||"binance", gStep: 0, gCap: +(txLs("dash-gx-cap")||1000), gLev: +(txLs("dash-gx-lev")||1), gPx: 0 });
+
+// Sổ paper → kế hoạch cho vốn người xem: tỉ lệ mỗi chân theo vốn paper, nhân lại theo vốn × đòn bẩy người xem
+function txGuidePlan(){
+  const ta=tx.data, p=ta.perp, ex=TX_EX[tx.gEx], px=txLivePx();
+  if(!p||!px) return null;
+  const eq=txEquity()||p.startCapital, k=(tx.gCap*tx.gLev)/(eq*(p.leverage||1));   // BTC paper → BTC người xem
+  const rnd=q=>Math.floor(q/ex.step+1e-9)*ex.step;
+  const leg=q=>{ const raw=q*k, r=rnd(raw); return {raw, qty:r, usd:r*px, tooSmall:raw>0&&(r<ex.min||(ex.minUsd&&r*px<ex.minUsd))}; };
+  const L=leg(p.legs.long.qty), S=leg(p.legs.short.qty), gross=(L.qty+S.qty)*px;
+  const orders=(p.orders||[]).map(o=>{ const base=o.action==="close_leg"?p.legs[o.leg].qty:o.action==="flatten"?0:o.qty;
+    return {...o, uQty:o.action==="flatten"?0:rnd(base*k)}; });
+  return { px, L, S, gross, margin:gross/tx.gLev, fee:gross*0.0005, orders, rating:(ta.lastOk||{}).signal||"—",
+    at:(ta.lastOk||{}).tradeDate||"", net:(L.qty-S.qty) };
+}
+
+const txQ = q => (+q).toFixed(TX_EX[tx.gEx].step<0.001?4:3);   // đúng số lẻ theo bước khối lượng của sàn
+function txGuideSteps(ex, P){
+  const s=[];
+  s.push({t:"Mở đúng thị trường", d:`Đăng nhập ${ex.name} → <b>${ex.path}</b>. Kiểm tra đúng mã <b>BTCUSDT</b> hợp đồng vĩnh cửu (Perpetual) ký quỹ USDT.`, m:"market"});
+  s.push({t:"Bật chế độ Hedge (2 chân)", d:`Vào ${ex.modeAt} → chọn <b>${ex.modeOn}</b> (thay vì ${ex.modeOff}) → xác nhận. `+
+    `Chỉ đổi được khi KHÔNG còn vị thế/lệnh BTCUSDT đang mở. Ở chế độ này sàn giữ riêng 1 vị thế LONG và 1 vị thế SHORT cùng lúc — đúng như sổ của PM.`, m:"mode"});
+  s.push({t:"Ký quỹ & đòn bẩy", d:`Bấm ${ex.levAt}. Chọn <b>Cross</b> (2 chân dùng chung ký quỹ) và đòn bẩy <b>${tx.gLev}×</b> như ô máy tính phía trên. `+
+    `Ký quỹ cần khoảng <b>${fmt(P.margin)} USDT</b> (sàn có thể giữ ký quỹ cho CẢ HAI chân).`, m:"lev"});
+  s.push({t:`Mở chân LONG · ${txQ(P.L.qty)} BTC`, d:P.L.qty>0?`Tab <b>Open</b> → loại lệnh <b>Market</b> (hoặc Limit gần giá) → ô khối lượng nhập <b>${txQ(P.L.qty)} BTC</b> (≈ ${fmt(P.L.usd)} USDT) → bấm <b style="color:${ex.buy}">${ex.openL}</b>. ${ex.unit}`
+      :`PM đang để chân LONG = 0 → <b>bỏ qua bước này</b>.`, m:"openL"});
+  s.push({t:`Mở chân SHORT · ${txQ(P.S.qty)} BTC`, d:P.S.qty>0?`Vẫn tab <b>Open</b> → ô khối lượng nhập <b>${txQ(P.S.qty)} BTC</b> (≈ ${fmt(P.S.usd)} USDT) → bấm <b style="color:${ex.sell}">${ex.openS}</b>. `+
+      `Hai chân bù trừ nhau: lãi/lỗ thực = vị thế ròng <b>${P.net>=0?"LONG":"SHORT"} ${txQ(Math.abs(P.net))} BTC</b>.`
+      :`PM đang để chân SHORT = 0 → <b>bỏ qua bước này</b>.`, m:"openS"});
+  P.orders.forEach((o,i)=>{ const dc=o.trigger==="daily_close", leg=o.leg==="long"?"LONG":"SHORT";
+    const btn=o.action==="add_to_leg"?(o.leg==="long"?ex.openL:ex.openS):(o.leg==="long"?ex.closeL:ex.closeS);
+    s.push({t:`Lệnh chờ #${i+1} · ${(TX_ORD[o.type]||{}).vn||o.type} ${o.price.toLocaleString("en-US")}`, o,
+      d:`PM: <i>${(TX_ORD[o.type]||{}).vn||o.type} — ${o.action==="flatten"?"đóng cả 2 chân":o.action==="add_to_leg"?`thêm vào chân ${leg}`:o.action==="close_leg"?`đóng chân ${leg}`:`giảm chân ${leg}`} khi `+
+        `${dc?`nến ngày đóng ${o.direction==="above"?"trên":"dưới"}`:`giá ${o.direction==="above"?"≥":"≤"}`} ${o.price.toLocaleString("en-US")}</i>.<br>`+
+        (o.action==="add_to_leg"?`Tab <b>Open</b>`:`Tab <b>Close</b> (chỉ giảm vị thế, không mở mới)`)+` → loại lệnh <b>${ex.cond}</b> → giá kích hoạt <b>${o.price.toLocaleString("en-US")}</b> theo ${ex.trig} → `+
+        `khối lượng <b>${o.action==="flatten"?"toàn bộ 2 chân":txQ(o.uQty)+" BTC"}</b> → bấm <b>${btn}</b>.`+
+        (dc?`<div class="gx-warn">⚠️ PM dùng điều kiện <b>NẾN NGÀY ĐÓNG ${o.direction==="above"?"TRÊN":"DƯỚI"} ${o.price.toLocaleString("en-US")}</b> — sàn không có loại lệnh này. `+
+          `<b>Cách A (đúng ý PM):</b> TradingView đặt cảnh báo BTCUSDT.P · khung 1D · Close crossing ${o.direction==="above"?"up":"down"} ${o.price.toLocaleString("en-US")} · <i>Once per bar close</i>; nhận cảnh báo (sau 07:00 giờ VN) thì vào tab Close đóng bằng Market. `+
+          `<b>Cách B (xấp xỉ):</b> đặt lệnh ${ex.cond} như trên — nhạy hơn, râu nến trong ngày cũng kích hoạt dù nến đóng không vượt mức.</div>`:""), m:"cond"}); });
+  if(!P.orders.length) s.push({t:"Lệnh chờ của PM", d:"PM chưa đặt mức stop / chốt lời nào ở lần chạy này — không cần lệnh điều kiện.", m:"none"});
+  s.push({t:"Kiểm tra & theo dõi hằng ngày", d:`Mục <b>Positions</b> phải thấy 2 dòng: <b style="color:${ex.buy}">LONG ${txQ(P.L.qty)}</b> và <b style="color:${ex.sell}">SHORT ${txQ(P.S.qty)}</b> BTCUSDT. `+
+    `Mỗi ngày sau 07:30 giờ VN xem lại dashboard: PM đổi xếp hạng thì chỉnh lại 2 chân (bỏ qua nếu lệch &lt; 2% vốn); <b>huỷ lệnh chờ cũ</b> rồi đặt bộ lệnh mới.`, m:"pos"});
+  return s;
+}
+
+// Khung lệnh mô phỏng giao diện sàn (không phải ảnh chụp) — phần cần bấm có viền nhấp nháy
+function txMock(ex, st, P){
+  const v=`--a:${ex.acc};--bg:${ex.bg};--pn:${ex.pn};--ln:${ex.ln};--t:${ex.tx};--dm:${ex.dim};--buy:${ex.buy};--sell:${ex.sell}`;
+  const head=`<div class="gx-top"><b>${ex.name}</b><span>BTCUSDT Perpetual</span><span class="gx-px">${fmt(P.px,1)}</span></div>`;
+  const tabs=(on)=>`<div class="gx-tabs"><span class="${on==="Open"?"on gx-hl":""}">Open</span><span class="${on==="Close"?"on gx-hl":""}">Close</span></div>`;
+  const field=(lab,val,hl)=>`<div class="gx-f${hl?" gx-hl":""}"><i>${lab}</i><b>${val}</b></div>`;
+  // hl: buy / sell = mở chân (tab Open) · cl / cs = đóng chân long / short (tab Close).
+  // Màu theo chiều lệnh thật: đóng short = MUA (xanh), đóng long = BÁN (đỏ)
+  const btns=(hl)=>{ const close=hl==="cl"||hl==="cs";
+    return `<div class="gx-btns"><span class="gx-b buy${hl==="buy"||hl==="cs"?" gx-hl":""}">${close?ex.closeS:ex.openL}</span>`+
+      `<span class="gx-b sell${hl==="sell"||hl==="cl"?" gx-hl":""}">${close?ex.closeL:ex.openS}</span></div>`; };
+  let body="";
+  if(st.m==="market") body=`<div class="gx-crumbs">${ex.path.split(" → ").map((x,i,a)=>`<span${i===a.length-1?' class="gx-hl"':""}>${x}</span>`).join("<em>›</em>")}</div>`;
+  else if(st.m==="mode") body=`<div class="gx-dlg"><b>Position Mode</b><label><i></i>${ex.modeOff}</label><label class="sel gx-hl"><i></i>${ex.modeOn}</label><span class="gx-ok">Confirm</span></div>`;
+  else if(st.m==="lev") body=`<div class="gx-row"><span class="gx-chip gx-hl">Cross</span><span class="gx-chip gx-hl">${tx.gLev}x</span></div>`+field("Ký quỹ ước tính",fmt(P.margin)+" USDT");
+  else if(st.m==="openL"||st.m==="openS"){ const L=st.m==="openL", q=L?P.L.qty:P.S.qty;
+    body=tabs("Open")+`<div class="gx-row"><span class="gx-chip">Limit</span><span class="gx-chip on">Market</span></div>`+field("Size (BTC)",txQ(q),true)+field("≈ USDT",fmt(q*P.px))+btns(L?"buy":"sell"); }
+  else if(st.m==="cond"){ const o=st.o, add=o.action==="add_to_leg";
+    body=tabs(add?"Open":"Close")+`<div class="gx-row"><span class="gx-chip">Market</span><span class="gx-chip on gx-hl">${ex.cond}</span></div>`+
+      field("Trigger ("+ex.trig+")",o.price.toLocaleString("en-US"),true)+field("Size (BTC)",o.action==="flatten"?"100%":txQ(o.uQty),true)+
+      btns(add?(o.leg==="long"?"buy":"sell"):(o.leg==="long"?"cl":"cs")); }
+  else if(st.m==="pos") body=`<div class="gx-pos"><div class="h"><span>Symbol</span><span>Size</span><span>Entry</span></div>`+
+    `<div class="gx-hl"><span><em style="background:var(--buy)">L</em>BTCUSDT</span><span style="color:var(--buy)">${txQ(P.L.qty)}</span><span>${fmt(P.px,1)}</span></div>`+
+    `<div class="gx-hl"><span><em style="background:var(--sell)">S</em>BTCUSDT</span><span style="color:var(--sell)">-${txQ(P.S.qty)}</span><span>${fmt(P.px,1)}</span></div></div>`;
+  else body=`<div class="gx-empty">Không có lệnh điều kiện.</div>`;
+  return `<div class="gx-mock" style="${v}">${head}${body}<div class="gx-cap">mô phỏng — giao diện thật có thể khác chút theo phiên bản</div></div>`;
+}
+
+function txGuide(){
+  const box=$("txGuide"); if(!box) return;
+  const on=txIsPerp()&&tx.data.perp; box.style.display=on?"":"none"; if(!on) return;
+  if(!box.dataset.ready){   // dựng khung 1 lần (giữ con trỏ trong ô nhập khi giá live cập nhật)
+    box.dataset.ready="1";
+    $("txGxEx").innerHTML=Object.entries(TX_EX).map(([k,e])=>`<button type="button" class="gx-ex" data-x="${k}" style="--a:${e.acc}">${e.name}</button>`).join("");
+    $("txGxEx").querySelectorAll(".gx-ex").forEach(b=>b.onclick=()=>{ tx.gEx=b.dataset.x; tx.gStep=0; txLs("dash-gx-ex",tx.gEx); txGuideRender(); });
+    const cap=$("txGxCap"), lev=$("txGxLev"); cap.value=tx.gCap; lev.value=String(tx.gLev);
+    cap.oninput=()=>{ const v=+cap.value; if(v>0&&v<1e9){ tx.gCap=v; txLs("dash-gx-cap",v); txGuideRender(); } };
+    lev.onchange=()=>{ tx.gLev=+lev.value; txLs("dash-gx-lev",tx.gLev); txGuideRender(); };
+  }
+  txGuideRender();
+}
+function txGuideRender(){
+  const P=txGuidePlan(), ex=TX_EX[tx.gEx]; if(!P) return;
+  tx.gPx=P.px;
+  $("txGxEx").querySelectorAll(".gx-ex").forEach(b=>b.classList.toggle("on",b.dataset.x===tx.gEx));
+  const warn=[P.L,P.S].some(l=>l.tooSmall);
+  $("txGxSum").innerHTML=
+    `<div><i>PM · ${escHtml(P.at)}</i><b style="color:${txCol(P.rating)}">${escHtml(P.rating)}</b></div>`+
+    `<div><i>CHÂN LONG</i><b style="color:${ex.buy}">${txQ(P.L.qty)} BTC</b><em>${fmt(P.L.usd)} USDT</em></div>`+
+    `<div><i>CHÂN SHORT</i><b style="color:${ex.sell}">${txQ(P.S.qty)} BTC</b><em>${fmt(P.S.usd)} USDT</em></div>`+
+    `<div><i>RÒNG</i><b>${P.net>=0?"LONG":"SHORT"} ${txQ(Math.abs(P.net))}</b><em>${fmt(Math.abs(P.net)*P.px)} USDT</em></div>`+
+    `<div><i>KÝ QUỸ · PHÍ MỞ</i><b>${fmt(P.margin)}</b><em>phí ≈ ${fmt(P.fee,2)} USDT</em></div>`+
+    (warn?`<p class="gx-warn">⚠️ Một chân nhỏ hơn mức tối thiểu của ${ex.name} (${ex.min} BTC${ex.minUsd?` / ${ex.minUsd} USDT`:""}) — tăng vốn hoặc đòn bẩy.</p>`:"");
+  const steps=txGuideSteps(ex,P); tx.gStep=Math.min(tx.gStep,steps.length-1);
+  $("txGxSteps").innerHTML=steps.map((s,i)=>`<button type="button" class="gx-st${i===tx.gStep?" on":""}" data-i="${i}" style="--a:${ex.acc}"><em>${i+1}</em><span>${s.t}</span></button>`).join("");
+  $("txGxSteps").querySelectorAll(".gx-st").forEach(b=>b.onclick=()=>{ tx.gStep=+b.dataset.i; txGuideRender(); });
+  const s=steps[tx.gStep];
+  $("txGxView").innerHTML=`<div class="gx-txt"><div class="gx-n" style="--a:${ex.acc}">BƯỚC ${tx.gStep+1}/${steps.length}</div><h4>${s.t}</h4><p>${s.d}</p>`+
+    `<div class="gx-nav"><button type="button" data-d="-1"${tx.gStep?"":" disabled"}>← Trước</button><button type="button" data-d="1"${tx.gStep<steps.length-1?"":" disabled"}>Tiếp →</button></div></div>`+txMock(ex,s,P);
+  $("txGxView").querySelectorAll(".gx-nav button").forEach(b=>b.onclick=()=>{ tx.gStep+=+b.dataset.d; txGuideRender(); });
+  $("txGxDemo").textContent=ex.demo;
+}
+
 // ── AGENT SHELL 3D: 11 tác tử là nút phát sáng trong không gian, xếp vòng quanh lõi hình xuyến.
 // Xung chạy LẦN LƯỢT theo đúng pipeline TradingAgents; kéo để xoay, bấm nút để đọc nhận định.
 // Khung tác tử luôn hiện (kể cả khi lượt chạy chưa lưu nhận định) — dữ liệu chỉ tô màu + chữ.
@@ -1179,17 +1498,20 @@ const TX_STANCE_COL = {"Tăng":"#3dff8f","Giảm":"#ff4d6d","Trung lập":"#ffc2
 Object.assign(tx, { rotY: -0.35, rotX: -0.42, drag: null, hover: null, proj: {}, stage: 0 });
 
 function txShell(err){
+  const defs=$("txChibiDefs"); if(defs&&!defs.dataset.ok){ defs.firstChild.innerHTML=txChibiDefs(); defs.dataset.ok="1"; }
   const by=Object.fromEntries(tx.agents.map(a=>[a.key,a]));
   if(!by[tx.selKey]) tx.selKey=tx.agents.length?tx.agents[tx.agents.length-1].key:"pm";
-  const src=tx.data.lastOk||tx.data.last||{}, upd=src.tradeDate||"", fresh=tx.agents.length>0;
+  // "cập nhật" = giờ CHẠY (giờ VN); tradeDate chỉ là ngày nến D vừa đóng mà tác tử phân tích (luôn = hôm trước)
+  const src=tx.data.lastOk||tx.data.last||{}, fresh=tx.agents.length>0;
+  const upd=src.at?`chạy ${txVn(src.at)} · nến D ${String(src.tradeDate||"").slice(8,10)}/${String(src.tradeDate||"").slice(5,7)}`:(src.tradeDate||"");
   $("txIn").innerHTML=TX_NODES.map(([k,lab,col])=>{ const a=by[k], c=a&&a.rating?txCol(a.rating):col;
     const badge=a&&a.rating?[a.rating,txCol(a.rating)]:a&&a.stance?[a.stance,TX_STANCE_COL[a.stance]||col]:null;
     const sum=a&&(a.summary||a.text);
     return `<button type="button" class="tx-card${k===tx.selKey?' sel':''}" style="--c:${c}" data-k="${k}">`+
-      `<span class="hd"><span>${escHtml(TX_LABEL[k])}</span>${badge?`<span class="bd" style="--b:${badge[1]}">${escHtml(badge[0])}</span>`:""}</span>`+
+      `<span class="hd"><span class="tx-ava">${txChibi(k)}</span><span class="nm">${escHtml(TX_LABEL[k])}</span>${badge?`<span class="bd" style="--b:${badge[1]}">${escHtml(badge[0])}</span>`:""}</span>`+
       `<span class="role">${escHtml(TX_ROLE[k])}</span>`+
       `<span class="sm${sum?"":" empty"}">${sum?escHtml(sum):"Chưa có nhận định — cập nhật ở lần chạy tới."}</span>`+
-      `<span class="ft"><span>${a?`cập nhật ${escHtml(upd)}`:"—"}</span>${a&&fresh&&src===tx.data.last?`<span class="new">● MỚI</span>`:""}</span></button>`; }).join("");
+      `<span class="ft"><span>${a?escHtml(upd):"—"}</span>${a&&fresh&&src===tx.data.last?`<span class="new">● MỚI</span>`:""}</span></button>`; }).join("");
   $("txIn").querySelectorAll(".tx-card").forEach(b=>b.onclick=()=>txSelect(b.dataset.k));
   const d=tx.data.lastOk||tx.data.last;
   $("txCore").innerHTML=d?`<div class="r" style="--c:${txCol(d.signal)}">${escHtml((d.signal||"—").toUpperCase())}</div>`+
@@ -1205,14 +1527,14 @@ function txDetail(){
   const a=tx.agents.find(x=>x.key===tx.selKey), lab=TX_LABEL[tx.selKey]||tx.selKey;
   if(a){
     const st=a.stance?` · lập trường <b style="color:${TX_STANCE_COL[a.stance]||"#fff"}">${escHtml(a.stance)}</b>`:"";
-    $("txDetail").innerHTML=`<b>${escHtml(a.label||lab)}</b> · <span style="color:${txCol(a.rating)}">${escHtml(a.rating||"không nêu xếp hạng")}</span>${st}`+
+    $("txDetail").innerHTML=`<span class="tx-dava">${txChibi(tx.selKey)}</span><b>${escHtml(a.label||lab)}</b> · <span style="color:${txCol(a.rating)}">${escHtml(a.rating||"không nêu xếp hạng")}</span>${st}`+
       ` <span class="tx-dim">· ${escHtml(TX_ROLE[tx.selKey]||"")}</span>`+
       (a.summary?`<div style="margin-top:6px;color:#e8f1ff">${escHtml(a.summary)}</div>`:"")+
       (Array.isArray(a.points)&&a.points.length?`<ul>${a.points.map(p=>`<li>${escHtml(p)}</li>`).join("")}</ul>`:"")+
       (a.text?`<details><summary>Trích báo cáo gốc (EN · ${a.chars||0} ký tự)</summary>${escHtml(a.text)}…</details>`:"");
     return; }
   $("txDetail").innerHTML=tx.err?`<b style="color:#ff4d6d">Lần chạy gần nhất lỗi [${escHtml(tx.err.stage||"run")}]:</b> ${escHtml(tx.err.error)}`
-    :`<b>${escHtml(lab)}</b> · <span class="tx-dim">nhận định riêng của từng tác tử có từ lần chạy kế tiếp (bản ghi hiện tại chưa lưu).</span>`;
+    :`<span class="tx-dava">${txChibi(tx.selKey)}</span><b>${escHtml(lab)}</b> · <span class="tx-dim">nhận định riêng của từng tác tử có từ lần chạy kế tiếp (bản ghi hiện tại chưa lưu).</span>`;
 }
 function txLayout(){
   const cv=$("txTorus"); if(!cv) return;
@@ -1303,8 +1625,11 @@ function txFrame(now){
     ctx.globalAlpha=on||sel||hov?1:.7; ctx.fillStyle=g; ctx.beginPath(); ctx.arc(P.x,P.y,rad*3.2,0,Math.PI*2); ctx.fill();
     ctx.fillStyle="#04070c"; ctx.beginPath(); ctx.arc(P.x,P.y,rad*.62,0,Math.PI*2); ctx.fill();
     ctx.strokeStyle=col; ctx.lineWidth=sel?2.4:1.4; ctx.beginPath(); ctx.arc(P.x,P.y,rad,0,Math.PI*2); ctx.stroke();
+    // avatar chibi đứng trên nút: nhún lệch pha từng tác tử, to hơn khi đang nói / được chọn
+    const im=txChibiImage(k), aw=rad*(on||sel?3.9:3.3), ah=aw*72/64, bob=txReduce?0:Math.sin(now/420+P.x*.05)*1.6*P.p;
+    if(im){ ctx.globalAlpha=Math.min(1,.55+P.p*.5); ctx.drawImage(im,P.x-aw/2,P.y-ah*.86+bob,aw,ah); }
     ctx.globalAlpha=(on||sel||hov)?1:Math.max(.45,P.p-.2);
-    ctx.fillStyle="#e8f1ff"; ctx.fillText(lab,P.x,P.y-rad-7);
+    ctx.fillStyle="#e8f1ff"; ctx.fillText(lab,P.x,P.y-ah*.86+bob-4);
     if(a&&a.rating){ ctx.fillStyle=col; ctx.fillText(a.rating,P.x,P.y+rad+13); }
   }
   ctx.globalAlpha=1; ctx.textAlign="left";
