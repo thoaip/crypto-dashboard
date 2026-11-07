@@ -10239,11 +10239,11 @@
   "startedAt": "2026-11-06T00:43:56+00:00",
   "startCapital": 10000,
   "startPrice": 76290,
-  "equity": 10076.31,
-  "buyHold": 9944.17,
+  "equity": 10067.27,
+  "buyHold": 9963.05,
   "council": 9422.46,
-  "updatedAt": "2026-11-06T09:09:02+00:00",
-  "runs": 4,
+  "updatedAt": "2026-11-07T06:21:49+00:00",
+  "runs": 5,
   "errors": 1,
   "lastError": {
    "at": "2026-11-06T03:45:12+00:00",
@@ -10253,247 +10253,191 @@
   },
   "signalCounts": {
    "Sell": 1,
-   "Underweight": 2
+   "Underweight": 3
   },
   "last": {
    "perpSide": "SHORT",
-   "perpOrder": {
-    "side": "BUY",
-    "qty": 0.000589,
-    "price": 75864.1,
-    "fee": 0.02,
-    "realized": 0.51,
-    "legs": [
-     {
-      "at": "2026-11-06T09:04:32+00:00",
-      "kind": "REBALANCE",
-      "leg": "LONG",
-      "action": "REDUCE",
-      "side": "SELL",
-      "qty": 0.000295,
-      "price": 75864.1,
-      "realized": 0.13
-     },
-     {
-      "at": "2026-11-06T09:04:32+00:00",
-      "kind": "REBALANCE",
-      "leg": "SHORT",
-      "action": "REDUCE",
-      "side": "BUY",
-      "qty": 0.000884,
-      "price": 75864.1,
-      "realized": 0.38
-     }
-    ]
-   },
-   "tradeDate": "2026-11-05",
-   "at": "2026-11-06T08:59:11+00:00",
+   "perpOrder": null,
+   "tradeDate": "2026-11-06",
+   "at": "2026-11-07T06:11:49+00:00",
    "signal": "Underweight",
-   "price": 75864.1,
-   "equity": 10076.31,
-   "order": {
-    "side": "BUY",
-    "qty": 0.000589,
-    "price": 75864.1,
-    "fee": 0.02,
-    "realized": 0.51,
-    "legs": [
-     {
-      "at": "2026-11-06T09:04:32+00:00",
-      "kind": "REBALANCE",
-      "leg": "LONG",
-      "action": "REDUCE",
-      "side": "SELL",
-      "qty": 0.000295,
-      "price": 75864.1,
-      "realized": 0.13
-     },
-     {
-      "at": "2026-11-06T09:04:32+00:00",
-      "kind": "REBALANCE",
-      "leg": "SHORT",
-      "action": "REDUCE",
-      "side": "BUY",
-      "qty": 0.000884,
-      "price": 75864.1,
-      "realized": 0.38
-     }
-    ]
-   },
+   "price": 76008.1,
+   "equity": 10067.27,
+   "order": null,
    "error": null,
    "stage": null,
-   "reason": "**Rating**: Underweight\n\n**Executive Summary**: Underweight BTC-USD: keep the book net short about 50%, with the long leg at 0.0335 BTC (about 25% of equity) and the short leg at 0.1005 BTC (about 75%). The legs already match the target, so no trades now. Resting orders: (1) short leg: buy back 0.1005 BTC (or whatever is left of the short leg if order 2 has fired) on a daily UTC close above 81,100. (2) On a daily UTC close below 73,100, sell the whole 0.0335 BTC long leg and buy back 0.0335 BTC of the short leg in the same step, so the net stays 0.067 BTC short instead of jumping automatically",
+   "reason": "**Rating**: Underweight\n\n**Executive Summary**: Keep BTC-USD net short about 50% of equity. The book already matches the Underweight targets (long 0.0332 BTC, short 0.0996 BTC, net about -0.066 BTC), so no size change today. Resting orders: (1) short leg: close the whole remaining short (0.0996 BTC, or 0.0661 BTC if order 4 has fired) on a daily close above 81,100; (2) long leg: close 0.0332 BTC on a daily close below 73,100; (3) short leg: cut 0.0335 BTC on a daily close below 73,100; (4) NEW, short leg: cut 0.0335 BTC on a daily close above 79,900. Holding period about 1-2 weeks; first targe",
    "agents": [
     {
      "key": "market",
      "label": "Market Analyst",
      "rating": null,
-     "text": "BTC-USD technical report (as of 2026-11-05) 1. Summary BTC-USD closed at **75,942.12** on 2026-11-05. That is a bearish reversal day inside a roughly 7-week range. The day opened at 80,405.29 and reached 80,833.62. It then sold off to a low of 75,114.29 on above-recent-average volume (48.4B). - **Longer-term structure:",
-     "chars": 9147,
+     "text": "BTC-USD Technical Analysis Report (as of 2026-11-06) **Data note:** The latest completed daily bar is 2026-11-05. The tools treat 2026-11-06 as having no data yet. Every exact figure below comes from the verified snapshot or from the tool output for dated rows. The snapshot and the indicator series agree, and I found n",
+     "chars": 8511,
      "stance": "Giảm",
-     "summary": "Nghiêng trung lập-giảm ngắn hạn: phiên 05/11 đảo chiều giảm mạnh sau khi bị từ chối tại SMA50, động lượng âm; xu hướng dài hạn vẫn còn nhờ giá trên SMA200.",
+     "summary": "Xu hướng ngắn và trung hạn giảm trong xu hướng dài hạn vẫn tăng: giá dưới EMA10, VWMA, SMA50 nhưng trên SMA200 đang đi lên; nến đảo chiều giảm 11-05 với khối lượng lớn.",
      "points": [
-      "Đóng cửa 75.942, giảm ~5,5% từ mở cửa 80.405, khối lượng 48,4B",
-      "RSI 38,5; MACD -1.263, histogram -264; ATR tăng 26% lên 2.442",
-      "Hỗ trợ 75,1k và SMA200 73,2k; cần đóng cửa trên ~82k để xóa tín hiệu giảm"
+      "Đóng cửa 75.942, dưới SMA50 81.988, trên SMA200 73.191",
+      "MACD -1.263, histogram âm suốt 30 ngày; RSI 38,5 chưa quá bán",
+      "Hỗ trợ 75,1–75,4k và 73,2k; cần lấy lại 79–80k để cải thiện"
      ]
     },
     {
      "key": "sentiment",
      "label": "Sentiment Analyst",
      "rating": null,
-     "text": "**Overall Sentiment:** **Mildly Bearish** (Score: 3.8/10) **Confidence:** Low **Data limits up front:** StockTwits was unavailable for 2026-10-29..2026-11-05. The tool only serves recent items, so this does not mean there were no messages. There is no retail Bullish/Bearish ratio for BTC-USD. The read below uses only n",
-     "chars": 5763,
+     "text": "**Overall Sentiment:** **Mildly Bearish** (Score: 3.9/10) **Confidence:** Low **Scope and data limits.** This report covers BTC-USD for 2026-10-30 to 2026-11-06. StockTwits was unavailable. The tool only serves recent items, so this is not evidence that no one posted about the asset. The fastest-moving retail gauge, a ",
+     "chars": 7960,
      "stance": "Giảm",
-     "summary": "Tâm lý hơi tiêu cực (3,8/10, độ tin cậy thấp): tin tức và Reddit xem cú giảm là risk-off theo cổ phiếu công nghệ, dù nhóm holder vẫn mua khi giá giảm.",
+     "summary": "Tâm lý hơi tiêu cực (3,9/10, độ tin cậy thấp): BTC giao dịch như tài sản công nghệ beta cao, chịu dòng tiền rút khỏi ETF và thanh lý; người nắm giữ dài hạn vẫn bình tĩnh.",
      "points": [
-      "Thiếu dữ liệu StockTwits; Reddit chỉ 15 bài",
-      "Một số bài Reddit dự báo về $58–60k (chỉ là ý kiến)",
-      "Tích cực nhẹ: STRC về mệnh giá, Deribit mở cho tổ chức Mỹ"
+      "Giá xuống đáy 3 tháng, thấp hơn đỉnh gần 40%",
+      "Câu chuyện chính trị đẩy giá trên 81k nhưng nhanh chóng mất",
+      "Thiếu dữ liệu StockTwits, ETF và phái sinh"
      ]
     },
     {
      "key": "news",
      "label": "News Analyst",
      "rating": null,
-     "text": "BTC-USD news and macro report, week to 2026-11-05 Data limits - **FRED macro data was unavailable.** The API key isn't configured, so I have no figures for the fed funds rate, 10-year yield, CPI or VIX. I haven't estimated any of them. - **Prediction-market odds were withheld** for this date. I have no market-implied p",
-     "chars": 6215,
-     "stance": "Giảm",
-     "summary": "Ngắn hạn thận trọng đến tiêu cực: BTC giảm cùng cổ phiếu công nghệ xuống dưới $76K, thấp nhất từ tháng 9; thiếu dữ liệu vĩ mô và dòng tiền ETF.",
+     "text": "BTC-USD news and macro report, week of 2026-10-30 to 2026-11-06 Data limitations - **FRED macro data was unavailable.** The API key is not set, so I have no readings for the Fed funds rate, 10-year yield, VIX or CPI. I haven't filled any of them in, so statements about rates and inflation below are not backed by data. ",
+     "chars": 4868,
+     "stance": "Trung lập",
+     "summary": "Thiên hướng trung lập đến thận trọng: BTC đi theo cổ phiếu công nghệ/AI, đợt tăng sau bầu cử bị xoá, dòng tiền ETF âm; giá dao động trong vùng 77k–81k.",
      "points": [
-      "Giảm ~5% trong ngày; Phố Wall có ngày tệ nhất 18 tháng",
-      "Hơn $1B vị thế đòn bẩy bị thanh lý dưới $76K",
-      "Clarity Act đình trệ, nhu cầu ETF được mô tả là suy yếu"
+      "Hỗ trợ khoảng 77k, kháng cự 80–81k thất bại hai lần",
+      "Quy tắc môi giới crypto của SEC đến Nhà Trắng, chưa rõ chi tiết",
+      "Không có dữ liệu FRED và thị trường dự đoán"
      ]
     },
     {
      "key": "bull",
      "label": "Bull Researcher",
      "rating": null,
-     "text": "Bull Analyst: # Bull Case for BTC-USD (as of 2026-11-05) The bear will open with today's candle, so I'll start there. BTC-USD opened at 80,405, closed at 75,942, and the 11-04 bounce was erased on the heaviest volume since September. That is a bad day, and I won't pretend otherwise. But a bad day inside an intact struc",
-     "chars": 6378,
+     "text": "Bull Analyst: # The Bull Case for BTC-USD: A Pullback Inside an Intact Uptrend Bear, since you haven't spoken yet, I'll take on the arguments I expect from you. The last two sessions look ugly. But a bad week inside a structurally intact trend is a very different thing from a broken trend, and the data support the firs",
+     "chars": 6749,
      "stance": "Tăng",
-     "summary": "Cấu trúc dài hạn còn nguyên: SMA200 đang đi lên, golden cross còn hiệu lực; cú giảm do vĩ mô và đợt xả đòn bẩy vào vùng hỗ trợ có thể tạo đáy cục bộ.",
+     "summary": "Đây chỉ là nhịp điều chỉnh trong xu hướng tăng: giá vẫn trên SMA200 đang đi lên, đợt bán do cú sốc công nghệ bên ngoài, tâm lý sợ hãi có thể là tín hiệu ngược.",
      "points": [
-      "Giá trên SMA200 73,2k; đáy 75,1k gần đáy 74,9k ngày 15/9",
-      "Histogram MACD -264, nhỏ hơn mức -500 đến -585 trong tháng 10",
-      "Đề xuất tích lũy 73–76k, mức vô hiệu dưới SMA200"
+      "Giá 75.942 trên SMA200 73.191; điều chỉnh ~14% từ đỉnh 87,4k",
+      "Vùng vào 75–76k, cắt lỗ ~72,5k, mục tiêu 82k–84,4k (~2:1)",
+      "Luận điểm suy yếu nếu đóng cửa dưới 73,2k"
      ]
     },
     {
      "key": "bear",
      "label": "Bear Researcher",
      "rating": null,
-     "text": "Bear Analyst: # Bear Case for BTC-USD (as of 2026-11-05) You asked what makes the 200 SMA fail this time. The question assumes the 200 SMA is a wall, when it is a lagging average sitting 3.8% below the price. Today's intraday range was about 7.6% (80,834 high to 75,114 low). One more day like today takes price through ",
-     "chars": 9186,
+     "text": "Bear Analyst: # The Bear Case for BTC-USD: A Failed Rally in a Damaged Structure Bull, you asked which part of the structure breaks first. I think it already has, and your own numbers show it. Let me go through your case. 1. \"The lows keep getting higher\" is wrong on your own data You cite a Feb low close of 62,702 and",
+     "chars": 9327,
      "stance": "Giảm",
-     "summary": "Chuỗi 5 đỉnh thấp dần ép vào vùng sàn phẳng, chưa có tín hiệu đầu hàng, BTC đi theo cổ phiếu công nghệ; nên chờ đóng cửa trên 82k mới tham gia.",
+     "summary": "Cấu trúc đã hư hại: đỉnh thấp dần, giá đóng cửa dưới vùng hỗ trợ 76,2k với khối lượng lớn, đà giảm và rủi ro nghiêng về phía giảm.",
      "points": [
-      "Đỉnh giảm dần: 87,4k → 85,8k → 84,0k → 81,3k → 81,1k",
-      "Đóng cửa ở ~14% biên độ ngày; RSI 38,5 chưa quá bán",
-      "Thủng 75,1k mở đường về SMA200; tham chiếu giảm $58–60k"
+      "Giá giảm ~31% so với cùng kỳ (110k xuống 75,9k)",
+      "Đệm trên SMA200 chỉ 3,6% (~1,1 ATR), dưới đó là vùng 62–65k",
+      "Mục tiêu đầu của phe tăng chỉ +3,6% so với rủi ro -4,5%"
      ]
     },
     {
      "key": "manager",
      "label": "Research Manager",
      "rating": null,
-     "text": "**Recommendation**: Underweight **Rationale**: Bull's points: the rising 200 SMA (73.2k), the 50 SMA still above the 200, the Sep and Nov lows holding the same zone, a macro-driven flush with $1B+ liquidated, and mildly positive news (STRC back at par, Deribit opening to US institutions). Bear's points, which won most ",
-     "chars": 2422,
+     "text": "**Recommendation**: Underweight **Rationale**: The bull case comes down to one point: BTC-USD closed at 75,942, which is still above a rising 200-day SMA at 73,191, so the long-term trend hasn't technically broken. That's true, and it's why I'm not going to Sell. Neither side calls this a full bear alignment, and Reddi",
+     "chars": 3880,
      "stance": "Giảm",
-     "summary": "Khuyến nghị Underweight: phe giảm thắng phần lớn tranh luận, nhưng không chọn Sell vì SMA200 vẫn đi lên và chưa bị phá vỡ.",
+     "summary": "Khuyến nghị Underweight: phe giảm thắng rõ, nhưng giá vẫn trên SMA200 đang tăng nên chưa đến mức Sell.",
      "points": [
-      "Giảm tỷ trọng về 50–60%, cắt tiếp nếu thủng 75,1k và 73,2k",
-      "Chỉ mua lại khi đóng cửa ngày trên SMA50 ~82k",
-      "Stop tối thiểu 1,5x ATR (ATR ~2,4k)"
+      "Giảm còn ~50% tỷ trọng; còn ~25% nếu đóng cửa dưới 75,1k",
+      "Gần như đóng vị thế nếu đóng cửa dưới 73,2k",
+      "Về Hold nếu đóng cửa trên 79–80k và MACD quay lên"
      ]
     },
     {
      "key": "trader",
      "label": "Trader",
      "rating": null,
-     "text": "**Action**: Sell **Reasoning**: Research plan is Underweight (Sell, sized as net short ~50%: long 25% / short 75%). The 4H and 1D trends are down. The 11-04 rally failed at the 50 SMA and reversed on the heaviest volume since 9-21. There are five lower highs into a flat 74.9-75.1k floor, MACD is negative and widening, ",
-     "chars": 1062,
+     "text": "**Action**: Sell **Reasoning**: The research plan rates this Underweight, which maps to Sell in the Buy/Hold/Sell scale. The account should be net short 50%: long leg 25% and short leg 75% of 1x equity. Price is 75,942, below the 10 EMA (78.3k), the VWMA (78.8k) and the 50 SMA (82.0k). MACD is negative, and the histogr",
+     "chars": 1722,
      "stance": "Giảm",
-     "summary": "Đề xuất SELL ở dạng net short ~50% (long 25%/short 75%) do xu hướng 4H và 1D đi xuống, đợt hồi 04/11 thất bại tại SMA50.",
+     "summary": "Đề xuất SELL ở mức Underweight, giữ vị thế ròng bán khống 50% vì xu hướng 4H và 1D đều giảm, nhưng còn giữ phần phòng hộ do SMA200 vẫn đi lên.",
      "points": [
-      "Long 0,0335 BTC, short 0,1005 BTC, giá vào 75.942",
-      "Mua lại toàn bộ short nếu đóng cửa ngày trên 81.100",
-      "Bán long nếu đóng cửa ngày dưới 73.100"
+      "Vào lệnh 75.942, cắt lỗ khi đóng cửa trên 81.100",
+      "Long 0,0332 BTC, short 0,0996 BTC, ròng ~-0,066 BTC",
+      "Đóng long và giảm short 0,0335 BTC nếu đóng cửa dưới 73.100"
      ]
     },
     {
      "key": "aggressive",
      "label": "Risk · Aggressive",
      "rating": null,
-     "text": "Aggressive Analyst: Neither of you has spoken yet, so I'll take on the objections I expect and make the case for the plan: net short about 50% on BTC-USD, long 0.0335 and short 0.1005 BTC, with defined exits on both legs. **The conservative objection: it's a 7-week range, the 200 SMA is rising, and BTC-USD is still in ",
-     "chars": 4511,
+     "text": "Aggressive Analyst: Let me open, since nobody else has spoken yet, and take on the objections I expect from both sides. The case for the Underweight, net short 50% book is stronger than it looks. Every trend gauge we have points the same way, and the book is already positioned for it. BTC-USD closed at 75,942, below th",
+     "chars": 4049,
      "stance": "Giảm",
-     "summary": "Ủng hộ giữ nguyên kế hoạch net short 50%: xu hướng giảm rõ, đợt hồi bị từ chối trên khối lượng lớn, rủi ro khi dính stop dưới 3% vốn.",
+     "summary": "Ủng hộ giữ nguyên sổ ròng bán khống 50%: mọi chỉ báo xu hướng cùng hướng giảm, rủi ro ~3,4% vốn đổi lấy khả năng giảm 10k trở lên.",
      "points": [
-      "Lỗ ròng ~295 USD nếu dính stop 81.100",
-      "Lãi ~1.300–1.400 USD nếu giá về vùng 62–66k",
-      "Chờ xác nhận phá vỡ sẽ làm tỷ lệ lợi nhuận/rủi ro kém đi"
+      "Cắt lỗ 81.100 cách giá ~2,1 ATR, phía trên đỉnh hỏng 11-04",
+      "RSI 38,5 chưa quá bán nên giá còn dư địa giảm",
+      "Muốn bán mạnh hơn nếu đóng cửa dưới 73,1k"
      ]
     },
     {
      "key": "conservative",
      "label": "Risk · Conservative",
      "rating": null,
-     "text": "Conservative Analyst: Since the neutral analyst hasn't spoken, I'll respond to the aggressive case directly. I don't think it's reckless to hold this book as it stands. My problem is with the confidence behind it and with a couple of the resting orders. **The reward side is overstated.** The 4-to-5-times figure depends",
-     "chars": 3807,
+     "text": "Conservative Analyst: Since the neutral analyst hasn't spoken yet, I'll respond to the aggressive case directly. The trend read isn't wrong. My problem is how much confidence is being placed on top of it and how loosely the risk is defined. First, the reward-to-risk claim. The trade is pitched as risking 3.4% for a mov",
+     "chars": 4352,
      "stance": "Giảm",
-     "summary": "Đồng ý xu hướng giảm nhưng cho rằng phần thưởng bị thổi phồng và rủi ro squeeze thực sự tồn tại; phản đối lệnh tự động lên 100% short tại 73.100.",
+     "summary": "Giữ thiên hướng giảm nhưng cần giảm chi phí khi sai: tỷ lệ lời/lỗ đến hỗ trợ đầu tiên là bất lợi và thị trường đang biến động giằng co.",
      "points": [
-      "Đến SMA200 lãi ròng ~235 so với lỗ ~295, dưới tỷ lệ 1:1",
-      "Stop 81.100 cách ~2,1 ATR; lỗ tệ nhất ~5,6% vốn",
-      "Đề xuất mua lại short theo hai nấc: 79.950 và 81.100"
+      "Lỗ thực tế của short khi chạm cắt lỗ ~480 USD, gần 5% vốn",
+      "Đề xuất dời cắt lỗ về đóng cửa trên ~79.900",
+      "Có thể mua lại ~0,033 BTC short, giữ ròng bán khống ~25%"
      ]
     },
     {
      "key": "neutral",
      "label": "Risk · Neutral",
      "rating": null,
-     "text": "Neutral Analyst: I think you're both half right, and the weak spots are in the details more than the direction. Aggressive first. The tactical read holds up. Both the 4H and 1D trends are down, the 50 SMA rejection was clean, and the 11-05 close sat only about 14% of the day's range above the low. That is a weak close,",
-     "chars": 3989,
+     "text": "Neutral Analyst: I mostly agree with the direction of the trade, but each of you has made a claim that doesn't hold up when I run the numbers. Aggressive first. Calling the 11-05 bar a heavy-volume rejection is reasonable, but the stronger claims around it are shakier. \"A bounce to 78.3-78.9k would be a gift\" only work",
+     "chars": 4596,
      "stance": "Giảm",
-     "summary": "Giữ cấu trúc net short ~0,067 BTC và stop 81.100; sửa lệnh tại 73.100 thành bán cặp để tránh tự động tăng lên 100% short.",
+     "summary": "Đồng ý hướng giảm nhưng đề xuất thoát lệnh theo từng phần: giữ cắt lỗ 81.100 và thêm lệnh giảm short khi đóng cửa trên 79.900.",
      "points": [
-      "SMA200 cách ~1 ATR, stop cách hơn 2 ATR, nên kỳ vọng dương",
-      "Stop 79.950 lẽ ra đã kích hoạt khi đóng cửa 80.405 ngày 04/11",
-      "Chi phí funding cho ~5.000 USD danh nghĩa là không đáng kể"
+      "Đến 73,2k sổ lời ~190 USD so với lỗ ~340 USD ở mức cắt lỗ",
+      "Cắt lỗ toàn phần ở 79.900 đã bị kích hoạt bởi nến 11-04 (80.405)",
+      "Lệnh mới: giảm short 0,0335 BTC khi đóng cửa trên 79.900"
      ]
     },
     {
      "key": "pm",
      "label": "Portfolio Manager",
      "rating": "Underweight",
-     "text": "**Rating**: Underweight **Executive Summary**: Underweight BTC-USD: keep the book net short about 50%, with the long leg at 0.0335 BTC (about 25% of equity) and the short leg at 0.1005 BTC (about 75%). The legs already match the target, so no trades now. Resting orders: (1) short leg: buy back 0.1005 BTC (or whatever i",
-     "chars": 3861,
+     "text": "**Rating**: Underweight **Executive Summary**: Keep BTC-USD net short about 50% of equity. The book already matches the Underweight targets (long 0.0332 BTC, short 0.0996 BTC, net about -0.066 BTC), so no size change today. Resting orders: (1) short leg: close the whole remaining short (0.0996 BTC, or 0.0661 BTC if ord",
+     "chars": 2818,
      "stance": "Giảm",
-     "summary": "Xếp hạng Underweight: giữ net short ~50% trong 1–2 tuần, mục tiêu 73.200; tín hiệu giảm chưa đủ mạnh để chuyển sang Sell toàn phần.",
+     "summary": "Xếp hạng Underweight, giữ ròng bán khống ~50% và áp dụng thoát lệnh theo từng phần; mục tiêu giá 73.200 trong 1–2 tuần.",
      "points": [
-      "Stop short: đóng cửa ngày trên 81.100",
-      "Dưới 73.100: bán long và mua lại 0,0335 BTC short, giữ net 0,067",
-      "Đóng cửa dứt khoát dưới 73,2k có thể dẫn tới chuyển sang Sell"
+      "Giá dưới EMA20 tuần 76,8k; đỉnh thấp dần 87,4k–84,8k–81,1k",
+      "Lệnh mới: giảm short 0,0335 BTC nếu đóng cửa trên 79.900",
+      "Về Hold nếu đóng cửa trên 79–80k kèm MACD quay lên"
      ]
     }
    ],
    "mtf": [
     {
      "tf": "4H",
-     "close": 75566.4,
-     "ema20": 77710.8,
-     "ema50": 78317.1,
-     "rsi14": 35.3,
+     "close": 75857.4,
+     "ema20": 76991.6,
+     "ema50": 77877.1,
+     "rsi14": 38.6,
      "trend": "down"
     },
     {
      "tf": "1D",
-     "close": 76049.5,
-     "ema20": 79539.2,
-     "ema50": 79951.1,
-     "rsi14": 38.5,
+     "close": 75816.3,
+     "ema20": 79184.6,
+     "ema50": 79788.9,
+     "rsi14": 37.9,
      "trend": "down"
     },
     {
@@ -10508,247 +10452,191 @@
    "mandate": "perp-mtf-hedge",
    "deepModel": "claude-opus-5-5",
    "quickModel": "claude-sonnet-5-5",
-   "secs": 327.6
+   "secs": 327.3
   },
   "lastOk": {
    "perpSide": "SHORT",
-   "perpOrder": {
-    "side": "BUY",
-    "qty": 0.000589,
-    "price": 75864.1,
-    "fee": 0.02,
-    "realized": 0.51,
-    "legs": [
-     {
-      "at": "2026-11-06T09:04:32+00:00",
-      "kind": "REBALANCE",
-      "leg": "LONG",
-      "action": "REDUCE",
-      "side": "SELL",
-      "qty": 0.000295,
-      "price": 75864.1,
-      "realized": 0.13
-     },
-     {
-      "at": "2026-11-06T09:04:32+00:00",
-      "kind": "REBALANCE",
-      "leg": "SHORT",
-      "action": "REDUCE",
-      "side": "BUY",
-      "qty": 0.000884,
-      "price": 75864.1,
-      "realized": 0.38
-     }
-    ]
-   },
-   "tradeDate": "2026-11-05",
-   "at": "2026-11-06T08:59:11+00:00",
+   "perpOrder": null,
+   "tradeDate": "2026-11-06",
+   "at": "2026-11-07T06:11:49+00:00",
    "signal": "Underweight",
-   "price": 75864.1,
-   "equity": 10076.31,
-   "order": {
-    "side": "BUY",
-    "qty": 0.000589,
-    "price": 75864.1,
-    "fee": 0.02,
-    "realized": 0.51,
-    "legs": [
-     {
-      "at": "2026-11-06T09:04:32+00:00",
-      "kind": "REBALANCE",
-      "leg": "LONG",
-      "action": "REDUCE",
-      "side": "SELL",
-      "qty": 0.000295,
-      "price": 75864.1,
-      "realized": 0.13
-     },
-     {
-      "at": "2026-11-06T09:04:32+00:00",
-      "kind": "REBALANCE",
-      "leg": "SHORT",
-      "action": "REDUCE",
-      "side": "BUY",
-      "qty": 0.000884,
-      "price": 75864.1,
-      "realized": 0.38
-     }
-    ]
-   },
+   "price": 76008.1,
+   "equity": 10067.27,
+   "order": null,
    "error": null,
    "stage": null,
-   "reason": "**Rating**: Underweight\n\n**Executive Summary**: Underweight BTC-USD: keep the book net short about 50%, with the long leg at 0.0335 BTC (about 25% of equity) and the short leg at 0.1005 BTC (about 75%). The legs already match the target, so no trades now. Resting orders: (1) short leg: buy back 0.1005 BTC (or whatever is left of the short leg if order 2 has fired) on a daily UTC close above 81,100. (2) On a daily UTC close below 73,100, sell the whole 0.0335 BTC long leg and buy back 0.0335 BTC of the short leg in the same step, so the net stays 0.067 BTC short instead of jumping automatically",
+   "reason": "**Rating**: Underweight\n\n**Executive Summary**: Keep BTC-USD net short about 50% of equity. The book already matches the Underweight targets (long 0.0332 BTC, short 0.0996 BTC, net about -0.066 BTC), so no size change today. Resting orders: (1) short leg: close the whole remaining short (0.0996 BTC, or 0.0661 BTC if order 4 has fired) on a daily close above 81,100; (2) long leg: close 0.0332 BTC on a daily close below 73,100; (3) short leg: cut 0.0335 BTC on a daily close below 73,100; (4) NEW, short leg: cut 0.0335 BTC on a daily close above 79,900. Holding period about 1-2 weeks; first targe",
    "agents": [
     {
      "key": "market",
      "label": "Market Analyst",
      "rating": null,
-     "text": "BTC-USD technical report (as of 2026-11-05) 1. Summary BTC-USD closed at **75,942.12** on 2026-11-05. That is a bearish reversal day inside a roughly 7-week range. The day opened at 80,405.29 and reached 80,833.62. It then sold off to a low of 75,114.29 on above-recent-average volume (48.4B). - **Longer-term structure:",
-     "chars": 9147,
+     "text": "BTC-USD Technical Analysis Report (as of 2026-11-06) **Data note:** The latest completed daily bar is 2026-11-05. The tools treat 2026-11-06 as having no data yet. Every exact figure below comes from the verified snapshot or from the tool output for dated rows. The snapshot and the indicator series agree, and I found n",
+     "chars": 8511,
      "stance": "Giảm",
-     "summary": "Nghiêng trung lập-giảm ngắn hạn: phiên 05/11 đảo chiều giảm mạnh sau khi bị từ chối tại SMA50, động lượng âm; xu hướng dài hạn vẫn còn nhờ giá trên SMA200.",
+     "summary": "Xu hướng ngắn và trung hạn giảm trong xu hướng dài hạn vẫn tăng: giá dưới EMA10, VWMA, SMA50 nhưng trên SMA200 đang đi lên; nến đảo chiều giảm 11-05 với khối lượng lớn.",
      "points": [
-      "Đóng cửa 75.942, giảm ~5,5% từ mở cửa 80.405, khối lượng 48,4B",
-      "RSI 38,5; MACD -1.263, histogram -264; ATR tăng 26% lên 2.442",
-      "Hỗ trợ 75,1k và SMA200 73,2k; cần đóng cửa trên ~82k để xóa tín hiệu giảm"
+      "Đóng cửa 75.942, dưới SMA50 81.988, trên SMA200 73.191",
+      "MACD -1.263, histogram âm suốt 30 ngày; RSI 38,5 chưa quá bán",
+      "Hỗ trợ 75,1–75,4k và 73,2k; cần lấy lại 79–80k để cải thiện"
      ]
     },
     {
      "key": "sentiment",
      "label": "Sentiment Analyst",
      "rating": null,
-     "text": "**Overall Sentiment:** **Mildly Bearish** (Score: 3.8/10) **Confidence:** Low **Data limits up front:** StockTwits was unavailable for 2026-10-29..2026-11-05. The tool only serves recent items, so this does not mean there were no messages. There is no retail Bullish/Bearish ratio for BTC-USD. The read below uses only n",
-     "chars": 5763,
+     "text": "**Overall Sentiment:** **Mildly Bearish** (Score: 3.9/10) **Confidence:** Low **Scope and data limits.** This report covers BTC-USD for 2026-10-30 to 2026-11-06. StockTwits was unavailable. The tool only serves recent items, so this is not evidence that no one posted about the asset. The fastest-moving retail gauge, a ",
+     "chars": 7960,
      "stance": "Giảm",
-     "summary": "Tâm lý hơi tiêu cực (3,8/10, độ tin cậy thấp): tin tức và Reddit xem cú giảm là risk-off theo cổ phiếu công nghệ, dù nhóm holder vẫn mua khi giá giảm.",
+     "summary": "Tâm lý hơi tiêu cực (3,9/10, độ tin cậy thấp): BTC giao dịch như tài sản công nghệ beta cao, chịu dòng tiền rút khỏi ETF và thanh lý; người nắm giữ dài hạn vẫn bình tĩnh.",
      "points": [
-      "Thiếu dữ liệu StockTwits; Reddit chỉ 15 bài",
-      "Một số bài Reddit dự báo về $58–60k (chỉ là ý kiến)",
-      "Tích cực nhẹ: STRC về mệnh giá, Deribit mở cho tổ chức Mỹ"
+      "Giá xuống đáy 3 tháng, thấp hơn đỉnh gần 40%",
+      "Câu chuyện chính trị đẩy giá trên 81k nhưng nhanh chóng mất",
+      "Thiếu dữ liệu StockTwits, ETF và phái sinh"
      ]
     },
     {
      "key": "news",
      "label": "News Analyst",
      "rating": null,
-     "text": "BTC-USD news and macro report, week to 2026-11-05 Data limits - **FRED macro data was unavailable.** The API key isn't configured, so I have no figures for the fed funds rate, 10-year yield, CPI or VIX. I haven't estimated any of them. - **Prediction-market odds were withheld** for this date. I have no market-implied p",
-     "chars": 6215,
-     "stance": "Giảm",
-     "summary": "Ngắn hạn thận trọng đến tiêu cực: BTC giảm cùng cổ phiếu công nghệ xuống dưới $76K, thấp nhất từ tháng 9; thiếu dữ liệu vĩ mô và dòng tiền ETF.",
+     "text": "BTC-USD news and macro report, week of 2026-10-30 to 2026-11-06 Data limitations - **FRED macro data was unavailable.** The API key is not set, so I have no readings for the Fed funds rate, 10-year yield, VIX or CPI. I haven't filled any of them in, so statements about rates and inflation below are not backed by data. ",
+     "chars": 4868,
+     "stance": "Trung lập",
+     "summary": "Thiên hướng trung lập đến thận trọng: BTC đi theo cổ phiếu công nghệ/AI, đợt tăng sau bầu cử bị xoá, dòng tiền ETF âm; giá dao động trong vùng 77k–81k.",
      "points": [
-      "Giảm ~5% trong ngày; Phố Wall có ngày tệ nhất 18 tháng",
-      "Hơn $1B vị thế đòn bẩy bị thanh lý dưới $76K",
-      "Clarity Act đình trệ, nhu cầu ETF được mô tả là suy yếu"
+      "Hỗ trợ khoảng 77k, kháng cự 80–81k thất bại hai lần",
+      "Quy tắc môi giới crypto của SEC đến Nhà Trắng, chưa rõ chi tiết",
+      "Không có dữ liệu FRED và thị trường dự đoán"
      ]
     },
     {
      "key": "bull",
      "label": "Bull Researcher",
      "rating": null,
-     "text": "Bull Analyst: # Bull Case for BTC-USD (as of 2026-11-05) The bear will open with today's candle, so I'll start there. BTC-USD opened at 80,405, closed at 75,942, and the 11-04 bounce was erased on the heaviest volume since September. That is a bad day, and I won't pretend otherwise. But a bad day inside an intact struc",
-     "chars": 6378,
+     "text": "Bull Analyst: # The Bull Case for BTC-USD: A Pullback Inside an Intact Uptrend Bear, since you haven't spoken yet, I'll take on the arguments I expect from you. The last two sessions look ugly. But a bad week inside a structurally intact trend is a very different thing from a broken trend, and the data support the firs",
+     "chars": 6749,
      "stance": "Tăng",
-     "summary": "Cấu trúc dài hạn còn nguyên: SMA200 đang đi lên, golden cross còn hiệu lực; cú giảm do vĩ mô và đợt xả đòn bẩy vào vùng hỗ trợ có thể tạo đáy cục bộ.",
+     "summary": "Đây chỉ là nhịp điều chỉnh trong xu hướng tăng: giá vẫn trên SMA200 đang đi lên, đợt bán do cú sốc công nghệ bên ngoài, tâm lý sợ hãi có thể là tín hiệu ngược.",
      "points": [
-      "Giá trên SMA200 73,2k; đáy 75,1k gần đáy 74,9k ngày 15/9",
-      "Histogram MACD -264, nhỏ hơn mức -500 đến -585 trong tháng 10",
-      "Đề xuất tích lũy 73–76k, mức vô hiệu dưới SMA200"
+      "Giá 75.942 trên SMA200 73.191; điều chỉnh ~14% từ đỉnh 87,4k",
+      "Vùng vào 75–76k, cắt lỗ ~72,5k, mục tiêu 82k–84,4k (~2:1)",
+      "Luận điểm suy yếu nếu đóng cửa dưới 73,2k"
      ]
     },
     {
      "key": "bear",
      "label": "Bear Researcher",
      "rating": null,
-     "text": "Bear Analyst: # Bear Case for BTC-USD (as of 2026-11-05) You asked what makes the 200 SMA fail this time. The question assumes the 200 SMA is a wall, when it is a lagging average sitting 3.8% below the price. Today's intraday range was about 7.6% (80,834 high to 75,114 low). One more day like today takes price through ",
-     "chars": 9186,
+     "text": "Bear Analyst: # The Bear Case for BTC-USD: A Failed Rally in a Damaged Structure Bull, you asked which part of the structure breaks first. I think it already has, and your own numbers show it. Let me go through your case. 1. \"The lows keep getting higher\" is wrong on your own data You cite a Feb low close of 62,702 and",
+     "chars": 9327,
      "stance": "Giảm",
-     "summary": "Chuỗi 5 đỉnh thấp dần ép vào vùng sàn phẳng, chưa có tín hiệu đầu hàng, BTC đi theo cổ phiếu công nghệ; nên chờ đóng cửa trên 82k mới tham gia.",
+     "summary": "Cấu trúc đã hư hại: đỉnh thấp dần, giá đóng cửa dưới vùng hỗ trợ 76,2k với khối lượng lớn, đà giảm và rủi ro nghiêng về phía giảm.",
      "points": [
-      "Đỉnh giảm dần: 87,4k → 85,8k → 84,0k → 81,3k → 81,1k",
-      "Đóng cửa ở ~14% biên độ ngày; RSI 38,5 chưa quá bán",
-      "Thủng 75,1k mở đường về SMA200; tham chiếu giảm $58–60k"
+      "Giá giảm ~31% so với cùng kỳ (110k xuống 75,9k)",
+      "Đệm trên SMA200 chỉ 3,6% (~1,1 ATR), dưới đó là vùng 62–65k",
+      "Mục tiêu đầu của phe tăng chỉ +3,6% so với rủi ro -4,5%"
      ]
     },
     {
      "key": "manager",
      "label": "Research Manager",
      "rating": null,
-     "text": "**Recommendation**: Underweight **Rationale**: Bull's points: the rising 200 SMA (73.2k), the 50 SMA still above the 200, the Sep and Nov lows holding the same zone, a macro-driven flush with $1B+ liquidated, and mildly positive news (STRC back at par, Deribit opening to US institutions). Bear's points, which won most ",
-     "chars": 2422,
+     "text": "**Recommendation**: Underweight **Rationale**: The bull case comes down to one point: BTC-USD closed at 75,942, which is still above a rising 200-day SMA at 73,191, so the long-term trend hasn't technically broken. That's true, and it's why I'm not going to Sell. Neither side calls this a full bear alignment, and Reddi",
+     "chars": 3880,
      "stance": "Giảm",
-     "summary": "Khuyến nghị Underweight: phe giảm thắng phần lớn tranh luận, nhưng không chọn Sell vì SMA200 vẫn đi lên và chưa bị phá vỡ.",
+     "summary": "Khuyến nghị Underweight: phe giảm thắng rõ, nhưng giá vẫn trên SMA200 đang tăng nên chưa đến mức Sell.",
      "points": [
-      "Giảm tỷ trọng về 50–60%, cắt tiếp nếu thủng 75,1k và 73,2k",
-      "Chỉ mua lại khi đóng cửa ngày trên SMA50 ~82k",
-      "Stop tối thiểu 1,5x ATR (ATR ~2,4k)"
+      "Giảm còn ~50% tỷ trọng; còn ~25% nếu đóng cửa dưới 75,1k",
+      "Gần như đóng vị thế nếu đóng cửa dưới 73,2k",
+      "Về Hold nếu đóng cửa trên 79–80k và MACD quay lên"
      ]
     },
     {
      "key": "trader",
      "label": "Trader",
      "rating": null,
-     "text": "**Action**: Sell **Reasoning**: Research plan is Underweight (Sell, sized as net short ~50%: long 25% / short 75%). The 4H and 1D trends are down. The 11-04 rally failed at the 50 SMA and reversed on the heaviest volume since 9-21. There are five lower highs into a flat 74.9-75.1k floor, MACD is negative and widening, ",
-     "chars": 1062,
+     "text": "**Action**: Sell **Reasoning**: The research plan rates this Underweight, which maps to Sell in the Buy/Hold/Sell scale. The account should be net short 50%: long leg 25% and short leg 75% of 1x equity. Price is 75,942, below the 10 EMA (78.3k), the VWMA (78.8k) and the 50 SMA (82.0k). MACD is negative, and the histogr",
+     "chars": 1722,
      "stance": "Giảm",
-     "summary": "Đề xuất SELL ở dạng net short ~50% (long 25%/short 75%) do xu hướng 4H và 1D đi xuống, đợt hồi 04/11 thất bại tại SMA50.",
+     "summary": "Đề xuất SELL ở mức Underweight, giữ vị thế ròng bán khống 50% vì xu hướng 4H và 1D đều giảm, nhưng còn giữ phần phòng hộ do SMA200 vẫn đi lên.",
      "points": [
-      "Long 0,0335 BTC, short 0,1005 BTC, giá vào 75.942",
-      "Mua lại toàn bộ short nếu đóng cửa ngày trên 81.100",
-      "Bán long nếu đóng cửa ngày dưới 73.100"
+      "Vào lệnh 75.942, cắt lỗ khi đóng cửa trên 81.100",
+      "Long 0,0332 BTC, short 0,0996 BTC, ròng ~-0,066 BTC",
+      "Đóng long và giảm short 0,0335 BTC nếu đóng cửa dưới 73.100"
      ]
     },
     {
      "key": "aggressive",
      "label": "Risk · Aggressive",
      "rating": null,
-     "text": "Aggressive Analyst: Neither of you has spoken yet, so I'll take on the objections I expect and make the case for the plan: net short about 50% on BTC-USD, long 0.0335 and short 0.1005 BTC, with defined exits on both legs. **The conservative objection: it's a 7-week range, the 200 SMA is rising, and BTC-USD is still in ",
-     "chars": 4511,
+     "text": "Aggressive Analyst: Let me open, since nobody else has spoken yet, and take on the objections I expect from both sides. The case for the Underweight, net short 50% book is stronger than it looks. Every trend gauge we have points the same way, and the book is already positioned for it. BTC-USD closed at 75,942, below th",
+     "chars": 4049,
      "stance": "Giảm",
-     "summary": "Ủng hộ giữ nguyên kế hoạch net short 50%: xu hướng giảm rõ, đợt hồi bị từ chối trên khối lượng lớn, rủi ro khi dính stop dưới 3% vốn.",
+     "summary": "Ủng hộ giữ nguyên sổ ròng bán khống 50%: mọi chỉ báo xu hướng cùng hướng giảm, rủi ro ~3,4% vốn đổi lấy khả năng giảm 10k trở lên.",
      "points": [
-      "Lỗ ròng ~295 USD nếu dính stop 81.100",
-      "Lãi ~1.300–1.400 USD nếu giá về vùng 62–66k",
-      "Chờ xác nhận phá vỡ sẽ làm tỷ lệ lợi nhuận/rủi ro kém đi"
+      "Cắt lỗ 81.100 cách giá ~2,1 ATR, phía trên đỉnh hỏng 11-04",
+      "RSI 38,5 chưa quá bán nên giá còn dư địa giảm",
+      "Muốn bán mạnh hơn nếu đóng cửa dưới 73,1k"
      ]
     },
     {
      "key": "conservative",
      "label": "Risk · Conservative",
      "rating": null,
-     "text": "Conservative Analyst: Since the neutral analyst hasn't spoken, I'll respond to the aggressive case directly. I don't think it's reckless to hold this book as it stands. My problem is with the confidence behind it and with a couple of the resting orders. **The reward side is overstated.** The 4-to-5-times figure depends",
-     "chars": 3807,
+     "text": "Conservative Analyst: Since the neutral analyst hasn't spoken yet, I'll respond to the aggressive case directly. The trend read isn't wrong. My problem is how much confidence is being placed on top of it and how loosely the risk is defined. First, the reward-to-risk claim. The trade is pitched as risking 3.4% for a mov",
+     "chars": 4352,
      "stance": "Giảm",
-     "summary": "Đồng ý xu hướng giảm nhưng cho rằng phần thưởng bị thổi phồng và rủi ro squeeze thực sự tồn tại; phản đối lệnh tự động lên 100% short tại 73.100.",
+     "summary": "Giữ thiên hướng giảm nhưng cần giảm chi phí khi sai: tỷ lệ lời/lỗ đến hỗ trợ đầu tiên là bất lợi và thị trường đang biến động giằng co.",
      "points": [
-      "Đến SMA200 lãi ròng ~235 so với lỗ ~295, dưới tỷ lệ 1:1",
-      "Stop 81.100 cách ~2,1 ATR; lỗ tệ nhất ~5,6% vốn",
-      "Đề xuất mua lại short theo hai nấc: 79.950 và 81.100"
+      "Lỗ thực tế của short khi chạm cắt lỗ ~480 USD, gần 5% vốn",
+      "Đề xuất dời cắt lỗ về đóng cửa trên ~79.900",
+      "Có thể mua lại ~0,033 BTC short, giữ ròng bán khống ~25%"
      ]
     },
     {
      "key": "neutral",
      "label": "Risk · Neutral",
      "rating": null,
-     "text": "Neutral Analyst: I think you're both half right, and the weak spots are in the details more than the direction. Aggressive first. The tactical read holds up. Both the 4H and 1D trends are down, the 50 SMA rejection was clean, and the 11-05 close sat only about 14% of the day's range above the low. That is a weak close,",
-     "chars": 3989,
+     "text": "Neutral Analyst: I mostly agree with the direction of the trade, but each of you has made a claim that doesn't hold up when I run the numbers. Aggressive first. Calling the 11-05 bar a heavy-volume rejection is reasonable, but the stronger claims around it are shakier. \"A bounce to 78.3-78.9k would be a gift\" only work",
+     "chars": 4596,
      "stance": "Giảm",
-     "summary": "Giữ cấu trúc net short ~0,067 BTC và stop 81.100; sửa lệnh tại 73.100 thành bán cặp để tránh tự động tăng lên 100% short.",
+     "summary": "Đồng ý hướng giảm nhưng đề xuất thoát lệnh theo từng phần: giữ cắt lỗ 81.100 và thêm lệnh giảm short khi đóng cửa trên 79.900.",
      "points": [
-      "SMA200 cách ~1 ATR, stop cách hơn 2 ATR, nên kỳ vọng dương",
-      "Stop 79.950 lẽ ra đã kích hoạt khi đóng cửa 80.405 ngày 04/11",
-      "Chi phí funding cho ~5.000 USD danh nghĩa là không đáng kể"
+      "Đến 73,2k sổ lời ~190 USD so với lỗ ~340 USD ở mức cắt lỗ",
+      "Cắt lỗ toàn phần ở 79.900 đã bị kích hoạt bởi nến 11-04 (80.405)",
+      "Lệnh mới: giảm short 0,0335 BTC khi đóng cửa trên 79.900"
      ]
     },
     {
      "key": "pm",
      "label": "Portfolio Manager",
      "rating": "Underweight",
-     "text": "**Rating**: Underweight **Executive Summary**: Underweight BTC-USD: keep the book net short about 50%, with the long leg at 0.0335 BTC (about 25% of equity) and the short leg at 0.1005 BTC (about 75%). The legs already match the target, so no trades now. Resting orders: (1) short leg: buy back 0.1005 BTC (or whatever i",
-     "chars": 3861,
+     "text": "**Rating**: Underweight **Executive Summary**: Keep BTC-USD net short about 50% of equity. The book already matches the Underweight targets (long 0.0332 BTC, short 0.0996 BTC, net about -0.066 BTC), so no size change today. Resting orders: (1) short leg: close the whole remaining short (0.0996 BTC, or 0.0661 BTC if ord",
+     "chars": 2818,
      "stance": "Giảm",
-     "summary": "Xếp hạng Underweight: giữ net short ~50% trong 1–2 tuần, mục tiêu 73.200; tín hiệu giảm chưa đủ mạnh để chuyển sang Sell toàn phần.",
+     "summary": "Xếp hạng Underweight, giữ ròng bán khống ~50% và áp dụng thoát lệnh theo từng phần; mục tiêu giá 73.200 trong 1–2 tuần.",
      "points": [
-      "Stop short: đóng cửa ngày trên 81.100",
-      "Dưới 73.100: bán long và mua lại 0,0335 BTC short, giữ net 0,067",
-      "Đóng cửa dứt khoát dưới 73,2k có thể dẫn tới chuyển sang Sell"
+      "Giá dưới EMA20 tuần 76,8k; đỉnh thấp dần 87,4k–84,8k–81,1k",
+      "Lệnh mới: giảm short 0,0335 BTC nếu đóng cửa trên 79.900",
+      "Về Hold nếu đóng cửa trên 79–80k kèm MACD quay lên"
      ]
     }
    ],
    "mtf": [
     {
      "tf": "4H",
-     "close": 75566.4,
-     "ema20": 77710.8,
-     "ema50": 78317.1,
-     "rsi14": 35.3,
+     "close": 75857.4,
+     "ema20": 76991.6,
+     "ema50": 77877.1,
+     "rsi14": 38.6,
      "trend": "down"
     },
     {
      "tf": "1D",
-     "close": 76049.5,
-     "ema20": 79539.2,
-     "ema50": 79951.1,
-     "rsi14": 38.5,
+     "close": 75816.3,
+     "ema20": 79184.6,
+     "ema50": 79788.9,
+     "rsi14": 37.9,
      "trend": "down"
     },
     {
@@ -10763,9 +10651,22 @@
    "mandate": "perp-mtf-hedge",
    "deepModel": "claude-opus-5-5",
    "quickModel": "claude-sonnet-5-5",
-   "secs": 327.6
+   "secs": 327.3
   },
   "recent": [
+   {
+    "perpSide": "SHORT",
+    "perpOrder": null,
+    "tradeDate": "2026-11-06",
+    "at": "2026-11-07T06:11:49+00:00",
+    "signal": "Underweight",
+    "price": 76008.1,
+    "equity": 10067.27,
+    "order": null,
+    "error": null,
+    "stage": null,
+    "reason": "**Rating**: Underweight\n\n**Executive Summary**: Keep BTC-USD net short about 50% of equity. The book already matches the Underweight targets (long 0.0332 BTC, short 0.0996 BTC, net about -0.066 BTC), so no size change today. Resting orders: (1) short leg: close the whole remaining short (0.0996 BTC, or 0.0661 BTC if order 4 has fired) on a daily close above 81,100; (2) long leg: close 0.0332 BTC on a daily close below 73,100; (3) short leg: cut 0.0335 BTC on a daily close below 73,100; (4) NEW, short leg: cut 0.0335 BTC on a daily close above 79,900. Holding period about 1-2 weeks; first targe"
+   },
    {
     "perpSide": "SHORT",
     "perpOrder": {
@@ -10967,9 +10868,16 @@
     "equity": 10076.31,
     "buyHold": 9944.17,
     "council": 9422.46
+   },
+   {
+    "t": "2026-11-07T06:21:49+00:00",
+    "price": 76008.1,
+    "equity": 10067.27,
+    "buyHold": 9963.05,
+    "council": 9422.46
    }
   ],
-  "cash": 10019.48,
+  "cash": 10020.01,
   "qty": -0.06641039025257983,
   "avgPrice": 76719.75,
   "perp": {
@@ -11019,20 +10927,32 @@
      "net": -0.06641,
      "state": "BOTH",
      "hedgeRatio": 0.3333
+    },
+    {
+     "at": "2026-11-07T06:11:49+00:00",
+     "tradeDate": "2026-11-06",
+     "signal": "Underweight",
+     "price": 76008.1,
+     "equity": 10067.27,
+     "long": 0.033205,
+     "short": 0.099616,
+     "net": -0.06641,
+     "state": "BOTH",
+     "hedgeRatio": 0.3333
     }
    ],
-   "bothShare": 66.67,
+   "bothShare": 75,
    "leverage": 1,
    "venue": "okx",
    "startCapital": 10000,
-   "wallet": 10019.48,
+   "wallet": 10020.01,
    "qty": -0.06641039025257983,
    "entry": 76719.75,
    "side": "SHORT",
-   "equity": 10076.31,
-   "liq": 226459.66,
+   "equity": 10067.27,
+   "liq": 226467.62,
    "fees": 7.44,
-   "funding": -0.13,
+   "funding": -0.67,
    "realized": 26.79,
    "liquidations": 0,
    "lastError": null,
@@ -11089,7 +11009,7 @@
    ],
    "orders": [
     {
-     "id": "2026-11-06-1",
+     "id": "2026-11-07-1",
      "type": "stop_loss",
      "leg": "short",
      "trigger": "daily_close",
@@ -11097,9 +11017,68 @@
      "price": 81100,
      "action": "close_leg",
      "qty": 0,
-     "note": "Cắt lỗ toàn bộ vị thế short khi đóng nến ngày trên 81.100",
-     "quote": "short leg: buy back 0.1005 BTC (or whatever is left of the short leg if order 2 has fired) on a daily UTC close above 81,100",
-     "createdAt": "2026-11-06T09:04:33+00:00"
+     "note": "Đóng toàn bộ vị thế short khi giá đóng cửa ngày trên 81.100",
+     "quote": "short leg: close the whole remaining short (0.0996 BTC, or 0.0661 BTC if order 4 has fired) on a daily close above 81,100",
+     "createdAt": "2026-11-07T06:17:12+00:00"
+    },
+    {
+     "id": "2026-11-07-2",
+     "type": "stop_loss",
+     "leg": "long",
+     "trigger": "daily_close",
+     "direction": "below",
+     "price": 73100,
+     "action": "close_leg",
+     "qty": 0,
+     "note": "Đóng vị thế long khi giá đóng cửa ngày dưới 73.100",
+     "quote": "long leg: close 0.0332 BTC on a daily close below 73,100",
+     "createdAt": "2026-11-07T06:17:12+00:00"
+    },
+    {
+     "id": "2026-11-07-3",
+     "type": "take_profit",
+     "leg": "short",
+     "trigger": "daily_close",
+     "direction": "below",
+     "price": 73100,
+     "action": "reduce_leg",
+     "qty": 0.0335,
+     "note": "Chốt lời một phần short khi đóng cửa ngày dưới 73.100",
+     "quote": "short leg: cut 0.0335 BTC on a daily close below 73,100",
+     "createdAt": "2026-11-07T06:17:12+00:00"
+    },
+    {
+     "id": "2026-11-07-4",
+     "type": "stop_loss",
+     "leg": "short",
+     "trigger": "daily_close",
+     "direction": "above",
+     "price": 79900,
+     "action": "reduce_leg",
+     "qty": 0.0335,
+     "note": "Giảm một phần ba short khi đóng cửa ngày trên 79.900",
+     "quote": "NEW, short leg: cut 0.0335 BTC on a daily close above 79,900",
+     "createdAt": "2026-11-07T06:17:12+00:00"
+    }
+   ],
+   "orderLog": [
+    {
+     "id": "2026-11-06-3",
+     "type": "take_profit",
+     "leg": "short",
+     "trigger": "daily_close",
+     "direction": "below",
+     "price": 73100,
+     "action": "reduce_leg",
+     "qty": 0.0335,
+     "note": "Mua lại 0.0335 BTC chân short khi đóng nến ngày dưới 73.100",
+     "quote": "buy back 0.0335 BTC of the short leg in the same step, so the net stays 0.067 BTC short",
+     "createdAt": "2026-11-06T09:04:33+00:00",
+     "status": "replaced",
+     "closedAt": "2026-11-07T06:17:12+00:00",
+     "fill": null,
+     "realized": null,
+     "why": "thay bằng kế hoạch PM mới"
     },
     {
      "id": "2026-11-06-2",
@@ -11112,23 +11091,32 @@
      "qty": 0,
      "note": "Đóng toàn bộ chân long khi đóng nến ngày dưới 73.100",
      "quote": "On a daily UTC close below 73,100, sell the whole 0.0335 BTC long leg",
-     "createdAt": "2026-11-06T09:04:33+00:00"
+     "createdAt": "2026-11-06T09:04:33+00:00",
+     "status": "replaced",
+     "closedAt": "2026-11-07T06:17:12+00:00",
+     "fill": null,
+     "realized": null,
+     "why": "thay bằng kế hoạch PM mới"
     },
     {
-     "id": "2026-11-06-3",
-     "type": "take_profit",
+     "id": "2026-11-06-1",
+     "type": "stop_loss",
      "leg": "short",
      "trigger": "daily_close",
-     "direction": "below",
-     "price": 73100,
-     "action": "reduce_leg",
-     "qty": 0.0335,
-     "note": "Mua lại 0.0335 BTC chân short khi đóng nến ngày dưới 73.100",
-     "quote": "buy back 0.0335 BTC of the short leg in the same step, so the net stays 0.067 BTC short",
-     "createdAt": "2026-11-06T09:04:33+00:00"
+     "direction": "above",
+     "price": 81100,
+     "action": "close_leg",
+     "qty": 0,
+     "note": "Cắt lỗ toàn bộ vị thế short khi đóng nến ngày trên 81.100",
+     "quote": "short leg: buy back 0.1005 BTC (or whatever is left of the short leg if order 2 has fired) on a daily UTC close above 81,100",
+     "createdAt": "2026-11-06T09:04:33+00:00",
+     "status": "replaced",
+     "closedAt": "2026-11-07T06:17:12+00:00",
+     "fill": null,
+     "realized": null,
+     "why": "thay bằng kế hoạch PM mới"
     }
-   ],
-   "orderLog": []
+   ]
   }
  }
 }
