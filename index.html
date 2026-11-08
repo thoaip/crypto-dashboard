@@ -247,6 +247,9 @@
   .tx-pop .bd table,.tx-full table{border-collapse:collapse;font-size:10.5px;margin:6px 0;width:100%}
   .tx-pop .bd td,.tx-full td{border:1px solid var(--tx-line2);padding:3px 6px;vertical-align:top}
   .tx-pop .note{color:var(--tx-dim);font-style:italic}
+  .tx-feeds{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--tx-line2)}
+  .tx-feeds i{font-style:normal;font-size:9px;letter-spacing:.8px;color:var(--tx-dim);margin-right:2px}
+  .tx-feeds em{font-style:normal;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;color:var(--b);background:color-mix(in srgb,var(--b) 14%,transparent)}
   .tx-pop .en{color:#9fb6d6}
   .tx-full summary{cursor:pointer;color:var(--tx-neon);margin-top:8px}
   .tx-dava .cb{transform:rotateY(-14deg)}
@@ -1503,7 +1506,7 @@ const TX_STAGE_SEC = 2.2;
 // Vai trò cố định của từng tác tử — luôn hiện, kể cả khi lượt chạy chưa có nhận định
 const TX_ROLE = {
   market:"Phân tích kỹ thuật: xu hướng, MA, RSI, MACD, Bollinger, vùng giá.",
-  sentiment:"Cảm xúc thị trường: mạng xã hội, Reddit/StockTwits, tâm lý đám đông.",
+  sentiment:"Cảm xúc thị trường: tin tức, Reddit/StockTwits + funding 4 sàn, long/short, quyền chọn Deribit, Fear&Greed, thanh lý — đám đông nói gì vs đang đặt cược gì.",
   news:"Tin tức vĩ mô & crypto: chính sách, ETF, sự kiện tác động BTC.",
   bull:"Phe MUA: dựng luận điểm tăng giá từ các báo cáo phân tích.",
   bear:"Phe BÁN: chỉ ra rủi ro, phản biện luận điểm của Bull.",
@@ -1592,6 +1595,7 @@ function txPopShow(k, r){
   pop.innerHTML=`<div class="hd"><span class="tx-ava">${txChibi(k)}</span><div><b>${escHtml((a&&a.label)||lab)}</b><span>`+
       (a&&a.rating?tag(a.rating,txCol(a.rating)):"")+(a&&a.stance?tag(a.stance,TX_STANCE_COL[a.stance]||"#fff"):"")+
       `<i>${full?(a.vi?"toàn văn tiếng Việt":"toàn văn bản gốc EN"):"tóm tắt"} · ${escHtml(tx.upd||"")}</i></span></div></div>`+
+    (k==="sentiment"?txFeeds():"")+
     `<div class="bd">`+(full?txMd(full):a?
       (a.summary?`<p>${escHtml(a.summary)}</p>`:"")+(Array.isArray(a.points)&&a.points.length?`<ul>${a.points.map(p=>`<li>${escHtml(p)}</li>`).join("")}</ul>`:"")+
       (a.text?`<p class="en">${escHtml(a.text)}…</p>`:"")+`<p class="note">Toàn văn báo cáo hiện từ lần chạy kế tiếp.</p>`
@@ -1603,6 +1607,24 @@ function txPopShow(k, r){
   if(x+w>vw-8){ x=r.left-w-10; if(x<8){ x=Math.max(8,Math.min(vw-w-8,r.left)); side=false; } }
   const y=side?Math.max(8,Math.min(vh-h-8,r.top)):(r.bottom+6+h<vh-8?r.bottom+6:Math.max(8,r.top-h-6));
   pop.style.left=x+"px"; pop.style.top=y+"px";
+}
+// Nguồn bổ sung Sentiment Analyst của lần chạy (tauric/feeds.py): funding 3 sàn + số bài X.com
+function txFeeds(){
+  const f=(tx.data.lastOk||tx.data.last||{}).feeds; if(!f||!f.funding) return "";
+  const fund=Object.entries(f.funding).map(([v,d])=>d.error?`<em style="--b:#5f7695" title="${escHtml(d.error)}">${escHtml(v)} ✗</em>`
+    :`<em style="--b:${d.rate>0.0003?"#ff4d6d":d.rate<0?"#3dff8f":"#ffc23d"}">${escHtml(v)} ${d.rate>=0?"+":""}${(d.rate*100).toFixed(4)}%</em>`).join("");
+  const x=f.x||{}, xs=x.posts?`<em style="--b:#3de1ff">X.com ${x.posts} bài</em>`:"";   // X tạm chưa dùng → ẩn
+  // định vị & phái sinh: [nhãn, giá trị, màu] — nguồn lỗi hiện ✗ kèm lý do khi rê chuột
+  const P=f.positioning||{}, g=(k)=>P[k]&&!P[k].error?P[k]:null, chip=(lab,val,c)=>`<em style="--b:${c}">${escHtml(lab)} ${escHtml(val)}</em>`;
+  const pos=[], o=g("OKX long/short + taker"), d=g("Deribit options"), fg=g("Fear & Greed"), cb=g("Coinbase premium"), sc=g("Stablecoin supply"), lq=g("Hyperliquid liquidations");
+  if(o) pos.push(chip("L/S",o.lsRatio.toFixed(2),o.lsRatio>2.5?"#ff4d6d":o.lsRatio<1?"#3dff8f":"#ffc23d"));
+  if(fg) pos.push(chip("F&G",`${fg.fng} ${fg.fngLabel}`,fg.fng<=25?"#3dff8f":fg.fng>=75?"#ff4d6d":"#ffc23d"));
+  if(d) pos.push(chip("DVOL",d.dvol!=null?d.dvol.toFixed(1):"—","#a98bff")+chip("Put/Call",d.pcr!=null?d.pcr.toFixed(2):"—",d.pcr>0.8?"#ff4d6d":"#a98bff"));
+  if(cb&&cb.cbBase!=null){ const dev=cb.cbPremium-cb.cbBase; pos.push(chip("CB prem.",`${dev>=0?"+":""}${Math.round(dev)}$`,dev>50?"#3dff8f":dev<-50?"#ff4d6d":"#5f7695")); }
+  if(sc) pos.push(chip("Stable 7d",`${sc.stable7d>=0?"+":""}${sc.stable7d}%`,sc.stable7d>0?"#3dff8f":"#ff4d6d"));
+  if(lq) pos.push(chip("Liq HL 24h",`L $${fmt(lq.liqLong)} / S $${fmt(lq.liqShort)}`,"#ff8f5c"));
+  for(const [k,v] of Object.entries(P)) if(v&&v.error) pos.push(`<em style="--b:#5f7695" title="${escHtml(v.error)}">${escHtml(k)} ✗</em>`);
+  return `<div class="tx-feeds"><i>FUNDING / 8H</i>${fund}${xs}</div>`+(pos.length?`<div class="tx-feeds"><i>ĐỊNH VỊ · PHÁI SINH</i>${pos.join("")}</div>`:"");
 }
 function txPopHide(){ clearTimeout(tx.popT); tx.popT=setTimeout(()=>{ const p=$("txPop"); if(p) p.hidden=true; },220); }
 function txPopBind(){
