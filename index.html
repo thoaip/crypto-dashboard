@@ -230,6 +230,25 @@
   .tx-card:hover .cb,.tx-card:focus-visible .cb{transform:rotateY(22deg) scale(1.1)}
   .tx-card.sel .cb .cb-bob{animation-duration:1.1s}
   .tx-dava{float:left;width:66px;height:74px;margin:0 12px 4px 0;perspective:260px}
+  /* Khung báo cáo đầy đủ khi rê chuột vào thẻ / nút tác tử */
+  .tx-pop{position:fixed;z-index:60;width:min(470px,92vw);max-height:72vh;overflow:auto;overscroll-behavior:contain;
+    background:rgba(5,9,15,.97);border:1px solid var(--tx-line2);border-left:3px solid var(--c,#3de1ff);border-radius:10px;padding:0 14px 12px;
+    box-shadow:0 18px 40px -10px rgba(0,0,0,.85),0 0 26px -10px var(--c,#3de1ff);font:11.5px/1.62 system-ui,-apple-system,"Segoe UI",sans-serif;color:#d8e6fb}
+  .tx-pop[hidden]{display:none}
+  .tx-pop .hd{position:sticky;top:0;z-index:1;display:flex;gap:10px;align-items:center;padding:9px 0 7px;background:rgb(5,9,15);border-bottom:1px solid var(--tx-line2)}
+  .tx-pop .hd .tx-ava{width:38px;height:43px;margin:0}
+  .tx-pop .hd b{display:block;color:#fff;font-size:13px}
+  .tx-pop .hd span{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .tx-pop .hd em{font-style:normal;font-size:9.5px;font-weight:800;padding:1px 6px;border-radius:4px;color:var(--b);background:color-mix(in srgb,var(--b) 15%,transparent)}
+  .tx-pop .hd i{font-style:normal;font-size:9.5px;color:var(--tx-dim)}
+  .tx-pop .bd h5,.tx-full h5{margin:12px 0 3px;font-size:12px;color:#fff}
+  .tx-pop .bd p,.tx-full p{margin:5px 0}
+  .tx-pop .bd ul,.tx-full ul{margin:4px 0;padding-left:18px}
+  .tx-pop .bd table,.tx-full table{border-collapse:collapse;font-size:10.5px;margin:6px 0;width:100%}
+  .tx-pop .bd td,.tx-full td{border:1px solid var(--tx-line2);padding:3px 6px;vertical-align:top}
+  .tx-pop .note{color:var(--tx-dim);font-style:italic}
+  .tx-pop .en{color:#9fb6d6}
+  .tx-full summary{cursor:pointer;color:var(--tx-neon);margin-top:8px}
   .tx-dava .cb{transform:rotateY(-14deg)}
   @media (prefers-reduced-motion:reduce){.cb *{animation:none!important}.cb{transition:none}}
 
@@ -504,6 +523,7 @@
       <svg id="txChibiDefs" width="0" height="0" style="position:absolute" aria-hidden="true"><defs></defs></svg>
       <div class="tx-chips" id="txIn" aria-label="Chọn tác tử để đọc nhận định"></div>
       <div class="tx-detail" id="txDetail" aria-live="polite"></div>
+      <div class="tx-pop" id="txPop" role="tooltip" hidden></div>
     </div>
     <div class="tx-hedge" id="txHedge" style="display:none">
       <div class="tx-p"><div class="tx-h">SET CHAIN · FLAT → LONG / SHORT → HEDGE <span class="tx-dim">chuyển trạng thái sổ giữa các lần chạy</span></div>
@@ -1512,7 +1532,10 @@ function txShell(err){
       `<span class="role">${escHtml(TX_ROLE[k])}</span>`+
       `<span class="sm${sum?"":" empty"}">${sum?escHtml(sum):"Chưa có nhận định — cập nhật ở lần chạy tới."}</span>`+
       `<span class="ft"><span>${a?escHtml(upd):"—"}</span>${a&&fresh&&src===tx.data.last?`<span class="new">● MỚI</span>`:""}</span></button>`; }).join("");
-  $("txIn").querySelectorAll(".tx-card").forEach(b=>b.onclick=()=>txSelect(b.dataset.k));
+  $("txIn").querySelectorAll(".tx-card").forEach(b=>{ b.onclick=()=>txSelect(b.dataset.k);
+    if(TX_HOVER){ b.onmouseenter=()=>txPopShow(b.dataset.k,b.getBoundingClientRect()); b.onmouseleave=txPopHide; }
+    b.onfocus=()=>txPopShow(b.dataset.k,b.getBoundingClientRect()); b.onblur=txPopHide; });
+  tx.upd=upd; txPopBind();
   const d=tx.data.lastOk||tx.data.last;
   $("txCore").innerHTML=d?`<div class="r" style="--c:${txCol(d.signal)}">${escHtml((d.signal||"—").toUpperCase())}</div>`+
     `<div class="m">PM · ${escHtml(d.tradeDate||"")} · ${txIsPerp()?`PERP ${escHtml((tx.data.perp&&tx.data.perp.side)||"—")}`:`SPOT ${Math.round((d.exposureAfter||0)*100)}%`}</div>`:"";
@@ -1531,10 +1554,62 @@ function txDetail(){
       ` <span class="tx-dim">· ${escHtml(TX_ROLE[tx.selKey]||"")}</span>`+
       (a.summary?`<div style="margin-top:6px;color:#e8f1ff">${escHtml(a.summary)}</div>`:"")+
       (Array.isArray(a.points)&&a.points.length?`<ul>${a.points.map(p=>`<li>${escHtml(p)}</li>`).join("")}</ul>`:"")+
-      (a.text?`<details><summary>Trích báo cáo gốc (EN · ${a.chars||0} ký tự)</summary>${escHtml(a.text)}…</details>`:"");
+      (a.vi||a.en?`<details class="tx-full"><summary>Đọc toàn văn báo cáo (${a.vi?"tiếng Việt":"bản gốc EN"})</summary>${txMd(a.vi||a.en)}</details>`
+        :a.text?`<details><summary>Trích báo cáo gốc (EN · ${a.chars||0} ký tự)</summary>${escHtml(a.text)}…</details>`:"");
     return; }
   $("txDetail").innerHTML=tx.err?`<b style="color:#ff4d6d">Lần chạy gần nhất lỗi [${escHtml(tx.err.stage||"run")}]:</b> ${escHtml(tx.err.error)}`
     :`<span class="tx-dava">${txChibi(tx.selKey)}</span><b>${escHtml(lab)}</b> · <span class="tx-dim">nhận định riêng của từng tác tử có từ lần chạy kế tiếp (bản ghi hiện tại chưa lưu).</span>`;
+}
+// ── Rê chuột vào thẻ / nút tác tử → khung báo cáo ĐẦY ĐỦ (toàn văn tiếng Việt; chưa dịch thì bản gốc EN).
+// Di chuột sang khung để cuộn đọc; rời cả hai thì ẩn; Esc để đóng. Máy cảm ứng: bấm thẻ → "Đọc toàn văn" ở ô chi tiết.
+const TX_HOVER = window.matchMedia("(hover: hover)").matches;
+// Markdown tối giản → HTML an toàn: escape TRƯỚC rồi mới thêm thẻ (chữ do LLM viết)
+function txMd(md){
+  const out=[]; let ul=false, tb=null;
+  const flush=()=>{ if(ul){ out.push("</ul>"); ul=false; } if(tb){ out.push(`<table>${tb.join("")}</table>`); tb=null; } };
+  for(const raw of String(md||"").split("\n")){
+    const l=escHtml(raw.trimEnd()).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>");
+    if(/^\s*\|/.test(l)){                                    // bảng markdown
+      if(ul){ out.push("</ul>"); ul=false; }
+      if(/^\s*\|?[\s:|-]+\|?\s*$/.test(l)) continue;        // dòng kẻ |---|
+      const cells=l.trim().replace(/^\||\|$/g,"").split("|").map(c=>c.trim());
+      tb=tb||[]; tb.push(`<tr>${cells.map(c=>`<td>${c}</td>`).join("")}</tr>`); continue;
+    }
+    const h=l.match(/^(#{1,4})\s+(.*)$/), li=l.match(/^\s*(?:[-*•]|\d+[.)])\s+(.*)$/);
+    if(li){ if(tb){ out.push(`<table>${tb.join("")}</table>`); tb=null; } if(!ul){ out.push("<ul>"); ul=true; } out.push(`<li>${li[1]}</li>`); continue; }
+    flush();
+    if(h) out.push(`<h5>${h[2]}</h5>`); else if(l.trim()) out.push(`<p>${l}</p>`);
+  }
+  flush(); return out.join("");
+}
+function txPopShow(k, r){
+  const pop=$("txPop"); if(!pop||!tx.data) return;
+  clearTimeout(tx.popT);
+  const a=tx.agents.find(x=>x.key===k), lab=TX_LABEL[k]||k, full=a&&(a.vi||a.en);
+  const col=a&&a.rating?txCol(a.rating):(TX_NODES.find(n=>n[0]===k)||[])[2]||"#3de1ff";
+  const tag=(t,c)=>`<em style="--b:${c}">${escHtml(t)}</em>`;
+  pop.style.setProperty("--c",col);
+  pop.innerHTML=`<div class="hd"><span class="tx-ava">${txChibi(k)}</span><div><b>${escHtml((a&&a.label)||lab)}</b><span>`+
+      (a&&a.rating?tag(a.rating,txCol(a.rating)):"")+(a&&a.stance?tag(a.stance,TX_STANCE_COL[a.stance]||"#fff"):"")+
+      `<i>${full?(a.vi?"toàn văn tiếng Việt":"toàn văn bản gốc EN"):"tóm tắt"} · ${escHtml(tx.upd||"")}</i></span></div></div>`+
+    `<div class="bd">`+(full?txMd(full):a?
+      (a.summary?`<p>${escHtml(a.summary)}</p>`:"")+(Array.isArray(a.points)&&a.points.length?`<ul>${a.points.map(p=>`<li>${escHtml(p)}</li>`).join("")}</ul>`:"")+
+      (a.text?`<p class="en">${escHtml(a.text)}…</p>`:"")+`<p class="note">Toàn văn báo cáo hiện từ lần chạy kế tiếp.</p>`
+      :`<p class="note">${escHtml(TX_ROLE[k]||"")} — chưa có nhận định ở lần chạy này.</p>`)+`</div>`;
+  pop.hidden=false; pop.scrollTop=0;
+  const w=pop.offsetWidth, h=pop.offsetHeight, vw=innerWidth, vh=innerHeight;
+  // ưu tiên bên phải thẻ, rồi bên trái; màn hẹp thì đặt dưới (hoặc trên) thẻ
+  let x=r.right+10, side=true;
+  if(x+w>vw-8){ x=r.left-w-10; if(x<8){ x=Math.max(8,Math.min(vw-w-8,r.left)); side=false; } }
+  const y=side?Math.max(8,Math.min(vh-h-8,r.top)):(r.bottom+6+h<vh-8?r.bottom+6:Math.max(8,r.top-h-6));
+  pop.style.left=x+"px"; pop.style.top=y+"px";
+}
+function txPopHide(){ clearTimeout(tx.popT); tx.popT=setTimeout(()=>{ const p=$("txPop"); if(p) p.hidden=true; },220); }
+function txPopBind(){
+  const pop=$("txPop"); if(!pop||pop.dataset.b) return; pop.dataset.b="1";
+  pop.onmouseenter=()=>clearTimeout(tx.popT); pop.onmouseleave=txPopHide;
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape") pop.hidden=true; });
+  window.addEventListener("scroll",()=>{ if(!pop.matches(":hover")) pop.hidden=true; },{passive:true});
 }
 function txLayout(){
   const cv=$("txTorus"); if(!cv) return;
@@ -1560,14 +1635,18 @@ function txBindPointer(cv){
   cv.style.pointerEvents="auto"; cv.style.touchAction="pan-y";
   const pick=(e)=>{ const r=cv.getBoundingClientRect(), mx=e.clientX-r.left, my=e.clientY-r.top; let best=null, bd=1e9;
     for(const [k,p] of Object.entries(tx.proj)){ const d=Math.hypot(p.x-mx,p.y-my); if(d<p.r+8&&d<bd){ bd=d; best=k; } } return best; };
-  cv.addEventListener("pointerdown",e=>{ tx.drag={x:e.clientX,y:e.clientY,ry:tx.rotY,rx:tx.rotX,moved:false}; cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener("pointerdown",e=>{ tx.drag={x:e.clientX,y:e.clientY,ry:tx.rotY,rx:tx.rotX,moved:false}; cv.setPointerCapture(e.pointerId); const p=$("txPop"); if(p) p.hidden=true; });
   cv.addEventListener("pointermove",e=>{
     if(tx.drag){ const dx=e.clientX-tx.drag.x, dy=e.clientY-tx.drag.y; if(Math.abs(dx)+Math.abs(dy)>4) tx.drag.moved=true;
       tx.rotY=tx.drag.ry+dx*.008; tx.rotX=Math.max(-1.2,Math.min(.3,tx.drag.rx+dy*.006)); if(txReduce) txFrame(performance.now()); return; }
-    const h=pick(e); if(h!==tx.hover){ tx.hover=h; cv.style.cursor=h&&h!=="core"?"pointer":"grab"; if(txReduce) txFrame(performance.now()); }
+    const h=pick(e); if(h!==tx.hover){ tx.hover=h; cv.style.cursor=h&&h!=="core"?"pointer":"grab"; if(txReduce) txFrame(performance.now());
+      // nút tác tử trên đồ thị cũng mở khung báo cáo đầy đủ, neo cạnh nút
+      if(TX_HOVER&&h&&h!=="core"){ const r=cv.getBoundingClientRect(), p=tx.proj[h], s=p.r+14;
+        txPopShow(h,{left:r.left+p.x-s,right:r.left+p.x+s,top:r.top+p.y-s,bottom:r.top+p.y+s}); }
+      else txPopHide(); }
   });
   cv.addEventListener("pointerup",e=>{ const d=tx.drag; tx.drag=null; if(d&&!d.moved){ const k=pick(e); if(k&&k!=="core") txSelect(k); } });
-  cv.addEventListener("pointerleave",()=>{ tx.hover=null; });
+  cv.addEventListener("pointerleave",()=>{ tx.hover=null; txPopHide(); });
 }
 function txFrame(now){
   const cv=$("txTorus"); if(!cv||!tx.W) return;
