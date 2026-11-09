@@ -1153,11 +1153,26 @@ function txSpot(){
     else ctx.arc(x,y,4,0,Math.PI*2);
     ctx.fill(); ctx.shadowBlur=0;
   }
-  ctx.font="9.5px ui-monospace,monospace";
-  for(const o of ords){ const k=TX_ORD[o.type]||{tag:o.type,c:"#cfe1ff"}, y=Y(o.price);
-    ctx.strokeStyle=k.c; ctx.globalAlpha=.85; ctx.setLineDash(o.trigger==="daily_close"?[2,3]:[6,4]); ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(w-pad,y); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
-    ctx.fillStyle=k.c; ctx.fillText(`${k.tag} ${fp(Math.round(o.price))}${o.trigger==="daily_close"?" (đóng D)":""}`,pad+2,y-3); }
+  // Lệnh chờ PM: vẽ đường từng lệnh, nhãn GỘP theo mức giá rồi giãn cho khỏi chồng (đường dẫn nối về đúng mức)
+  for(const o of ords){ const k=TX_ORD[o.type]||{c:"#cfe1ff"}, y=Y(o.price);
+    ctx.strokeStyle=k.c; ctx.globalAlpha=.8; ctx.setLineDash(o.trigger==="daily_close"?[2,3]:[6,4]); ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(w-pad,y); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1; }
+  const grp={}; for(const o of ords){ const g=grp[o.price]||(grp[o.price]={price:o.price,y:Y(o.price),tags:[],trig:new Set()});
+    const k=TX_ORD[o.type]||{tag:o.type,c:"#cfe1ff"}; if(!g.tags.some(t=>t.tag===k.tag)) g.tags.push(k); g.trig.add(o.trigger); }
+  const labs=Object.values(grp).sort((a,b)=>a.y-b.y), GAP=16, top=pad+8, bot=h-pad-8;
+  labs.forEach((l,i)=>{ l.ly=Math.max(l.y, i?labs[i-1].ly+GAP:top); });          // đẩy xuống khi chạm nhãn phía trên
+  for(let i=labs.length-1;i>=0;i--){                                               // tràn đáy khung → đẩy ngược lên
+    const lim=i<labs.length-1?labs[i+1].ly-GAP:bot; if(labs[i].ly>lim) labs[i].ly=lim; }
+  ctx.font="bold 10px ui-monospace,monospace"; ctx.textBaseline="middle";
+  for(const l of labs){
+    const col=l.tags.length>1?"#ffc23d":l.tags[0].c, trig=l.trig.size>1?" · D/chạm":l.trig.has("daily_close")?" · đóng D":"";
+    const txt=`${l.tags.map(t=>t.tag).join(" + ")} ${fp(Math.round(l.price))}${trig}`, tw=ctx.measureText(txt).width, x0=pad+4, bw=tw+12;
+    if(Math.abs(l.ly-l.y)>1){ ctx.strokeStyle=col; ctx.globalAlpha=.7; ctx.beginPath(); ctx.moveTo(x0+bw,l.ly); ctx.lineTo(x0+bw+10,l.y); ctx.stroke(); ctx.globalAlpha=1; }
+    ctx.fillStyle="rgba(5,9,15,.88)"; ctx.strokeStyle=col; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.roundRect?ctx.roundRect(x0,l.ly-7.5,bw,15,4):ctx.rect(x0,l.ly-7.5,bw,15); ctx.fill(); ctx.stroke();
+    ctx.fillStyle=col; ctx.fillText(txt,x0+6,l.ly+.5);
+  }
+  ctx.textBaseline="alphabetic";
   ctx.fillStyle="#5f7695"; ctx.font="10px ui-monospace,monospace"; ctx.textAlign="right";
   ctx.fillText("$"+fp(Math.round(hi)),w-2,pad-3); ctx.fillText("$"+fp(Math.round(lo)),w-2,h-2); ctx.textAlign="left";
 }
