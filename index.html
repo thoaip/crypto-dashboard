@@ -1637,9 +1637,9 @@ function txFeeds(){
   if(d) pos.push(chip("DVOL",d.dvol!=null?d.dvol.toFixed(1):"—","#a98bff")+chip("Put/Call",d.pcr!=null?d.pcr.toFixed(2):"—",d.pcr>0.8?"#ff4d6d":"#a98bff"));
   if(cb&&cb.cbBase!=null){ const dev=cb.cbPremium-cb.cbBase; pos.push(chip("CB prem.",`${dev>=0?"+":""}${Math.round(dev)}$`,dev>50?"#3dff8f":dev<-50?"#ff4d6d":"#5f7695")); }
   if(sc) pos.push(chip("Stable 7d",`${sc.stable7d>=0?"+":""}${sc.stable7d}%`,sc.stable7d>0?"#3dff8f":"#ff4d6d"));
-  if(lq) pos.push(chip("Liq HL 24h",`L $${fmt(lq.liqLong)} / S $${fmt(lq.liqShort)}`,"#ff8f5c"));
-  // thanh lý: heatmap ƯỚC TÍNH 3 sàn (cụm lớn nhất trên / dưới giá, tổng ±5%) + thanh lý THẬT OKX
+  // thanh lý: HL 24h + heatmap ƯỚC TÍNH 3 sàn (cụm lớn nhất trên / dưới giá, tổng ±5%) + thanh lý THẬT OKX — số gọn $xM / $xk
   const M=v=>v>=1e6?`$${Math.round(v/1e6)}M`:`$${Math.round(v/1e3)}k`, hm=g("Liquidation heatmap (est.)"), ol=g("OKX liquidations");
+  if(lq) pos.push(chip("Liq HL 24h",`L ${M(lq.liqLong)} / S ${M(lq.liqShort)}`,"#ff8f5c"));
   if(hm){ if(hm.topUp) pos.push(chip("Cụm short ↑",`${fmt(hm.topUp[0])} ${M(hm.topUp[1])}`,"#ff4d6d"));
     if(hm.topDn) pos.push(chip("Cụm long ↓",`${fmt(hm.topDn[0])} ${M(hm.topDn[1])}`,"#3dff8f"));
     pos.push(chip("±5% (ước tính)",`↑${M(hm.up5)} / ↓${M(hm.dn5)}`,hm.up5>hm.dn5?"#ff8f5c":"#3de1ff")); }
