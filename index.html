@@ -247,6 +247,23 @@
   .tx-pop .bd table,.tx-full table{border-collapse:collapse;font-size:10.5px;margin:6px 0;width:100%}
   .tx-pop .bd td,.tx-full td{border:1px solid var(--tx-line2);padding:3px 6px;vertical-align:top}
   .tx-pop .note{color:var(--tx-dim);font-style:italic}
+  .tx-journal .jn-kpi{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:10px}
+  .jn-kpi>div{background:rgba(7,12,20,.85);border:1px solid var(--tx-line2);border-radius:7px;padding:7px 9px}
+  .jn-kpi i{display:block;font-style:normal;font-size:9px;letter-spacing:.8px;color:var(--tx-dim)}
+  .jn-kpi b{font-size:14px;color:#fff;font-variant-numeric:tabular-nums}
+  .jn-kpi em{display:block;font-style:normal;font-size:9.5px;color:var(--tx-dim)}
+  .jn-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:12px}
+  @media(max-width:1000px){.jn-grid{grid-template-columns:1fr}}
+  .jn-sub{font-size:9.5px;letter-spacing:.8px;color:var(--tx-dim);margin-bottom:6px}
+  .jn-tbl{width:100%;border-collapse:collapse;font-size:10.5px;font-variant-numeric:tabular-nums}
+  .jn-tbl th{font-size:9px;letter-spacing:.6px;color:var(--tx-dim);font-weight:700;text-align:right;padding:4px 6px;border-bottom:1px solid var(--tx-line2)}
+  .jn-tbl th:first-child,.jn-tbl td:first-child{text-align:left}
+  .jn-tbl td{padding:4px 6px;border-bottom:1px dashed var(--tx-line);text-align:right;color:#cfe1ff}
+  .jn-ag{display:flex;align-items:center;gap:6px}
+  .jn-ag .tx-ava{width:22px;height:25px;margin:0}
+  .jn-bar{display:inline-block;width:46px;height:5px;border-radius:3px;background:var(--tx-line2);vertical-align:middle;margin-left:5px;overflow:hidden}
+  .jn-bar i{display:block;height:100%;background:var(--c)}
+  .jn-note{font-size:9.5px;color:#ffe2a0;margin-top:6px}
   .tx-feeds{display:flex;flex-wrap:wrap;gap:5px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--tx-line2)}
   .tx-feeds i{font-style:normal;font-size:9px;letter-spacing:.8px;color:var(--tx-dim);margin-right:2px}
   .tx-feeds em{font-style:normal;font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;color:var(--b);background:color-mix(in srgb,var(--b) 14%,transparent)}
@@ -553,6 +570,12 @@
       <div class="tx-p"><div class="tx-h">EXECUTION TAPE · XẾP HẠNG &amp; LỆNH</div><div class="tx-tapewrap" id="txExec"></div></div>
       <div class="tx-p" id="txPerpBox"><div class="tx-h">PERP · BTCUSDT.P <span class="tx-dim" id="txPerpMeta"></span></div><div id="txPerp"></div></div>
       <div class="tx-p"><div class="tx-h">RATING FUNNEL</div><div id="txFunnel"></div></div>
+    </div>
+    <div class="tx-p tx-journal" id="txJournal">
+      <div class="tx-h">NHẬT KÝ LỆNH · HIỆU QUẢ TÁC TỬ <span class="tx-dim" id="txJnMeta">tư liệu để PM rút kinh nghiệm — cập nhật sau mỗi lần chạy</span></div>
+      <div class="jn-kpi" id="txJnKpi"></div>
+      <div class="jn-grid"><div><div class="jn-sub">CHẤM ĐIỂM TÁC TỬ — hướng nhận định so với biến động BTC thật sau nến ngày được phân tích</div><div id="txJnAgents"></div></div>
+        <div><div class="jn-sub">NHẬT KÝ LỆNH (mới nhất trước)</div><div id="txJnTrades"></div></div></div>
     </div>
     <div class="tx-tiles" id="txTiles"></div>
     <p class="tx-note">🧪 <b>Chạy song song, độc lập với Hội đồng.</b> Mỗi ngày sau khi nến ngày (UTC) đóng, khung đa tác tử TradingAgents (Apache-2.0): phân tích kỹ thuật · cảm xúc · tin tức → tranh luận Bull/Bear → Research Manager → Trader → tranh luận rủi ro → Portfolio Manager ra xếp hạng 5 bậc. Hai tài khoản <b>tách biệt</b>, mỗi tài khoản một lượt chạy riêng với điều lệ riêng. <b>SPOT · DÀI HẠN</b> (đánh giá mỗi tuần, khung nhiều tháng → năm, long-only): Buy 100% · Overweight 75% · Hold giữ · Underweight 25% · Sell 0% BTC, phí 0.1%/chiều. <b>PERP · ĐA KHUNG L/S</b> (mỗi ngày, BTCUSDT.P, khung 4H/1D/1W kèm số liệu đa khung thật): sổ phòng hộ 2 chân — Buy long 100% · Overweight long 75%/short 25% · Hold giữ · Underweight long 25%/short 75% · Sell short 100% (× đòn bẩy; hai chân bù trừ, rủi ro/funding/thanh lý theo vị thế ròng), giá + funding thật từ OKX (dự phòng Bybit/Binance), phí taker 0.05%, có thanh lý; mức stop / chốt lời / huỷ kịch bản PM nêu rõ giá được đặt thành lệnh chờ và khớp theo nến 1H (chỉ nến sau lúc đặt, gap khớp ở giá mở) — KHÔNG đặt lệnh thật. Bấm từng tác tử để đọc nhận định. Không backtest được trung thực (LLM đã biết giá quá khứ) → chỉ chấm forward · không phải khuyến nghị.</p>
@@ -965,7 +988,7 @@ function renderTauric(){
   $("txSub").textContent=`VỐN $${fp(ta.startCapital)} · TỪ ${String(ta.startedAt).slice(0,10)} · ${ta.runs} LẦN CHẠY`+(ta.errors?` · ${ta.errors} LỖI`:"")+(d&&d.deepModel?` · ${txModel(d.deepModel)} / ${txModel(d.quickModel)}`:"");
   $("txPerpBox").style.display=txIsPerp()?"":"none";
   $("txGrid2").classList.toggle("no-perp",!txIsPerp());
-  txStats(); txWallet(); txWire(); txExec(); txPerp(); txFunnel(); txTiles(); txMarquee(); txShell(err); txHedge(); txGuide();
+  txStats(); txWallet(); txWire(); txExec(); txPerp(); txFunnel(); txTiles(); txMarquee(); txShell(err); txHedge(); txGuide(); txJournal();
   requestAnimationFrame(()=>{ txSpot(); txRace(); txLayout(); txFrame(performance.now()); });
   txStartLoop();
 }
@@ -1494,6 +1517,40 @@ function txGuideRender(){
   $("txGxDemo").textContent=ex.demo;
 }
 
+
+// ── Nhật ký lệnh + chấm điểm tác tử (tauric/journal.py) — tư liệu để PM rút kinh nghiệm ──
+function txJournal(){
+  const box=$("txJournal"); if(!box) return;
+  const j=tx.data.journal; if(!j){ box.style.display="none"; return; } box.style.display="";
+  const s=j.stats, H=j.horizons||[], usd=v=>v==null?"—":txUsd(v), pc=v=>v==null?"—":`${v}%`;
+  $("txJnMeta").textContent=`· cập nhật ${txVn(j.asOf)} · khung chấm ${H.map(h=>h+"N").join(" / ")} · tư liệu để PM rút kinh nghiệm`;
+  $("txJnKpi").innerHTML=s?[
+    ["LÃI/LỖ ĐÃ CHỐT",usd(s.realized),`${s.trades} giao dịch`],
+    ["TỈ LỆ THẮNG (lần đóng/giảm)",pc(s.winRate),`${s.wins} thắng / ${s.losses} thua · ${s.closing} lần`],
+    ["TB THẮNG / TB THUA",`${usd(s.avgWin)} / ${usd(s.avgLoss)}`,""],
+    ["PHÍ · FUNDING",`${usd(-s.fees)} · ${usd(s.funding)}`,"funding + = nhận"],
+    ["SỤT GIẢM LỚN NHẤT",`${s.maxDD}%`,"theo các lần chạy"],
+    ["SO VỚI GIỮ BTC",s.equity&&s.buyHold?txSgn(txPct(s.equity,s.buyHold)):"—",`$${fp(Math.round(s.equity||0))} vs $${fp(Math.round(s.buyHold||0))}`],
+    ...Object.entries(s.byKind||{}).map(([k,v])=>[`LOẠI: ${k==="REBALANCE"?"Tái cân bằng":k==="LIQUIDATION"?"Thanh lý":(TX_ORD[k.toLowerCase()]||{}).vn||k}`,usd(v.realized),`${v.n} lần`])
+  ].map(([k,v,e])=>`<div><i>${escHtml(k)}</i><b>${escHtml(v)}</b>${e?`<em>${escHtml(e)}</em>`:""}</div>`).join("")
+    :`<div><i>TÀI KHOẢN SPOT</i><b>chỉ chấm tác tử</b><em>đánh giá mỗi tuần</em></div>`;
+  const A=j.agents||{}, order=TX_NODES.map(n=>n[0]).filter(k=>A[k]);
+  const cell=c=>!c||!c.calls?`<td class="tx-dim">—</td><td class="tx-dim">—</td>`
+    :`<td>${c.hit}%<span class="jn-bar" style="--c:${c.hit>=55?"#3dff8f":c.hit>=45?"#ffc23d":"#ff4d6d"}"><i style="width:${c.hit}%"></i></span></td><td style="color:${c.avg>=0?"#3dff8f":"#ff4d6d"}">${c.avg>=0?"+":""}${c.avg}%</td>`;
+  const maxN=Math.max(0,...order.flatMap(k=>H.map(h=>((A[k].h||{})[h]||{}).calls||0)));
+  $("txJnAgents").innerHTML=order.length?`<table class="jn-tbl"><tr><th>TÁC TỬ</th>`+H.map(h=>`<th>ĐÚNG ${h}N</th><th>TB ${h}N</th>`).join("")+`<th>SỐ LẦN</th></tr>`+
+    order.map(k=>{ const a=A[k], cs=H.map(h=>(a.h||{})[h]); return `<tr><td><span class="jn-ag"><span class="tx-ava">${txChibi(k)}</span>${escHtml(TX_LABEL[k]||a.label)}</span></td>`+
+      cs.map(cell).join("")+`<td>${cs.map(c=>c&&c.calls||0).join(" / ")}</td></tr>`; }).join("")+`</table>`+
+    `<div class="jn-note">${maxN<(j.minSample||20)?`⚠️ Mới ${maxN} lần chấm — dưới ${j.minSample||20} lần thì tỉ lệ đúng CHƯA có ý nghĩa thống kê. `:""}`+
+    `"TB" = biến động trung bình của BTC theo hướng tác tử nhận định (dương = đúng hướng). Bull/Bear tranh luận theo vai cố định nên điểm của họ chủ yếu phản ánh hướng thị trường.</div>`
+    :`<div class="tx-dim" style="font-size:10.5px">Chưa đủ dữ liệu — cần ít nhất 1 nến ngày trôi qua sau lần chạy.</div>`;
+  const T=j.recentTrades||[];
+  $("txJnTrades").innerHTML=T.length?`<table class="jn-tbl"><tr><th>THỜI ĐIỂM</th><th>LOẠI</th><th>CHÂN</th><th>KHỐI LƯỢNG</th><th>GIÁ</th><th>LÃI/LỖ</th></tr>`+
+    T.slice(0,15).map(t=>{ const k=TX_ORD[String(t.kind||"").toLowerCase()]; return `<tr><td class="tx-dim">${escHtml(txVn(t.at))}</td><td>${escHtml(k?k.vn:t.kind==="REBALANCE"?"Tái cân bằng":t.kind)}</td>`+
+      `<td style="color:${t.leg==="LONG"?"#3dff8f":"#ff4d6d"}">${escHtml(t.leg||"")} ${t.action==="OPEN"?"mở":"giảm"}</td><td>${(+t.qty).toFixed(4)}</td><td>$${fp(Math.round(t.price))}</td>`+
+      `<td style="color:${(t.realized||0)>0?"#3dff8f":(t.realized||0)<0?"#ff4d6d":"#5f7695"}">${t.realized?txUsd(t.realized):"—"}</td></tr>`; }).join("")+`</table>`
+    :`<div class="tx-dim" style="font-size:10.5px">Tài khoản này chưa có giao dịch.</div>`;
+}
 // ── AGENT SHELL 3D: 11 tác tử là nút phát sáng trong không gian, xếp vòng quanh lõi hình xuyến.
 // Xung chạy LẦN LƯỢT theo đúng pipeline TradingAgents; kéo để xoay, bấm nút để đọc nhận định.
 // Khung tác tử luôn hiện (kể cả khi lượt chạy chưa lưu nhận định) — dữ liệu chỉ tô màu + chữ.
