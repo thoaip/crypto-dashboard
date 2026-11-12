@@ -1578,7 +1578,7 @@ const TX_STAGE_SEC = 2.2;
 // Vai trò cố định của từng tác tử — luôn hiện, kể cả khi lượt chạy chưa có nhận định
 const TX_ROLE = {
   market:"Phân tích kỹ thuật: xu hướng, MA, RSI, MACD, Bollinger, vùng giá.",
-  sentiment:"Cảm xúc thị trường: tin tức, Reddit/StockTwits + funding 4 sàn, long/short, quyền chọn Deribit, Fear&Greed, thanh lý — đám đông nói gì vs đang đặt cược gì.",
+  sentiment:"Cảm xúc thị trường: tin tức, Reddit/StockTwits, kênh Telegram + funding 4 sàn, long/short, quyền chọn Deribit, Fear&Greed, thanh lý — đám đông nói gì vs đang đặt cược gì.",
   news:"Tin tức vĩ mô & crypto: chính sách, ETF, sự kiện tác động BTC.",
   bull:"Phe MUA: dựng luận điểm tăng giá từ các báo cáo phân tích.",
   bear:"Phe BÁN: chỉ ra rủi ro, phản biện luận điểm của Bull.",
@@ -1702,7 +1702,12 @@ function txFeeds(){
     pos.push(chip("±5% (ước tính)",`↑${M(hm.up5)} / ↓${M(hm.dn5)}`,hm.up5>hm.dn5?"#ff8f5c":"#3de1ff")); }
   if(ol) pos.push(chip(`Liq OKX ${ol.hours}h`,`L ${M(ol.long)} / S ${M(ol.short)}`,"#ff8f5c"));
   for(const [k,v] of Object.entries(P)) if(v&&v.error) pos.push(`<em style="--b:#5f7695" title="${escHtml(v.error)}">${escHtml(k)} ✗</em>`);
-  return `<div class="tx-feeds"><i>FUNDING / 8H</i>${fund}${xs}</div>`+(pos.length?`<div class="tx-feeds"><i>ĐỊNH VỊ · PHÁI SINH</i>${pos.join("")}</div>`:"");
+  // cộng đồng: Reddit (API chính thức nếu có key, không thì RSS bị chặn) + kênh Telegram công khai
+  const rd=f.reddit||{}, tg=f.telegram||{}, tgN=Object.values(tg).filter(v=>typeof v==="number"), comm=[];
+  if(f.reddit) comm.push(rd.source==="oauth"?chip("Reddit",`${rd.posts} bài`,"#ff8f5c")
+    :`<em style="--b:#5f7695" title="${escHtml(rd.error||rd.note||"")}">Reddit ✗ cần key API</em>`);
+  if(tgN.length) comm.push(chip("Telegram",`${tgN.length} kênh · ${tgN.reduce((a,b)=>a+b,0)} bài`,"#3de1ff"));
+  return `<div class="tx-feeds"><i>FUNDING / 8H</i>${fund}${xs}</div>`+(comm.length?`<div class="tx-feeds"><i>CỘNG ĐỒNG</i>${comm.join("")}</div>`:"")+(pos.length?`<div class="tx-feeds"><i>ĐỊNH VỊ · PHÁI SINH</i>${pos.join("")}</div>`:"");
 }
 function txPopHide(){ clearTimeout(tx.popT); tx.popT=setTimeout(()=>{ const p=$("txPop"); if(p) p.hidden=true; },220); }
 function txPopBind(){
