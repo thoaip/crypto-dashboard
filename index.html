@@ -1030,11 +1030,24 @@ function txPerp(){
     (mtf.length?`<div class="tx-mtf">`+mtf.map(m=>{ const c={up:"#3dff8f",down:"#ff4d6d"}[m.trend]||"#ffc23d";
       return `<span style="--c:${c}"><b>${escHtml(m.tf)}</b> ${m.trend==="up"?"▲":m.trend==="down"?"▼":"◆"} RSI ${m.rsi14}</span>`; }).join("")+`</div>`:"")+
     (p.lastError?`<div class="tx-empty" style="color:#ff4d6d">⚠️ ${escHtml(p.lastError)}</div>`:"")+
+    txToday(tx.data.lastOk&&tx.data.lastOk.today, px)+
     txOrders(p,px)+
     `<div style="margin-top:8px">`+(p.trades||[]).slice(0,5).map(t=>{ const k=TX_ORD[String(t.kind||"").toLowerCase()];
       return `<div class="tx-ptr"><span class="tx-dim">${escHtml(txIso(t.at))}</span><span style="color:${t.kind==="LIQUIDATION"?"#ff4d6d":t.side==="BUY"?"#3dff8f":"#ff4d6d"}">${t.kind==="LIQUIDATION"?"LIQ":k?k.tag:t.side} ${t.leg?escHtml(t.leg)+" ":""}${txBtc(t.qty,t.price)}</span><span>$${fp(Math.round(t.price))}</span><span class="tx-dim">${t.realized?txUsd(t.realized):"—"}</span></div>`; }).join("")+`</div>`;
 }
 
+// "Hôm nay (24h tới)" — tính sẵn lúc chạy (run.py today_outlook): biên độ ±1σ từ DVOL + mốc gần nhất trên/dưới giá
+function txToday(t, px){
+  if(!t||!t.price) return "";
+  const live=px||t.price, inR=t.lo&&live>=t.lo&&live<=t.hi;
+  const row=(m,c)=>`<div class="tx-ptr"><span style="color:${c}">$${fp(m.price)}</span><span class="tx-dim">${escHtml(m.what)}</span><span class="tx-dim">${((m.price/live-1)*100).toFixed(1)}%</span></div>`;
+  return `<div class="tx-ords" style="--a:#3de1ff"><div class="tx-h">HÔM NAY · 24H TỚI <span class="tx-dim">tính lúc ${escHtml(txVn(t.at))}</span></div>`+
+    (t.sigma?`<div style="font-size:11.5px;margin-bottom:6px">Biên độ kỳ vọng ±1σ: <b>$${fp(t.lo)} – $${fp(t.hi)}</b> <span class="tx-dim">(±$${fp(t.sigma)} · DVOL ${t.dvol.toFixed(1)}; ~68% khả năng giá nằm trong vùng này)</span>`+
+      ` · giá hiện tại <b style="color:${inR?"#3dff8f":"#ffc23d"}">${inR?"trong vùng":"ngoài vùng"}</b></div>`:"")+
+    (t.above||[]).slice().reverse().map(m=>row(m,"#ff4d6d")).join("")+
+    `<div class="tx-ptr"><span style="color:#fff">$${fp(Math.round(live))}</span><span>◀ giá hiện tại</span><span></span></div>`+
+    (t.below||[]).map(m=>row(m,"#3dff8f")).join("")+`</div>`;
+}
 // Lệnh chờ PM (tauric/orders.py): stop / chốt lời / huỷ kịch bản / vào thêm — khớp theo nến 1H ở lần chạy sau
 const TX_ORD = { stop_loss:{tag:"STOP",vn:"Cắt lỗ",c:"#ff4d6d"}, take_profit:{tag:"TP",vn:"Chốt lời",c:"#3dff8f"},
   invalidation:{tag:"HUỶ KB",vn:"Huỷ kịch bản",c:"#ffc23d"}, add:{tag:"ADD",vn:"Vào thêm",c:"#3de1ff"} };
