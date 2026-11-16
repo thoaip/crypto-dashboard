@@ -10950,14 +10950,14 @@
   "equity": 10683,
   "buyHold": 8448.04,
   "council": 9422.46,
-  "updatedAt": "2026-11-16T07:14:54+00:00",
-  "runs": 26,
-  "errors": 4,
+  "updatedAt": "2026-11-16T12:24:55+00:00",
+  "runs": 27,
+  "errors": 5,
   "lastError": {
-   "at": "2026-11-16T06:47:21+00:00",
+   "at": "2026-11-16T12:24:55+00:00",
    "stage": "agents",
-   "msg": "AnthropicInvalidRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-12-01 at 00:00 UTC.'}, 'request_id': 'req_011Ch6A8JZkXQjZvRP6rgzjn'}",
-   "logTail": "\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\tvenv\\tauric-venv-9fa1196\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 1727, in generate\n    self._generate_with_cache(\n    ~~~~~~~~~~~~~~~~~~~~~~~~~^\n        m,\n        ^^\n    ...<2 lines>...\n        **kwargs,\n        ^^^^^^^^^\n    )\n    ^\n  File \"D:\\tvenv\\tauric-venv-9fa1196\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 2065, in _generate_with_cache\n    result = self._generate(\n        messages, stop=stop, run_manager=run_manager, **kwargs\n    )\n  File \"D:\\tvenv\\tauric-venv-9fa1196\\Lib\\site-packages\\langchain_anthropic\\chat_models.py\", line 2613, in _generate\n    _handle_anthropic_bad_request(e)\n    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"D:\\tvenv\\tauric-venv-9fa1196\\Lib\\site-packages\\langchain_anthropic\\chat_models.py\", line 1284, in _handle_anthropic_bad_request\n    raise AnthropicInvalidRequestError(\n        message=e.message, response=e.response, body=e.body\n    ) from e\nlangchain_anthropic.chat_models.AnthropicInvalidRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-12-01 at 00:00 UTC.'}, 'request_id': 'req_011Ch6A8JZkXQjZvRP6rgzjn'}\nDuring task with name 'agent' and id '94e422cf-a9bf-fb6a-783c-ffff3b091ad6'\nDuring task with name 'News Analyst' and id 'd4478958-b8d0-9e8f-a0a6-2ae5c9a41c0a'\n"
+   "msg": "OpenAIConnectionError: Connection error.",
+   "logTail": "nput)],\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    ...<6 lines>...\n        **kwargs,\n        ^^^^^^^^^\n    ).generations[0][0],\n    ^\n  File \"D:\\tvenv\\tauric-venv-9fa1196\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 1920, in generate_prompt\n    return self.generate(prompt_messages, stop=stop, callbacks=callbacks, **kwargs)\n           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\tvenv\\tauric-venv-9fa1196\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 1727, in generate\n    self._generate_with_cache(\n    ~~~~~~~~~~~~~~~~~~~~~~~~~^\n        m,\n        ^^\n    ...<2 lines>...\n        **kwargs,\n        ^^^^^^^^^\n    )\n    ^\n  File \"D:\\tvenv\\tauric-venv-9fa1196\\Lib\\site-packages\\langchain_core\\language_models\\chat_models.py\", line 2065, in _generate_with_cache\n    result = self._generate(\n        messages, stop=stop, run_manager=run_manager, **kwargs\n    )\n  File \"D:\\tvenv\\tauric-venv-9fa1196\\Lib\\site-packages\\langchain_openai\\chat_models\\base.py\", line 2001, in _generate\n    _handle_openai_api_error(e)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^\n  File \"D:\\tvenv\\tauric-venv-9fa1196\\Lib\\site-packages\\langchain_openai\\chat_models\\base.py\", line 748, in _handle_openai_api_error\n    raise OpenAIConnectionError(message=e.message, request=e.request) from e\nlangchain_openai.chat_models.base.OpenAIConnectionError: Connection error.\nDuring task with name 'Bear Researcher' and id '3937605d-9f7c-04d9-a22d-fd1e1efb8f0f'\n"
   },
   "signalCounts": {
    "Sell": 1,
@@ -10965,335 +10965,26 @@
    "Hold": 4
   },
   "last": {
-   "perpSide": "SHORT",
-   "perpOrder": {
-    "side": "SELL",
-    "qty": 0.072889,
-    "price": 64450.1,
-    "fee": 2.35,
-    "realized": 0,
-    "legs": [
-     {
-      "at": "2026-11-16T07:14:48+00:00",
-      "kind": "REBALANCE",
-      "leg": "LONG",
-      "action": "OPEN",
-      "side": "BUY",
-      "qty": 0.016943,
-      "price": 64450.1,
-      "realized": 0
-     },
-     {
-      "at": "2026-11-16T07:14:48+00:00",
-      "kind": "REBALANCE",
-      "leg": "SHORT",
-      "action": "OPEN",
-      "side": "SELL",
-      "qty": 0.089832,
-      "price": 64450.1,
-      "realized": 0
-     }
-    ]
-   },
+   "perpSide": null,
+   "perpOrder": null,
    "tradeDate": "2026-11-15",
-   "at": "2026-11-16T06:57:59+00:00",
-   "signal": "Underweight",
-   "price": 64450.1,
-   "equity": 10683,
-   "order": {
-    "side": "SELL",
-    "qty": 0.072889,
-    "price": 64450.1,
-    "fee": 2.35,
-    "realized": 0,
-    "legs": [
-     {
-      "at": "2026-11-16T07:14:48+00:00",
-      "kind": "REBALANCE",
-      "leg": "LONG",
-      "action": "OPEN",
-      "side": "BUY",
-      "qty": 0.016943,
-      "price": 64450.1,
-      "realized": 0
-     },
-     {
-      "at": "2026-11-16T07:14:48+00:00",
-      "kind": "REBALANCE",
-      "leg": "SHORT",
-      "action": "OPEN",
-      "side": "SELL",
-      "qty": 0.089832,
-      "price": 64450.1,
-      "realized": 0
-     }
-    ]
-   },
-   "error": null,
-   "stage": null,
-   "reason": "**Rating**: Underweight\n\n**Executive Summary**: \nToday (next 24h): BTC-USD is expected to trade between the November 15 intraday low of $62,000 and a 1.0x ATR extension near $68,100, with the Bollinger Lower Band at $65,768 acting as immediate resistance. A daily close back above the 10-day EMA at $70,841 accompanied by the RSI reclaiming 30 would invalidate the continuation thesis and force an immediate reduction in short exposure before the next review.\n\nThe bearish trend is confirmed across all timeframes, but deeply oversold conditions and negative funding rates make a full 100% net short ",
-   "agents": [
-    {
-     "key": "market",
-     "label": "Market Analyst",
-     "rating": null,
-     "text": "BTC-USD Technical Analysis Report **Date: 2026-11-15** --- Executive Summary BTC-USD is currently in the grips of a severe and accelerating bearish breakdown. The asset has declined from its recent high of **$87,399.00 (2026-09-21)** to a close of **$65,348.30 (2026-11-15)** — a drawdown of approximately **25.2%** over",
-     "chars": 10587,
-     "en": "# BTC-USD Technical Analysis Report\n**Date: 2026-11-15**\n\n---\n\n## Executive Summary\n\nBTC-USD is currently in the grips of a severe and accelerating bearish breakdown. The asset has declined from its recent high of **$87,399.00 (2026-09-21)** to a close of **$65,348.30 (2026-11-15)** — a drawdown of approximately **25.2%** over roughly eight weeks. The collapse has intensified dramatically over the last week, with the price falling below the critical **200 SMA ($72,978.61)** and breaching below the **Bollinger Lower Band ($65,768.10)**, signaling extreme oversold conditions paired with intense selling pressure. The RSI at **24.32** confirms deeply oversold territory, though in strong downtrends, RSI can remain suppressed for extended periods.\n\n---\n\n## Indicator-by-Indicator Analysis\n\n### 1. Moving Averages — Full Bearish Alignment\n\n**10 EMA (Short-Term): $70,840.74**\nPrice closed at $65,348.30, approximately **$5,492 below** the 10 EMA. The 10 EMA has been declining steadily from ~$82,645 on Oct 16 to $70,841, confirming persistent short-term downtrend momentum. The wide gap between price and the 10 EMA indicates aggressive selling with no near-term stabilization.\n\n**50 SMA (Medium-Term): $79,840.66**\nPrice is approximately **$14,492 below** the 50 SMA. The 50 SMA has been in a slow decline from ~$81,285 on Oct 16 to $79,841, showing that the medium-term trend has fully rolled over. The widening gap is consistent with a capitulation-style selloff.\n\n**200 SMA (Long-Term): $72,978.61**\nThis is the most critical breakdown signal. BTC-USD closed at $65,348.30, approximately **$7,630 below** the 200 SMA. The 200 SMA had been slowly rising throughout the period (from ~$72,399 on Oct 16), but the price has now decisively broken below it. The 2026-11-14 close of $64,155 was the first confirmed close well below this key long-term benchmark, representing a **death-cross-like breakdown** on a strategic timeframe. This is typically considered a major bearish regime shift.\n\n> **Interpretation:** All three moving averages are stacked bearishly (10 EMA < 200 SMA < 50 SMA), and price is below all three. This is a textbook bearish alignment. The price is farthest from the 50 SMA, indicating the steepest short-to-medium term momentum loss.\n\n---\n\n### 2. RSI — Deep Oversold with Early Divergence Signals\n\n| Date | RSI | Close |\n|---|---:|---:|\n| 2026-11-10 | 34.07 | $73,795.80 |\n| 2026-11-11 | 35.06 | $74,018.60 |\n| 2026-11-12 | 29.60 | $71,461.00 |\n| 2026-11-13 | 24.54 | $68,311.10 |\n| 2026-11-14 | **19.74** | $64,155.00 |\n| 2026-11-15 | **24.32** | $65,348.30 |\n\nRSI hit an extreme low of **19.74 on Nov 14**, deeply below the 30 oversold threshold. On Nov 15, while price made a higher close ($65,348 vs $64,155), the RSI ticked up to 24.32 — this is the first hint of **potential bullish divergence**, though it is extremely premature to call a reversal based on two data points. The RSI has been below 30 for the last four sessions (Nov 12–15), which in a strong downtrend can persist as price continues to decline.\n\n> **Interpretation:** RSI is in the most oversold reading seen in the entire 93-day dataset. While this creates a setup for a potential mean-reversion bounce, traders should wait for confirmation (e.g., RSI crossing back above 30 with volume and a higher close) before considering long entries.\n\n---\n\n### 3. MACD & MACD Histogram — Unrelenting Bearish Momentum\n\n**MACD Line: -$3,516.66**\nThe MACD has deteriorated continuously from a positive reading of +$221 on Oct 16 to -$3,517 on Nov 15. This is a severe momentum collapse.\n\n**MACD Signal: -$2,365.95**\nThe signal line is also deeply negative, and the MACD line remains **below** the signal line, confirming the bearish trend is intact.\n\n**MACD Histogram: -$1,150.70**\nThe histogram has been widening in negative territory. However, examining the recent trajectory:\n\n| Date | MACD Histogram |\n|---|---:|\n| 2026-11-13 | -718.68 |\n| 2026-11-14 | -1,077.43 |\n| 2026-11-15 | -1,150.70 |\n\nThe histogram continued to worsen through Nov 15, meaning the rate of bearish momentum is still **accelerating**. There is no sign of histogram convergence (bars shrinking toward zero), which would be the first sign of momentum deceleration.\n\n> **Interpretation:** MACD provides no bullish signal. The continued deepening of the MACD line below the signal line, combined with a widening negative histogram, confirms that the downtrend has not yet exhausted itself.\n\n---\n\n### 4. Bollinger Bands — Price Breached the Lower Band\n\n| Band | Value |\n|---|---:|\n| Upper Band | $84,563.82 |\n| Middle (20 SMA) | $75,165.96 |\n| Lower Band | $65,768.10 |\n\nBTC-USD closed at **$65,348.30**, which is **$420 below the Bollinger Lower Band**. This is a statistically significant event — prices close below the lower band only during extreme selloffs and typically revert toward the mean (middle band). The lower band itself has been declining rapidly (from $80,742 on Oct 16 to $65,768 on Nov 15), reflecting the expanding volatility and accelerating decline.\n\n> **Interpretation:** The breach of the lower Bollinger Band is a classic \"oversold bounce\" setup, but in a strong trend, prices can \"walk the band\" downward for multiple sessions. The fact that the middle band ($75,166) is now well above price confirms the bands are opening downward — a bearish expansion pattern.\n\n---\n\n### 5. ATR — Elevated Volatility Confirms Market Stress\n\n**ATR: $2,732.66**\n\nATR has increased significantly from ~$2,071 (Oct 19) to $2,733 (Nov 15), representing a **32% increase in average daily range**. This confirms that the market is in a high-stress, high-volatility regime. The spike on Nov 5 ($2,457) and Nov 14 ($2,625) corresponds to the sharp selloff days.\n\n> **Interpretation:** Elevated ATR means stop-losses should be widened to avoid being stopped out by normal volatility. A reasonable stop would be 1.5–2x ATR below entry (roughly $4,100–$5,465). Position sizing should also be reduced proportionally.\n\n---\n\n## Key Price Levels\n\n| Level | Value | Significance |\n|---|---:|---|\n| Recent High | $87,399.00 (Sep 21) | Swing high — major resistance |\n| 200 SMA | $72,978.61 | Broken support; now potential resistance |\n| Bollinger Middle | $75,165.96 | Dynamic resistance zone |\n| Bollinger Lower Band | $65,768.10 | Price is currently below — potential bounce zone |\n| Nov 15 Low | $62,000.00 | Intraday low — near-term support |\n| Nov 15 Close | $65,348.30 | Current price |\n\n---\n\n## Synthesis & Actionable Insights\n\n### Market Regime: **Strong Bearish Downtrend with Extreme Oversold Conditions**\n\nThe confluence of signals paints a picture of a market in capitulation:\n- Price is below all three major moving averages (10 EMA, 50 SMA, 200 SMA)\n- RSI is at 24.32, deeply oversold\n- MACD is accelerating downward with no bullish crossover\n- Price is below the Bollinger Lower Band\n- ATR is elevated at $2,733, confirming high-stress conditions\n\n### Potential Scenarios:\n\n1. **Mean-Reversion Bounce (Higher Probability Short-Term):**\n   Given the RSI at 24.32 and price below the Bollinger Lower Band, a technical bounce is statistically likely in the near term. The first target would be the Bollinger Lower Band at $65,768 (already very close), followed by the 10 EMA at $70,841 and the 200 SMA at $72,979. However, this would be a counter-trend trade with high risk.\n\n2. **Continuation of Downtrend (Medium Probability):**\n   If momentum indicators (MACD histogram, RSI) do not show signs of convergence, the downtrend can persist. The next logical support area would be the $62,000 intraday low from Nov 15, with a break below opening the door to $60,000 and potentially lower.\n\n3. **Trend Reversal (Lower Probability, Longer Timeframe):**\n   A genuine reversal would require: (a) RSI crossing back above 30 and then 50, (b) MACD histogram showing sustained convergence and eventual bullish crossover, (c) price reclaiming the 200 SMA at $72,979 with conviction, and (d) the 10 EMA curling upward. None of these conditions are currently met.\n\n### Trading Recommendations:\n\n| Strategy | Action | Rationale |\n|---|---|---|\n| **Long Entries (Aggressive)** | Wait for RSI > 30 + bullish candle above $65,768 (Boll LB) with volume confirmation | Counter-trend bounce play with tight stop below $62,000 |\n| **Long Entries (Conservative)** | Wait for price to reclaim 200 SMA ($72,979) with MACD bullish crossover | Trend-following entry after confirmed reversal |\n| **Short Entries** | Wait for a bounce to 200 SMA or 10 EMA ($70,841–$72,979) with RSI failing at 40–50, then look for rejection candles | Trend-following short on pullback |\n| **Existing Longs** | Strongly consider reducing or hedging positions; stop-loss should be below $62,000 | Risk management during capitulation |\n| **Existing Shorts** | Consider trailing stops to lock in profits; tighten stops above $68,000–$70,000 | Protect gains during potential bounce |\n\n---\n\n## Key Metrics Summary Table\n\n| Indicator | Current Value | Signal | Interpretation |\n|---|---:|---|---|\n| **Close** | $65,348.30 | — | Down 25.2% from Sep 21 high |\n| **10 EMA** | $70,840.74 | Bearish | Price $5,492 below; short-term downtrend intact |\n| **50 SMA** | $79,840.66 | Bearish | Price $14,492 below; medium trend rolled over |\n| **200 SMA** | $72,978.61 | Bearish | Price $7,630 below; key long-term support broken |\n| **RSI** | 24.32 | Oversold | Deep oversold; potential bounce setup but trend remains down |\n| **MACD** | -3,516.66 | Bearish | Momentum deeply negative, accelerating downward |\n| **MACD Histogram** | -1,150.70 | Bearish | Bars widening; momentum acceleration still bearish |\n| **Bollinger Lower Band** | $65,768.10 | Oversold | Price below band; mean-reversion bounce candidate |\n| **Bollinger Middle** | $75,165.96 | Resistance | First major upside target on any bounce |\n| **ATR** | $2,732.66 | High Volatility | Widen stops to ~$4,100–$5,465; reduce position size |\n\n---\n\n**Bottom Line:** BTC-USD is in a severe bearish breakdown with all trend, momentum, and volatility indicators confirming a strong downtrend. The extreme oversold readings on RSI and the breach of the Bollinger Lower Band suggest a near-term bounce is possible, but the structural damage (break of the 200 SMA, accelerating MACD, wide moving average gaps) means any bounce should be treated as a counter-trend trade until proven otherwise. Conservative traders should wait for the 200 SMA to be reclaimed with confirmation before considering the downtrend broken. Risk management is paramount — use wide stops and reduced position sizes in this elevated volatility environment."
-    },
-    {
-     "key": "sentiment",
-     "label": "Sentiment Analyst",
-     "rating": null,
-     "text": "**Overall Sentiment:** **Mixed** (Score: 4.8/10) **Confidence:** Medium 1. Source-by-Source Breakdown **News & Institutional Framing:** Headlines for BTC-USD over the past 7 days are anchored in a sharply corrective macro backdrop. Multiple outlets note that Bitcoin is trading nearly 50% below its October peak, with US",
-     "chars": 6743,
-     "en": "**Overall Sentiment:** **Mixed** (Score: 4.8/10)\n**Confidence:** Medium\n\n### 1. Source-by-Source Breakdown\n**News & Institutional Framing:** Headlines for BTC-USD over the past 7 days are anchored in a sharply corrective macro backdrop. Multiple outlets note that Bitcoin is trading nearly 50% below its October peak, with US spot ETFs experiencing ~$1.91B in net outflows over a single week. Veteran trader Peter Brandt flags a potential long-term bearish chart structure, while analytical pieces tie the drawdown to Fed pressure, hot inflation, and mid-term political uncertainty. Despite the near-term weakness, long-term bullish forecasts persist, with Wall Street voices still modeling $1M per BTC by 2030, and Michael Saylor highlighting \"rare and extreme\" on-chain metrics framing the current price action. Overall, news sentiment is bearish to cautious, emphasizing structural selling and macro headwinds.\n\n**Social & Community (StockTwits/Reddit):** Both StockTwits and Reddit feeds returned `<unavailable>` or `<fetch failed>` placeholders for the 2026-11-08 to 2026-11-15 window. This is a system limitation, not an absence of discussion, but it removes real-time retail sentiment and community discourse from the analysis.\n\n**Telegram Broadcasts & On-Chain Flows:** The Telegram signal is bifurcated. On one side, WatcherGuru and Cointelegraph highlight a $65,000 reclaim accompanied by $130M in short liquidations, CZ stating Binance hasn't sold and has personally bought more, and a massive 250M USDC mint signaling fresh stablecoin liquidity. On the flip side, whale alerts show consistent BTC transfers from exchanges (Kraken, Coinbase) to unknown wallets (potentially cold storage/accumulation), alongside reports of $1.23B in long liquidations in a 24-hour window, exchange security incidents (Binance PoR update, Luxor mining pool hack), and regulatory friction (Brazil stablecoin scrutiny). The broadcast tone reflects short-term pain with emerging stabilization signals.\n\n**Derivatives & Positioning (Hard Data):** Quantitative positioning shows a decisive unwind of leveraged longs. OKX long/short account ratio dropped from a crowded 3.20 to 2.70, while taker buy/sell ratios consistently sit below 1.0, indicating aggressive sellers. OI-weighted perpetual funding has turned slightly negative (-0.0009%/8h), a departure from the 7-day positive baseline, indicating shorts are now paying to maintain positions. Deribit DVOL spiked to the mid-40s, reflecting elevated hedging demand, while options put/call volume sits at 1.41 (heavy downside protection). The Crypto Fear & Greed Index collapsed to 10 (Extreme Fear), a historically strong contrarian bullish extreme. Stablecoin supply contracted -1.41% over 7 days, confirming a tightening liquidity backdrop. Liquidation heatmaps show relatively balanced short-term fuel (~$305M in short clusters above vs ~$287M in long clusters below within ±5%), with actual OKX data confirming shorts were recently flushed at the 64.5k–65.25k band.\n\n### 2. Cross-Source Divergences and Alignments\nA clear divergence exists between the **narrative/flow** and the **positioning extremes**. News and Telegram broadcasts emphasize ongoing ETF outflows, macro pressure, and realized long liquidations, painting a bearish near-term picture. However, positioning data reveals the exact opposite: long crowding has been aggressively washed out, funding has flipped negative, and sentiment has hit Extreme Fear (10). Historically, when retail capitulates, longs are flushed, and funding turns negative while fear is maximized, the market often forms a short-term floor or triggers a contrarian short squeeze. Telegram's report of large BTC withdrawals to unknown wallets and a fresh 250M USDC mint aligns with the positioning exhaustion thesis, suggesting institutional/whale accumulation is absorbing retail capitulation.\n\n### 3. Dominant Narrative Themes\n- **Capitulation & Liquidity Drain:** The dominant short-term theme is a liquidity squeeze driven by spot ETF outflows, stablecoin supply contraction, and aggressive taker selling, forcing leveraged longs to liquidate.\n- **Contrarian Exhaustion:** The secondary theme is positioning reset. Extreme Fear, negative funding, and heavy put buying signal that the downward move is becoming crowded, with traders heavily hedging against further downside rather than aggressively shorting.\n- **Institutional/Whale Accumulation vs. Retail Panic:** Exchange outflows, CZ's public accumulation, and the USDC mint suggest larger players are using the retail flush as a buying opportunity, contrasting sharply with the fearful retail narrative highlighted in news headlines.\n\n### 4. Catalysts and Risks\n**Catalysts for Upside:**\n- A short squeeze targeting the $66,000–$67,500 cluster (~$138M in short liquidation fuel) if BTC-USD holds the $64k–$65k support band.\n- Reversal of US spot ETF outflows into net inflows, which would immediately tighten sell-side pressure.\n- Deployment of the newly minted 250M USDC into spot markets.\n- Full resolution of Binance's security incident and restored network liquidity.\n\n**Risks to Downside:**\n- Continuation of the ~$2B/week ETF outflow pace or further Fed hawkishness/inflation data, which would pressure the macro liquidity environment.\n- Breakdown below the $59k–$60k long liquidation cluster (~$61M+ actual on-chain exposure), which could trigger a cascading flush.\n- Regulatory escalation (e.g., stablecoin remittance rules, mining pool vulnerabilities) or exchange operational failures.\n- Sustained high options put/call volume ratio, indicating institutional market makers remain structurally short volatility or hedged for further downside.\n\n### 5. Key Sentiment Signals Summary\n| Signal | Direction | Source | Supporting Evidence |\n|---|---|---|---|\n| Spot ETF Flow | Bearish | News / Telegram | ~$1.91B outflows in 7 days cited by CZ and media |\n| Retail Sentiment | Bearish | Fear & Greed | Index collapsed to 10 (Extreme Fear) and holding |\n| Funding Rates | Mixed/Contrarian | OKX/Bybit/Binance/Hyperliquid | OI-weighted -0.0009%/8h; shift from positive baseline |\n| Taker Aggression | Bearish | OKX | Buy/Sell ratio consistently <1.0 (0.89–0.97) |\n| Options Hedging | Bearish/Hedge | Deribit | 24h Put/Call vol 1.41; DVOL spiked to 44–47 |\n| Exchange Outflows | Mildly Bullish | Whale Alert | 2,500+ BTC moved from Coinbase/Kraken to unknown wallets |\n| Stablecoin Supply | Bearish | DefiLlama | 7-day contraction of -1.41% ($287.1B total) |\n| Liquidation Clusters | Neutral/Contrarian | Heatmap / OKX | $305M shorts above vs $287M longs below; recent short flush at 64.5k–65.25k |\n| Influencer/Insider | Mildly Bullish | Telegram | CZ states Binance hasn't sold; personally bought more |"
-    },
-    {
-     "key": "news",
-     "label": "News Analyst",
-     "rating": null,
-     "text": "BTC-USD — Macro & News Report: Week of November 8–15, 2026 --- Executive Summary BTC-USD is trading near **$62,000**, roughly **50% below its October 2026 all-time high**, in a sustained capitulation phase driven by ETF outflows, sticky inflation, and an hawkish Fed that markets see as completely inactive for the remai",
-     "chars": 9067,
-     "en": "# BTC-USD — Macro & News Report: Week of November 8–15, 2026\n\n---\n\n## Executive Summary\n\nBTC-USD is trading near **$62,000**, roughly **50% below its October 2026 all-time high**, in a sustained capitulation phase driven by ETF outflows, sticky inflation, and an hawkish Fed that markets see as completely inactive for the remainder of 2026. US crypto funds have lost **$1.91 billion in seven days**, and prediction markets price a **100% probability that BTC-USD will not reclaim $60,000 by year-end**. However, prediction markets also show an 88.9% chance BTC-USD holds above $62,000 by November 17, suggesting near-term support is forming at these levels. The macro backdrop is a **\"higher-for-longer\" rate environment** (Fed funds at 3.88%, 10Y Treasury at 5.15%), sticky inflation (CPI +4.08% y/y), and a still-resilient labor market (unemployment at 4.10%).\n\n---\n\n## 1. BTC-USD Specific News & Sentiment\n\n**Price Action & Technical Warnings**\n- BTC-USD has collapsed from its October peak, now trading near $62,000. Veteran trader Peter Brandt has warned of a bearish chart pattern that could delay a return to all-time highs for years.\n- Michael Saylor recently highlighted four \"rare and extreme\" on-chain metrics coinciding with the sell-off, though Binance co-founder CZ pushed back, noting correlation is not causation.\n- CZ separately outlined **six possible reasons** for the drop, pointing to a confluence of macro pressure, ETF outflows, and liquidity fragmentation.\n\n**ETF & Institutional Flows**\n- US spot Bitcoin ETFs are experiencing sustained outflows. Analysts note the stalled ETF momentum is a key overhang; recovery narratives hinge on renewed institutional participation and clearer regulatory signals.\n\n**Long-Term Bull Cases Persist**\n- Despite the crash, several Wall Street forecasters maintain seven-figure price targets for BTC-USD by 2030, framing the current drawdown as a cyclical bear within a secular bull market. However, these forecasts assume ETF flows eventually stabilize and Fed policy pivots to easing.\n\n**Sentiment**\n- Market sentiment is in **extreme fear**, as is typical of late-stage crypto corrections. The \"extreme fear\" readings historically have preceded medium-term bottoms, though timing remains uncertain.\n\n---\n\n## 2. Macroeconomic Backdrop\n\n### Inflation: Sticky and Above Target\n| Metric | Value | Change |\n|---|---|---|\n| CPI (Oct 2026) | 337.48 | **+4.08% y/y**, +0.35% m/m |\n| Core CPI | 339.90 | **+2.87% y/y**, +0.30% m/m |\n\nCPI acceleration has been persistent: monthly prints have ranged from +0.07% (July) to +0.65% (September), with October at +0.35%. This inflation trajectory **locks the Fed out of cutting** and creates headwinds for risk assets like BTC-USD, which thrive in low-rate, high-liquidity environments.\n\n### Fed Policy: Frozen at 3.88%\nThe effective fed funds rate has been **steady at 3.88%** throughout November and across recent months. Prediction markets assign a **98.4% probability to zero Fed rate cuts in 2026**, with the first cut not priced until mid-2027 (July 2027 at 50%, April 2027 at 28%). This \"higher-for-longer\" regime is a structural headwind for BTC-USD, as higher real rates increase the opportunity cost of holding non-yielding assets.\n\n### Labor Market: Resilient but Softening\nUnemployment has trended down from 4.40% (December 2025) to **4.10% (October 2026)**, with October nonfarm payrolls adding +165K. The labor market is holding up, which gives the Fed no urgency to cut. However, if unemployment ticks back up (September was 4.2% before October's dip), it could reignite recession fears.\n\n### Bond Markets: Yields Spiking, Curve Narrowing\n- **10Y Treasury Yield**: **5.15%** (as of Nov 13), up sharply from 4.88% at the start of the window and up ~102 bps over the past year. This spike reflects hot inflation data and repricing of the Fed's rate path.\n- **Yield Curve (10Y–2Y)**: **+0.27%**, down from +0.38% earlier in November. The curve has steepened from deeply inverted territory over the past year but is now narrowing again as the long end rallies on growth concerns.\n- **VIX**: **19.30**, elevated but not at panic levels. The VIX spiked to 28.18 on November 5 before settling, indicating episodic risk-off events.\n\n### Recession Risk: Low for Now\nPrediction markets price only a **2.5% probability of a US recession by end of 2026**, suggesting the macro economy is not yet in contraction. This is a double-edged sword for BTC-USD: a resilient economy keeps the Fed hawkish, but also means crypto isn't facing a demand-side collapse.\n\n---\n\n## 3. Prediction Markets — Forward-Looking Signals\n\n### Fed Rate Cut Expectations\n- **0 cuts in 2026**: **98.4%** — markets see the Fed as done for the year.\n- First cut: **July 2027 (50%)**, April 2027 (28%).\n- Emergency cut before 2027: only **1.7%**.\n\n### BTC-USD Price Probabilities (Polymarket)\n| Event | Probability | Traded Volume |\n|---|---|---|\n| BTC-USD below $60K by end of 2026 | **100.0%** | $89M |\n| BTC-USD above $70K by end of 2026 | **0.4%** | $89M |\n| BTC-USD above $66K on Nov 16 | **14.8%** | $470K |\n| BTC-USD above $62K on Nov 17 | **88.9%** | $256K |\n| BTC-USD above $66K on Nov 17 | **25.9%** | $256K |\n| BTC-USD drops below $62K by Nov 23 | **47.5%** | $68K |\n\nThe prediction market data is stark: **BTC-USD is not expected to recover above $60,000 by year-end** (100% probability of staying below). However, the near-term (Nov 16–17) odds suggest **$62,000 is acting as meaningful support**, with an 88.9% probability of holding. The ~47.5% chance of a break below $62K by late November is the key risk to monitor.\n\n---\n\n## 4. Upcoming Macro Catalysts (Week of Nov 16–20)\n\n| Date | Event | Forecast | Implication for BTC-USD |\n|---|---|---|---|\n| Nov 16 | Fed Chair Warsh speaks | — | Hawkish tone could push BTC-USD lower |\n| Nov 17 | Core Retail Sales m/m | +0.4% (prev +0.9%) | Beat → hawkish → bearish for BTC-USD |\n| Nov 17 | Retail Sales m/m | +0.2% (prev +0.8%) | Strong data → no rate cut hope |\n| Nov 18 | FOMC Meeting Minutes | — | Key signal for future rate path |\n| Nov 20 | UoM Consumer Sentiment | 52.1 (prev 51.0) | Higher sentiment → risk-on possible |\n| Nov 20 | UoM Inflation Expectations | 4.3% prev | Above 4.3% → very bearish for BTC-USD |\n\n---\n\n## 5. Actionable Insights for BTC-USD Traders\n\n1. **Near-Term Support at $62,000**: Prediction markets assign 88.9% odds that BTC-USD holds above $62,000 by November 17. This suggests **$60,000–$62,000 is a high-probability accumulation zone** for patient, risk-tolerant traders. A break below $60,000 would invalidate this thesis and open downside toward $50,000–$55,000.\n\n2. **Fed-Driven Macro Headwind Dominates**: With 98.4% odds of zero rate cuts in 2026 and CPI at +4.08% y/y, BTC-USD faces a structural liquidity squeeze. **Avoid leveraged longs** until there is credible evidence of a Fed pivot (likely mid-2027 at the earliest per prediction markets).\n\n3. **FOMC Minutes (Nov 18) Are Key**: The minutes could reveal dissent or urgency that shifts the rate path narrative. A dovish surprise could spark a relief rally in BTC-USD; a hawkish confirmation would reinforce the downtrend.\n\n4. **ETF Flow Watch**: Sustained ETF outflows are the primary driver of institutional selling pressure. Any sign of stabilization or reversal in daily ETF flows would be a bullish signal.\n\n5. **Position Sizing**: Given the 100% market-implied probability of BTC-USD staying below $60,000 through year-end, **short-term traders should treat any bounce above $68,000 as a selling opportunity** rather than a breakout. Long-term holders may dollar-cost average, but should expect continued volatility.\n\n6. **Risk Management**: The 47.5% prediction market probability of BTC-USD falling below $62,000 by November 23 is a real tail risk. Traders should use tight stop-losses below $60,000 and avoid overexposure ahead of the FOMC minutes and retail sales data.\n\n---\n\n## Key Points Summary Table\n\n| Category | Key Data Point | Implication for BTC-USD |\n|---|---|---|\n| **BTC Price** | ~$62,000 (−50% from Oct ATH) | Deep correction; seeking bottom |\n| **BTC Prediction** | 100% chance below $60K by end of 2026 | No recovery expected before 2027 |\n| **CPI Inflation** | +4.08% y/y, +0.35% m/m | Fed locked out; bearish for BTC-USD |\n| **Fed Funds Rate** | 3.88% (unchanged) | \"Higher for longer\" regime persists |\n| **Fed Rate Cut Odds** | 98.4% = zero cuts in 2026 | No liquidity relief coming |\n| **10Y Treasury Yield** | 5.15% (↑102 bps YoY) | Rising real rates = BTC-USD headwind |\n| **Unemployment** | 4.10% (↓ from 4.40% YoY) | Resilient labor market = no Fed urgency |\n| **VIX** | 19.30 (spiked to 28 on Nov 5) | Elevated but contained risk aversion |\n| **Recession Risk** | 2.5% by end of 2026 | Economy resilient; double-edged for BTC-USD |\n| **Near-Term Support** | 88.9% chance BTC > $62K by Nov 17 | $62K level holding for now |\n| **Downside Risk** | 47.5% chance BTC < $62K by Nov 23 | Break below $62K is a real possibility |\n| **Key Catalyst** | FOMC Minutes on Nov 18 | Could shift rate narrative either way |"
-    },
-    {
-     "key": "bull",
-     "label": "Bull Researcher",
-     "rating": null,
-     "text": "Bull Analyst: Let’s cut straight to the tape. If you’re looking at `BTC-USD` right now, the surface-level technicals look absolutely brutal: we’re down ~25% from the September peak, price is sitting at $65,348 below the 200-day SMA, and the macro backdrop feels like it’s engineered to squeeze risk assets. As the bear a",
-     "chars": 6401,
-     "en": "\nBull Analyst: Let’s cut straight to the tape. If you’re looking at `BTC-USD` right now, the surface-level technicals look absolutely brutal: we’re down ~25% from the September peak, price is sitting at $65,348 below the 200-day SMA, and the macro backdrop feels like it’s engineered to squeeze risk assets. As the bear analyst, you’re probably pointing to the broken trendlines, the ~$1.91B in weekly ETF outflows, and the 100% prediction-market probability of `BTC-USD` staying below $60K through year-end. I respect the caution, but I’m here to tell you exactly why this isn’t the start of a structural bear market—it’s a textbook liquidity washout setting up one of the highest-conviction accumulation windows we’ve seen this cycle. Let’s break it down point by point.\n\n### 🔹 Growth Potential: The Drawdown Is Clearing the Path for Institutional Scaling\nYes, spot ETF flows are currently negative, but let’s contextualize the outflows. They’re happening in a \"higher-for-longer\" rate environment where traditional portfolios are rebalancing toward yield-bearing Treasuries (10Y at 5.15%) and cash. That doesn’t mean institutional interest in `BTC-USD` is dying; it means it’s rotating. The $1M-by-2030 price targets from Wall Street aren’t speculative noise. They’re built on the maturation of regulated ETF infrastructure, sovereign accumulation trends, and the inevitable Fed pivot prediction markets are already pricing in for mid-to-late 2027. Once the rate cut cycle begins, liquidity will flood back into digital reserve assets, and `BTC-USD` has historically captured 3–5x leverage to global M2 expansion. We’re not losing growth; we’re compressing volatility so the next expansion phase can scale without retail leverage crowding the upside.\n\n### 🔹 Competitive Advantages: Why `BTC-USD` Outlasts the Macro Squeeze\nUnlike altcoins or equity proxies, `BTC-USD` has no CEO, no earnings reports, and no centralized liquidity traps to exploit. Its moat is absolute: unmatched proof-of-work security, globally recognized settlement finality, and a fixed 21M supply cap that doesn’t respond to Fed balance sheet expansions. When inflation prints at +4.08% YoY and real yields erode purchasing power, `BTC-USD` doesn’t just compete with gold—it actively absorbs capital seeking asymmetric, non-sovereign stores of value. The recent protocol-level resilience, combined with the ETF rails now fully operational, means `BTC-USD` is the only crypto asset with both decentralized security and institutional-grade accessibility. That’s a dual advantage no other asset class replicates.\n\n### 🔹 Positive Indicators: The Capitulation Setup Is Already Firing\nLet’s address the technicals directly. You’re seeing RSI at 24.32, a close $420 below the Bollinger Lower Band, and MACD momentum accelerating downward. In a vacuum, that looks terrible. But in Bitcoin’s market microstructure, RSI sub-20 combined with a Bollinger breach has historically marked exhaustion, not continuation. The derivatives market just proved it: funding flipped negative (-0.0009%/8h), meaning shorts are now paying to hold, and the $130M short liquidation flush at the $65K band shows the market already ran over its own leverage. Meanwhile, the Crypto Fear & Greed Index is at 10 (Extreme Fear). When retail capitulates to this degree while smart money quietly accumulates, `BTC-USD` has consistently printed medium-term floors.\n\nLook at the on-chain reality vs. the headline narrative. While news outlets focus on ETF outflows, over 2,500 BTC have moved off Coinbase and Kraken into unknown cold-storage wallets. CZ confirmed Binance hasn’t sold and is personally buying. A fresh 250M USDC just hit the chain, injecting dry powder directly into the spot market. Prediction markets might scream 100% odds of sub-$60K by year-end, but those same markets price an 88.9% probability of `BTC-USD` holding above $62K by November 17. The floor is forming beneath us. This isn’t a breakdown; it’s a shakeout.\n\n### 🔹 Direct Bear Counterpoints & Risk Management\nTo the bear analyst arguing that the broken 200 SMA and 0% odds of 2026 rate cuts doom `BTC-USD` to multi-year stagnation: I hear you, but you’re pricing in certainty where only cyclical friction exists. The Fed funds rate at 3.88% isn’t permanent. Prediction markets assign a 50% chance of the first cut by July 2027. Once that catalyst hits, liquidity normalization favors hard-capped assets immediately. The 200 SMA break is significant, yes, but in volatile assets, retests of the 200 SMA after capitulation often become reversal triggers, not trend killers. \n\nHere’s how I structure the `BTC-USD` trade to neutralize bear risk while capturing asymmetric upside:\n- **Entry Strategy:** Scale into `BTC-USD` via disciplined dollar-cost averaging between $60K–$65K. This is where short liquidation fuel sits and institutional cold storage accumulation is active.\n- **Invalidation Level:** A sustained daily close below $59.5K with expanding volume invalidates the base and signals deeper macro deleveraging. Trail stops accordingly.\n- **Upside Triggers:** A reclaim of $68K–$70K with RSI crossing back above 30 and funding normalizing to flat/positive confirms the washout is complete. The 200 SMA ($72,979) becomes the next technical magnet.\n- **Positioning:** Size at 40–50% of normal exposure due to elevated ATR ($2,732). Use $4.1K–$5.4K volatility buffers for stops. Do not use leverage in this regime.\n\n### 🎯 The Bottom Line on `BTC-USD`\nFear is loud at the bottom. The headlines will emphasize outflows, inflation, and broken moving averages. But the data tells a different story: leverage is flushed, funding is inverted, smart money is moving coins offline, and fresh stablecoin liquidity is standing by. `BTC-USD` at these levels isn’t a falling knife; it’s a liquidity compression zone before the next structural expansion. I’m accumulating `BTC-USD` strategically here, defending the $62K support thesis, and positioning for the 2027 liquidity pivot. The bears will argue the trend until it’s too late to enter. I’m buying the capitulation, not fearing it.\n\nI’m ready to pressure-test this thesis point-by-point. Show me the data where the derivatives exhaustion thesis fails, or where the on-chain accumulation narrative doesn’t align with historical cycle bottoms. Otherwise, `BTC-USD` remains my highest-conviction asymmetric setup in the digital asset space."
-    },
-    {
-     "key": "bear",
-     "label": "Bear Researcher",
-     "rating": null,
-     "text": "Bear Analyst: You’re framing this capitulation as a textbook liquidity washout, but let’s call the data what it actually shows: a structural regime shift disguised as a buying opportunity. Your thesis leans heavily on narrative anchors—the “inevitable” 2027 Fed pivot, “smart money” accumulation magically absorbing inst",
-     "chars": 6991,
-     "en": "\nBear Analyst: You’re framing this capitulation as a textbook liquidity washout, but let’s call the data what it actually shows: a structural regime shift disguised as a buying opportunity. Your thesis leans heavily on narrative anchors—the “inevitable” 2027 Fed pivot, “smart money” accumulation magically absorbing institutional outflows, and extreme fear automatically printing macro bottoms. The market doesn’t care about hope. It cares about liquidity, volatility, and price discovery. Right now, `BTC-USD` is failing on all three fronts. Let’s pressure-test your points against the tape.\n\n### 🔪 The Macro Illusion: \"Inevitable\" Pivots Don't Pay the Bills\nYou argue we’re simply waiting for the mid-2027 liquidity pivot. But prediction markets are pricing in a **98.4% probability of zero rate cuts in 2026**. CPI is sticky at **+4.08% YoY**, the 10Y Treasury is screaming at **5.15%**, and the labor market remains resilient enough to give the Fed no urgency to ease. `BTC-USD` is not a fundamental-yielding asset; it’s a liquidity multiple. When real yields are deeply positive and Treasuries offer guaranteed 5%+ returns, institutional capital doesn’t “rotate”—it systematically de-risks. That **$1.91B in spot ETF outflows over one week** isn’t portfolio rebalancing; it’s structural capital flight. Wall Street’s $1M-by-2030 targets assume flawless ETF adoption and aggressive monetary easing. Neither is on the horizon in 2026. You’re buying a future macro regime that markets explicitly say won’t arrive until mid-2027 at the earliest. That’s an 8+ month liquidity vacuum.\n\n### 📉 Technicals: Oversold ≠ Exhaustion, It’s Momentum\nYou’re pointing to an RSI of 24.32 and a Bollinger Lower Band breach as reversal signals. But in a confirmed breakdown, oversold conditions don’t mean buyers are stepping in—they mean sellers are in total control. Look at the MACD: it’s at **-$3,516** and the histogram is **-$1,150 and actively widening**. Momentum is still accelerating downward. There is zero histogram convergence. Meanwhile, `BTC-USD` closed **$7,630 below the 200 SMA ($72,978)**. That moving average isn’t just a line on a chart; it’s the institutional trend filter. Breaking it decisively with widening gaps to the 50 SMA ($14.5k below) and 10 EMA ($5.5k below) isn’t a dip—it’s a regime shift. RSI can and does stay sub-30 for weeks during distribution phases. Calling this a “springboard” ignores the most basic law of technical analysis: trends persist until proven otherwise, and the burden of proof is entirely on the bulls right now.\n\n### 💧 Liquidity & Flow Reality Check\nYou highlighted negative funding (-0.0009%/8h), a $130M short flush, and whale exchange outflows as proof of a floor. But negative funding doesn’t mean a bottom; it means shorts are paying a premium to maintain their bearish positions because they expect further downside. More critically, **taker buy/sell ratios are consistently below 1.0**, meaning spot market makers are absorbing aggressive, sustained selling. While you point to the 250M USDC mint, the broader stablecoin ecosystem actually **contracted by 1.41% over 7 days**. Dry powder isn’t flooding the market; it’s evaporating. As for the 2,500 BTC moved off exchanges: in high-volatility regimes, cold storage transfers are just as often risk management for OTC desks, exchange liability hedging, or prep for institutional margin calls as they are long-term accumulation. Without confirmed on-chain accumulation addresses (like miner treasury rebuilds or known institutional wallets), assuming it’s “smart money buying the dip” is speculative storytelling.\n\n### 🎯 Prediction Markets & The $60K Reality\nYou noted the 88.9% probability of `BTC-USD` holding above $62K by Nov 17, but conveniently sidelined the **100% prediction market pricing that it will NOT reclaim $60K by year-end**. That’s not a statistical quirk; it’s collective capital voting with real money. The market is pricing in a full-cycle deleveraging event. Add the **47.5% probability of dropping below $62K by Nov 23**, and you’re staring at a binary event: either liquidity fractures further, or we chop violently in a narrow band while volatility bleeds traders. The Crypto Fear & Greed Index at 10 isn’t a contrarian buy signal here; it’s a reflection of actual capital destruction. Extreme fear marks bottoms only when accompanied by liquidity normalization. We have the opposite.\n\n### ⚠️ Structural Vulnerabilities You’re Overlooking\nYou called `BTC-USD`’s moat “absolute,” but proof-of-work and a fixed supply cap don’t immunize it from:\n1. **Regulatory friction:** Stablecoin remittance scrutiny, mining pool vulnerabilities (Luxor hack), and exchange compliance friction (Binance PoR updates) introduce operational and legal drag.\n2. **Macro sensitivity:** When global liquidity contracts, BTC doesn’t decouple—it leads the decline as risk premia unwind.\n3. **Leverage fragility:** With ATR spiking 32% to **$2,732**, normal intraday swings routinely vaporize leveraged positions. Your $59.5K invalidation level sits directly on a massive long liquidation cluster. That’s not a stop-loss; it’s liquidity fuel for the next flush.\n\n### 📊 The Bear’s Playbook: Capital Preservation Over Narrative Trading\nYour DCA strategy between $60K–$65K assumes a structural floor. But the tape says `BTC-USD` is still searching for it. Here’s the reality-based approach:\n- **Do not buy breakdowns.** Wait for trend confirmation: sustained close back above the 200 SMA, RSI reclaiming 50, and MACD histogram convergence + crossover.\n- **Short rallies into resistance.** The $70K–$73K zone (10 EMA to broken 200 SMA) is a high-probability short entry with invalidation above $74.5K and targets at $62K → $58K.\n- **Size appropriately.** ATR is $2.7k. Standard stops will get hunted. Position sizing must be cut to 30–40% of normal, with buffers of 1.5x ATR.\n- **Watch the catalysts.** FOMC minutes (Nov 18), Nov 23 $62K breakdown probability, and daily ETF flows will dictate the next leg. A hawkish Fed surprise or sustained outflows will accelerate the grind lower.\n\n### 🔚 Bottom Line\nYou’re trading a narrative of eventual recovery. I’m trading the reality of current price action. `BTC-USD` is in a confirmed bearish breakdown with accelerating downside momentum, structural liquidity drains, and macro headwinds that won’t resolve for 12+ months. Oversold isn’t a buy signal when the trend is explicitly downward, funding is negative, and stablecoin supply is contracting. The floor you’re trying to catch is being built by sellers, not buyers.\n\nUntil `BTC-USD` reclaims the 200 SMA, ETF flows stabilize, and the Fed’s rate path shifts, treating this as an accumulation zone is gambling with asymmetric downside. Respect the trend, preserve capital, and wait for the market to prove the bull thesis—not the other way around. I’m staying out of longs, watching for short entries on dead-cat bounces, and letting `BTC-USD` price its true macro bottom before committing risk."
-    },
-    {
-     "key": "manager",
-     "label": "Research Manager",
-     "rating": null,
-     "text": "**Recommendation**: Underweight **Rationale**: The bear analyst wins this debate decisively by grounding their argument in current market realities, whereas the bull is trading a hopeful narrative for 2027. The macro setup is undeniably hostile for BTC-USD right now: sticky inflation at 4.08%, 10-year yields at 5.15%, ",
-     "chars": 2050,
-     "en": "**Recommendation**: Underweight\n\n**Rationale**: The bear analyst wins this debate decisively by grounding their argument in current market realities, whereas the bull is trading a hopeful narrative for 2027. The macro setup is undeniably hostile for BTC-USD right now: sticky inflation at 4.08%, 10-year yields at 5.15%, and a 98.4% probability of zero rate cuts in 2026 mean we're staring at a structural liquidity vacuum for non-yielding assets. The bull tries to frame the severe technical breakdown as a 'textbook washout,' but the bear correctly points out that oversold conditions (RSI 24.32) in a confirmed downtrend just mean sellers are in control, especially with the MACD histogram widening and price sitting over $7,600 below the 200 SMA. The bear also effectively dismantles the bull's on-chain optimism by noting that broader stablecoin supply is actually contracting and taker buy/sell ratios are below 1.0, meaning spot market makers are absorbing aggressive selling, not accumulating. Given the lack of near-term catalysts and the clear downward momentum, the bear's call for capital preservation and avoiding the falling knife is the much stronger, data-backed play.\n\n**Strategic Actions**: 1. Trim existing long exposure to BTC-USD to reduce portfolio risk; do not attempt to catch the bottom via DCA in the $60K–$65K range, as the structural floor remains unproven. 2. For active mandates, look to short dead-cat bounces into the $70K–$73K resistance zone (between the 10 EMA and the broken 200 SMA), targeting $62K and $58K with strict invalidation above $74.5K. 3. Cut position sizing to 30–40% of standard allocations and use 1.5x ATR ($2,732) buffers for stops to survive the elevated volatility and stop-hunts. 4. Avoid leveraging up in this regime. 5. Keep a close eye on FOMC minutes, daily ETF flows, and the Nov 23 $62K breakdown probability. Only consider flipping back to a neutral or bullish stance if BTC-USD prints a sustained daily close above the 200 SMA ($72,978) alongside MACD convergence and RSI reclaiming 50."
-    },
-    {
-     "key": "trader",
-     "label": "Trader",
-     "rating": null,
-     "text": "Today (next 24h): BTC-USD is expected to trade between the Nov 15 intraday low of $62,000 and a 1.0x ATR extension near $68,100, with $65,768 (Bollinger Lower Band) acting as immediate resistance. A daily close back above the 10 EMA ($70,841) accompanied by RSI reclaiming 30 would invalidate the continuation thesis and",
-     "chars": 1569,
-     "en": "Today (next 24h): BTC-USD is expected to trade between the Nov 15 intraday low of $62,000 and a 1.0x ATR extension near $68,100, with $65,768 (Bollinger Lower Band) acting as immediate resistance. A daily close back above the 10 EMA ($70,841) accompanied by RSI reclaiming 30 would invalidate the continuation thesis and force an immediate reduction in short exposure before the next review.\n\n- **Action**: Sell\n- **Reasoning**: The technical structure is unequivocally bearish: BTC-USD has decisively broken the 200 SMA ($72,978.61) and trades $5,492 below the 10 EMA ($70,840.74), confirming full moving average bearish alignment. Momentum remains aggressive with the MACD histogram at -$1,150.70 and widening, while elevated ATR ($2,732.66) signals a high-stress, high-volatility regime. Although RSI (24.32) is deeply oversold, the report explicitly warns that strong downtrends can suppress RSI while prices continue lower. Macro conditions reinforce the technical breakdown: sticky CPI (+4.08% y/y), 10-year yields at 5.15%, and a 98.4% probability of zero Fed cuts in 2026 create a structural liquidity vacuum hostile to risk assets. Following the Underweight/Sell mandate, we shift to a 100% net short posture to capture further capitulation toward the $62,000 support, utilizing wide structural buffers to survive volatility without premature stop-outs.\n- **Entry Price**: 65,348.30\n- **Stop Loss**: 70,841.00\n- **Position Sizing**: Close 0.02451 BTC long leg; add 0.12896 BTC to short leg (target net short 0.16347 BTC, representing 1.0x equity of $10,682.41)"
-    },
-    {
-     "key": "aggressive",
-     "label": "Risk · Aggressive",
-     "rating": null,
-     "text": "Aggressive Analyst: Today (next 24h): BTC-USD is expected to trade between the November 15 intraday low near sixty-two thousand dollars and a one-times average true range extension approaching sixty-eight thousand one hundred dollars, with sixty-five thousand seven hundred sixty-eight acting as immediate resistance. A ",
-     "chars": 5583,
-     "en": "Aggressive Analyst: Today (next 24h): BTC-USD is expected to trade between the November 15 intraday low near sixty-two thousand dollars and a one-times average true range extension approaching sixty-eight thousand one hundred dollars, with sixty-five thousand seven hundred sixty-eight acting as immediate resistance. A daily close back above the ten-day moving average at seventy thousand eight hundred forty-one accompanied by the relative strength index reclaiming thirty would invalidate the continuation thesis and force an immediate reduction in short exposure before the next review.\n\nI know exactly what the conservative analysts will argue before they even speak, and I am going to dismantle it now. They will point to the relative strength index at twenty-four and the breach below the Bollinger Lower Band and claim this is a textbook mean-reversion setup. They will tell us to sit in cash, trim our short exposure, or wait for confirmation because the market is oversold. That is reactive thinking, and in a regime shift of this magnitude, it is capital destruction in disguise. The data explicitly shows that in structural breakdowns, momentum does not just snap back. It suppresses. We have already logged four consecutive sessions below thirty on the RSI while the MACD histogram accelerates downward at negative one thousand one hundred fifty. Waiting for the bleeding to stop before you enter the short means you are always late to the move. The twenty-day moving average is sitting at seventy-five thousand while we are trading near sixty-five thousand. That is a ten-thousand-dollar distribution vacuum. We capture that. The risk of a technical bounce is already fully contained by our invalidation level at seventy thousand eight hundred forty-one. That gives us a structural five-to-one reward ratio if BTC-USD simply rolls over to sixty-two thousand. Caution here does not protect capital. It surrenders it.\n\nThe neutral camp will inevitably try to balance the ledger by pointing to whale accumulation on the blockchain, the two hundred fifty million USDC mint, and the extreme fear index hitting ten. They will advocate for a hedged book or a wait-and-see approach because positioning looks exhausted. But let us look at the actual flow data instead of the noise. That one point nine billion dollars in weekly spot ETF outflows completely dwarfs the two hundred fifty million in fresh stablecoin liquidity. The market is in a verified liquidity vacuum. The negative funding rate and the one point four-one put-call ratio do not signal a bottom. They signal institutional hedging and structural downside protection. Market makers are actively leaning into this move while retail longs get liquidated. Fear at ten is not a reversal signal when the trend is this steep. It is the soundtrack of ongoing capitulation. We already flushed the long liquidation cluster below sixty-five thousand two hundred fifty. The next catalyst is the forty-seven point five percent prediction market probability of BTC-USD breaking sixty-two thousand dollars by late November. If that level cracks, it triggers a cascade of stops toward fifty-nine thousand. Sitting on the sidelines because of accumulation whispers ignores the actual price delivery and the macro reality.\n\nAnd let us address the macro backdrop directly, because it is the ultimate anchor for this aggressive short stance. Inflation remains sticky at four point zero eight percent year over year. The ten-year treasury yield is locked at five point fifteen percent. Prediction markets are pricing a ninety-eight point four percent probability of zero Federal Reserve rate cuts in twenty twenty-six. That is not a temporary headwind. It is a structural liquidity drought that makes holding long exposure mathematically irrational. The neutral argument might hinge on the upcoming FOMC minutes on November eighteenth, but even a slightly dovish tone will not change the rate trajectory until mid-twenty twenty-seven. We do not trade hypothetical pivots. We trade confirmed macro regimes. The labor market is resilient, the yield curve is normalizing, and volatility is elevated but controlled. The path of least resistance for BTC-USD is straight down until liquidity returns.\n\nOur execution framework is engineered to exploit this exact environment. The average true range has expanded to two thousand seven hundred thirty-two, confirming we are in a high-stress distribution phase. Our stop loss is deliberately placed at seventy thousand eight hundred forty-one, sitting well above the recent volatility cluster and the ten-day EMA. It gives the trade exactly what it needs to breathe without getting shaken out by standard wicks. By closing the long leg entirely and committing the full one-times equity to the short side, we are maximizing capital efficiency in a confirmed downtrend. This is not reckless gambling. It is disciplined aggression backed by a clear invalidation rule, a wide volatility buffer, and a macro environment that fundamentally rewards risk-off positioning. The technical structure is unequivocally bearish, the macro liquidity is contracting, and the market is handing us a textbook trend continuation. We are going to take it. We hold this net short one hundred percent posture through the upcoming macro data, riding the downside momentum until the ten-day moving average and relative strength index force our hand. If the market invalidates us, we cover and preserve capital. If it does not, we compound the win. Sell rating confirmed. Full net short executed. Let the breakdown run."
-    },
-    {
-     "key": "conservative",
-     "label": "Risk · Conservative",
-     "rating": null,
-     "text": "Conservative Analyst: Today (next 24h): BTC-USD is expected to trade between the November 15 intraday support band near 62,000 dollars and a one-times average true range extension approaching 68,100 dollars, with 65,768 acting as a volatile immediate pivot. A daily close back above 66,500 accompanied by the RSI reclaim",
-     "chars": 5214,
-     "en": "Conservative Analyst: Today (next 24h): BTC-USD is expected to trade between the November 15 intraday support band near 62,000 dollars and a one-times average true range extension approaching 68,100 dollars, with 65,768 acting as a volatile immediate pivot. A daily close back above 66,500 accompanied by the RSI reclaiming 30 will signal premature exhaustion of downside momentum and will force an immediate compression of our short exposure before the next scheduled review.\n\nLet me address the aggressive case directly, because while the bearish trend is undeniable, the execution you are proposing mistakes a confirmed downtrend for an invitation to risk maximum capital. You argue that the RSI reading of 24 and the Bollinger breach are mere noise in a structural breakdown, but the current positioning data tells a different story. You are advocating for a one-times equity net short position right at a historical extreme, but the derivatives market is flashing clear contrarian warnings. Funding has flipped negative to minus 0.0009 percent every eight hours, meaning shorts are literally paying to maintain this position. The Fear and Greed Index is at ten, which historically marks short-term capitulation extremes rather than sustained trend continuations. We just flushed a 130 million dollar short liquidation cluster below 65,250. When the market is this heavily skewed short, any minor catalyst or simple short covering can trigger a violent, high-velocity bounce. Your proposed stop loss at 70,841 sits over 5,400 dollars away from the entry. With an ATR of 2,733 dollars, that stop is wide enough for standard swings, but in a short squeeze scenario, price can easily wick through that level, turning your projected reward into a twenty percent equity drawdown before the next daily close. We do not survive drawdowns of that magnitude on a swing trading account, and protecting the downside is my primary mandate.\n\nFurthermore, you dismiss the upcoming macro calendar as hypotheticals we can ignore. I cannot. We have the Fed Chair speaking tomorrow, retail sales on Tuesday, and the FOMC minutes on Wednesday. Prediction markets already assign an 88.9 percent probability that BTC-USD holds above 62,000 dollars by November 17, meaning the market is actively defending this support zone. If retail sales miss or the FOMC minutes reveal even a fraction of dovish hesitation, the liquidity vacuum you rely on could temporarily fill with relief buying, and we would be left holding maximum short exposure at the worst possible moment. You also dismiss the neutral camp's accumulation thesis by pointing to the 1.91 billion dollar ETF outflow. That outflow is real, but it is a lagging institutional measure. The 250 million USDC mint, the whale movements to cold storage, and the sustained prediction market defense suggest that larger players are quietly absorbing retail capitulation. Chasing the breakdown here with one hundred percent equity exposure ignores the asymmetry of risk in a mean-reversion environment. Caution here does not surrender capital. It prevents us from handing it back to a volatility spike.\n\nMy mandate is capital preservation, which means we must participate in the downside but refuse to be exposed to binary event risk or short-squeeze wipes. I am adjusting this to an Underweight rating, which locks in a net fifty percent short position. We will keep a twenty-five percent long hedge intact. This hedge acts as a volatility shock absorber. If price spikes on a squeeze, the long leg profits while we evaluate the short thesis without taking a mark-to-market loss that forces a panic exit. If the breakdown continues cleanly to 62,000 dollars, the net short still captures substantial gains while the long leg is managed with minimal damage.\n\nHere is how we structure the book to ensure survival through this high-stress regime. We will close the existing 0.0245 BTC long leg and open a new long leg of 0.0410 BTC to establish the twenty-five percent hedge. We will close the existing 0.0345 BTC short leg and open a new short leg of 0.1225 BTC for the seventy-five percent short allocation, leaving us net short 0.0815 BTC, which represents exactly zero-point-five times our equity. This halves your directional risk while preserving the bearish bias. We are replacing all previous resting orders with these precise instructions. Execute a stop loss on the short leg if price daily closes above 68,800, size 0.1225 BTC. Execute a stop loss on the long leg if price daily closes below 60,500, size 0.0410 BTC. Execute a take profit on the short leg if price touches 62,200, size 0.0612 BTC. This structure guarantees we bank half the position at the prediction-market-supported floor while leaving the remainder to run only if momentum confirms. We do not bet the entire account on a single volatility expansion. We scale in, we hedge, and we let the data confirm before we commit further. If the daily candle closes back above 66,500, we reduce the short leg by half immediately and reassess. This approach respects the downtrend but prioritizes account longevity over maximum short-term extraction. We stay defensive, we manage volatility, and we compound steadily."
-    },
-    {
-     "key": "neutral",
-     "label": "Risk · Neutral",
-     "rating": null,
-     "text": "Neutral Analyst: Today (next 24h): BTC-USD is expected to oscillate between the recent November 15 intraday low near sixty-two thousand dollars and a one-times ATR extension toward sixty-eight thousand dollars, with the Bollinger lower band at sixty-five thousand seven hundred sixty-eight serving as immediate resistanc",
-     "chars": 5540,
-     "en": "Neutral Analyst: Today (next 24h): BTC-USD is expected to oscillate between the recent November 15 intraday low near sixty-two thousand dollars and a one-times ATR extension toward sixty-eight thousand dollars, with the Bollinger lower band at sixty-five thousand seven hundred sixty-eight serving as immediate resistance. A daily close back above the ten-day EMA at seventy thousand eight hundred forty-one, combined with RSI reclaiming thirty, would signal a shift from capitulation to structural consolidation and force us to compress the short book before the next review.\n\nLet us unpack why the aggressive approach is fundamentally misaligned with sustainable compounding, even though the trend is clearly bearish. You are correctly reading the macro liquidity drought, the broken two hundred SMA, and the accelerating MACD, but you are mistaking a confirmed regime shift for an invitation to deploy full one-times equity exposure into a crowded, negative-funding environment. Shorts are already paying to hold these positions, and the derivatives market is heavily positioned to the downside. Adding a full short leg right after flushing the sixty-five thousand two hundred fifty long liquidation cluster ignores the mechanical reality that any minor positive catalyst or simple short covering can trigger a violent squeeze. Your stop loss at seventy thousand eight hundred forty-one is structurally sound in a vacuum, but in a regime where the ATR is twenty-seven hundred dollars and we have binary macro events stacked over the next forty-eight hours, a full equity short leaves zero margin for the standard volatility wicks that define this phase. You are chasing a distribution vacuum without accounting for the fact that fear at ten and RSI at twenty-four historically precede sharp, high-velocity mean reversion, even if the broader trend remains down. Chasing here with maximum capital turns a high-probability setup into a binary event that ignores the account's proven strength in scaled execution and disciplined risk control.\n\nOn the flip side, the conservative pivot to a fifty percent net short with a twenty-five percent long hedge is well-intentioned but structurally flawed for this specific environment. Placing a stop loss on the short leg at sixty-eight thousand eight hundred is simply too tight. That is barely one point two times the current ATR. Normal intraday noise in this high-volatility regime will easily wick through that level, stopping you out before the broader macro thesis plays out. Furthermore, opening a new long hedge at current prices in a market where funding is already negative and the moving averages are steeply declining guarantees you will bleed capital on both sides. The long leg acts as a drag, not a shock absorber, when the entire technical stack and institutional flow point lower. Taking partial profits at sixty-two thousand two hundred is also premature. The prediction market data shows an eighty-eight point nine percent probability that price holds above sixty-two thousand through Monday, but it does not confirm a reversal there. Scaling out that early caps your downside capture and leaves the account exposed to opportunity cost if we get the capitulation flush toward fifty-nine thousand to sixty thousand that the liquidity structure and elevated ATR suggest is entirely possible.\n\nThe middle path is to maintain an Underweight posture with a clean fifty percent net short exposure, but to engineer the book for volatility survival rather than theoretical perfection. We keep the short bias aligned with the broken moving averages, sticky CPI, and hawkish Fed pricing, but we strip out the inefficient long hedge mechanics and replace them with a scaled, volatility-adjusted structure. We use wider, daily-close triggers to avoid intraday stop hunting, and we target the sixty-two thousand zone as a partial realization area rather than an absolute floor. This matches the account's historical track record, which shows a ninety percent win rate driven by precise take-profit execution and conservative drawdown management rather than maximum directional betting. We participate in the downside momentum without overleveraging into a negative-funding squeeze trap.\n\nHere is the execution framework for the next twenty-four hours that replaces all previous resting orders. Close the existing long leg of 0.02451 BTC and open a new long leg of 0.0409 BTC to satisfy the twenty-five percent allocation requirement. Close the existing short leg of 0.03451 BTC and open a new short leg of 0.1226 BTC for the seventy-five percent allocation, resulting in a net short position of 0.0817 BTC representing half our equity. Execute a stop loss on the short leg if the price triggers a daily close at 70,500, size 0.1226 BTC. Execute a stop loss on the long leg if the price triggers a daily close at 59,500, size 0.0409 BTC. Execute a take profit on the short leg if price touches 62,100, size 0.0613 BTC. This structure respects the prevailing downtrend and macro headwinds, but it widens the invalidation level to nearly one point nine times the ATR to absorb normal swings, avoids funding bleed by minimizing hedge duration, and locks in partial gains at a statistically defended support level. We stay positioned for further downside without gambling on a straight-line crash, and we preserve the account equity to compound steadily through the high-volatility regime. Let the market breathe, capture the structural edge, and scale out only when the data confirms exhaustion."
-    },
-    {
-     "key": "pm",
-     "label": "Portfolio Manager",
-     "rating": "Underweight",
-     "text": "**Rating**: Underweight **Executive Summary**: Today (next 24h): BTC-USD is expected to trade between the November 15 intraday low of $62,000 and a 1.0x ATR extension near $68,100, with the Bollinger Lower Band at $65,768 acting as immediate resistance. A daily close back above the 10-day EMA at $70,841 accompanied by ",
-     "chars": 4018,
-     "en": "**Rating**: Underweight\n\n**Executive Summary**: \nToday (next 24h): BTC-USD is expected to trade between the November 15 intraday low of $62,000 and a 1.0x ATR extension near $68,100, with the Bollinger Lower Band at $65,768 acting as immediate resistance. A daily close back above the 10-day EMA at $70,841 accompanied by the RSI reclaiming 30 would invalidate the continuation thesis and force an immediate reduction in short exposure before the next review.\n\nThe bearish trend is confirmed across all timeframes, but deeply oversold conditions and negative funding rates make a full 100% net short (Sell) too risky due to severe squeeze potential. We adopt the Neutral analyst's Underweight framework (net 50% short) with a wider, volatility-adjusted stop loss to survive intraday noise. We will immediately rebalance the book to a 25% long hedge and a 75% short leg. All previous resting orders are canceled and replaced with the new volatility-buffered stops and partial take-profits. \n\n**Immediate Rebalance Actions:**\n- Close the existing long leg of 0.02451 BTC and open a new long leg of 0.0409 BTC.\n- Close the existing short leg of 0.03451 BTC and open a new short leg of 0.1227 BTC.\n\n**Resting Orders:**\n- stop_loss: close short leg (0.1227 BTC) if daily close above 70,500\n- stop_loss: close long leg (0.0409 BTC) if daily close below 59,500\n- take_profit: close short leg (0.0614 BTC) if price touches 62,100\n\n**Investment Thesis**: \nThe macro environment is undeniably hostile for BTC-USD right now: sticky CPI at 4.08%, 10-year Treasury yields locked at 5.15%, and prediction markets pricing a 98.4% probability of zero Fed rate cuts in 2026. This creates a structural liquidity vacuum that fundamentally rewards risk-off positioning. Technically, price has decisively broken the 200 SMA and is trading well below all major moving averages with a widening MACD histogram, confirming full bearish alignment. \n\nHowever, the Aggressive analyst's call for a 100% net short (Sell) is rejected because it ignores extreme oversold conditions (1D RSI at 24.2), negative funding rates (where shorts are literally paying to maintain positions), and a Fear & Greed index at 10. These derivatives and sentiment metrics historically precede violent, high-velocity short-covering squeezes. Committing 1x equity to the short side at the bottom of a massive distribution move is a binary gamble that violates our capital preservation mandate. \n\nThe Conservative analyst correctly identifies the squeeze risk and advocates for a 50% net short, but their proposed stop loss at $68,800 is structurally flawed. At roughly 1.2x the current ATR ($2,732), that stop is far too tight and will easily be hunted by normal intraday volatility wicks, prematurely ejecting us from a winning trend. \n\nThe Neutral analyst provides the optimal synthesis: maintaining the 50% net short bias to capture the structural downtrend, but widening the invalidation level to $70,500 (roughly 1.9x ATR, sitting just below the 10-day EMA at $70,841). This gives the trade the necessary room to breathe through binary macro events this week (Fed Chair speech, Retail Sales, FOMC minutes). Furthermore, scaling out half the short position at $62,100 respects the prediction market's 88.9% probability that this support zone holds through the immediate calendar, locking in gains before a potential mean-reversion bounce.\n\n**What would change the call:** \nA daily close above $70,841 (the 10-day EMA) with the RSI reclaiming 30 would invalidate the bearish continuation and force an immediate compression of the short book toward a Hold or Overweight stance. Conversely, a verified daily close below $62,000 accompanied by expanding open interest and continued spot ETF outflows would confirm the capitulation flush toward $59,000, potentially prompting a shift to a full Sell rating on the subsequent review. Missing data that could shift the view includes real-time ETF flow reversals or unexpected dovish surprises from the upcoming FOMC minutes."
-    }
-   ],
-   "mtf": [
-    {
-     "tf": "4H",
-     "close": 65079.5,
-     "ema20": 66909.5,
-     "ema50": 70280.4,
-     "rsi14": 32.7,
-     "trend": "down"
-    },
-    {
-     "tf": "1D",
-     "close": 65311,
-     "ema20": 73972.3,
-     "ema50": 77138.5,
-     "rsi14": 24.2,
-     "trend": "down"
-    },
-    {
-     "tf": "1W",
-     "close": 65311,
-     "ema20": 75564.9,
-     "ema50": 77884.6,
-     "rsi14": 38.6,
-     "trend": "down"
-    }
-   ],
-   "mandate": "perp-mtf-hedge",
-   "deepModel": "qwen3.7-max",
-   "quickModel": "qwen3.6-plus",
-   "secs": 1011.5,
-   "feeds": {
-    "patched": true,
-    "reddit": {
-     "source": "oauth-failed",
-     "error": "RuntimeError: Reddit từ chối id/secret (401) — id dài 47 ký tự, secret dài 29 ký tự; kiểm tra app loại 'script', id = chuỗi dưới 'personal use script', secret = dòng 'secret'"
-    },
-    "telegram": {
-     "WatcherGuru": 8,
-     "whale_alert_io": 8,
-     "cointelegraph": 8,
-     "binance_announcements": 8
-    },
-    "funding": {
-     "OKX": {
-      "rate": -0.0000063334163998,
-      "oiBtc": 32316
-     },
-     "Bybit": {
-      "rate": -0.00002865,
-      "oiBtc": 70270
-     },
-     "Binance": {
-      "rate": 4e-8,
-      "oiBtc": 93145
-     },
-     "Hyperliquid": {
-      "rate": 0.0000017144,
-      "oiBtc": 36448
-     }
-    },
-    "positioning": {
-     "OKX long/short + taker": {
-      "lsRatio": 2.7,
-      "takerBS": 0.969
-     },
-     "Deribit options": {
-      "dvol": 42.42,
-      "pcr": 0.766
-     },
-     "Fear & Greed": {
-      "fng": 10,
-      "fngLabel": "Extreme Fear"
-     },
-     "Coinbase premium": {
-      "cbPremium": -59.9,
-      "cbBase": -106.1
-     },
-     "Stablecoin supply": {
-      "stable7d": -1.41
-     },
-     "Hyperliquid liquidations": {
-      "liqLong": 11633097,
-      "liqShort": 23561758
-     },
-     "Liquidation heatmap (est.)": {
-      "venues": 3,
-      "up5": 304561513,
-      "dn5": 287300384,
-      "topUp": [
-       67250,
-       137630785
-      ],
-      "topDn": [
-       58750,
-       141423295
-      ]
-     },
-     "OKX liquidations": {
-      "long": 2830007,
-      "short": 2481250,
-      "hours": 14.5
-     },
-     "Hyperliquid liquidation map": {
-      "bigLong": [
-       60000,
-       53554674
-      ],
-      "bigShort": [
-       69400,
-       19557702
-      ]
-     }
-    },
-    "x": {
-     "posts": 0,
-     "note": "X API key not configured (secret X_BEARER_TOKEN)"
-    }
-   },
-   "today": {
-    "price": 64450.1,
-    "at": "2026-11-16T07:14:50+00:00",
-    "dvol": 42.42,
-    "sigma": 1431,
-    "lo": 63019,
-    "hi": 65881,
-    "above": [
-     {
-      "price": 67250,
-      "what": "cụm thanh lý short ước tính ~$138M"
-     },
-     {
-      "price": 73972,
-      "what": "EMA20 khung ngày"
-     }
-    ],
-    "below": [
-     {
-      "price": 58750,
-      "what": "cụm thanh lý long ước tính ~$141M"
-     }
-    ]
-   },
-   "marketData": {
-    "patched": true,
-    "table": "okx:BTC-USDT → 2026-11-15",
-    "source": "okx:BTC-USDT",
-    "latest": "2026-11-15",
-    "rows": 899
-   },
-   "macro": {
-    "fallback": {
-     "CPIAUCSL": "BLS",
-     "CPILFESL": "BLS",
-     "UNRATE": "BLS",
-     "PAYEMS": "BLS",
-     "DFF": "NY Fed",
-     "DGS2": "US Treasury",
-     "DGS10": "US Treasury",
-     "T10Y2Y": "US Treasury",
-     "VIXCLS": "CBOE"
-    },
-    "polymarket": "Fed rate cut",
-    "patched": true,
-    "served": [
-     "CPIAUCSL",
-     "DFF",
-     "UNRATE",
-     "DGS10",
-     "VIXCLS",
-     "T10Y2Y"
-    ]
-   }
+   "at": "2026-11-16T12:24:55+00:00",
+   "signal": null,
+   "price": 64061.4,
+   "order": null,
+   "error": "OpenAIConnectionError: Connection error.",
+   "stage": "agents",
+   "reason": null,
+   "agents": null,
+   "mtf": null,
+   "mandate": null,
+   "deepModel": null,
+   "quickModel": null,
+   "secs": null,
+   "feeds": null,
+   "today": null,
+   "marketData": null,
+   "macro": null
   },
   "lastOk": {
    "perpSide": "SHORT",
@@ -11627,6 +11318,18 @@
    }
   },
   "recent": [
+   {
+    "perpSide": null,
+    "perpOrder": null,
+    "tradeDate": "2026-11-15",
+    "at": "2026-11-16T12:24:55+00:00",
+    "signal": null,
+    "price": 64061.4,
+    "order": null,
+    "error": "OpenAIConnectionError: Connection error.",
+    "stage": "agents",
+    "reason": null
+   },
    {
     "perpSide": "SHORT",
     "perpOrder": {
@@ -12801,7 +12504,7 @@
     }
    ]
   },
-  "cash": 10595.38,
+  "cash": 10595.35,
   "qty": -0.0828963325670157,
   "avgPrice": 65507.13730343514,
   "perp": {
@@ -13085,14 +12788,14 @@
    "leverage": 1,
    "venue": "okx",
    "startCapital": 10000,
-   "wallet": 10595.38,
+   "wallet": 10595.35,
    "qty": -0.0828963325670157,
    "entry": 65507.13730343514,
    "side": "SHORT",
    "equity": 10683,
    "liq": 192360.16,
    "fees": 18.45,
-   "funding": -6.6,
+   "funding": -6.57,
    "realized": 607.24,
    "liquidations": 0,
    "lastError": null,
