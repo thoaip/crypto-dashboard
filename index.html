@@ -1718,7 +1718,7 @@ function txFeeds(){
   // cộng đồng: Reddit (API chính thức nếu có key, không thì RSS bị chặn) + kênh Telegram công khai
   const rd=f.reddit||{}, tg=f.telegram||{}, tgN=Object.values(tg).filter(v=>typeof v==="number"), comm=[];
   if(f.reddit) comm.push(rd.source==="oauth"?chip("Reddit",`${rd.posts} bài`,"#ff8f5c")
-    :`<em style="--b:#5f7695" title="${escHtml(rd.error||rd.note||"")}">Reddit ✗ cần key API</em>`);
+    :`<em style="--b:#5f7695" title="${escHtml(rd.error||rd.note||"")}">Reddit ✗ ${rd.source==="oauth-failed"?"key bị từ chối":"cần key API"}</em>`);
   if(tgN.length) comm.push(chip("Telegram",`${tgN.length} kênh · ${tgN.reduce((a,b)=>a+b,0)} bài`,"#3de1ff"));
   return `<div class="tx-feeds"><i>FUNDING / 8H</i>${fund}${xs}</div>`+(comm.length?`<div class="tx-feeds"><i>CỘNG ĐỒNG</i>${comm.join("")}</div>`:"")+(pos.length?`<div class="tx-feeds"><i>ĐỊNH VỊ · PHÁI SINH</i>${pos.join("")}</div>`:"");
 }
