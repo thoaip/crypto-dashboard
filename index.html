@@ -1031,6 +1031,7 @@ function txPerp(){
       return `<span style="--c:${c}"><b>${escHtml(m.tf)}</b> ${m.trend==="up"?"▲":m.trend==="down"?"▼":"◆"} RSI ${m.rsi14}</span>`; }).join("")+`</div>`:"")+
     (p.lastError?`<div class="tx-empty" style="color:#ff4d6d">⚠️ ${escHtml(p.lastError)}</div>`:"")+
     txToday(tx.data.lastOk&&tx.data.lastOk.today, px)+
+    txWeekly(tx.data.weekly)+
     txOrders(p,px)+
     `<div style="margin-top:8px">`+(p.trades||[]).slice(0,5).map(t=>{ const k=TX_ORD[String(t.kind||"").toLowerCase()];
       return `<div class="tx-ptr"><span class="tx-dim">${escHtml(txIso(t.at))}</span><span style="color:${t.kind==="LIQUIDATION"?"#ff4d6d":t.side==="BUY"?"#3dff8f":"#ff4d6d"}">${t.kind==="LIQUIDATION"?"LIQ":k?k.tag:t.side} ${t.leg?escHtml(t.leg)+" ":""}${txBtc(t.qty,t.price)}</span><span>$${fp(Math.round(t.price))}</span><span class="tx-dim">${t.realized?txUsd(t.realized):"—"}</span></div>`; }).join("")+`</div>`;
@@ -1047,6 +1048,22 @@ function txToday(t, px){
     (t.above||[]).slice().reverse().map(m=>row(m,"#ff4d6d")).join("")+
     `<div class="tx-ptr"><span style="color:#fff">$${fp(Math.round(live))}</span><span>◀ giá hiện tại</span><span></span></div>`+
     (t.below||[]).map(m=>row(m,"#3dff8f")).join("")+`</div>`;
+}
+// Báo cáo tuần (tauric/weekly.py): tổng kết tuần đã đóng + dự báo tuần tới (vùng ±1σ, kịch bản) + sổ dự báo đã chấm
+function txWeekly(w){
+  if(!w||!w.view) return "";
+  const v=w.view, nw=v.next_week||{}, f=w.forecast||{}, r=w.record||{}, b=w.btc||{};
+  const bc={"Tăng":"#3dff8f","Giảm":"#ff4d6d","Đi ngang":"#ffc23d"};
+  const pc=(x)=>x==null?"—":`${x>0?"+":""}${Number(x).toFixed(2)}%`;
+  const done=(w.forecasts||[]).filter(x=>x.result).slice(0,6);
+  return `<div class="tx-ords" style="--a:#9b8cff"><div class="tx-h">BÁO CÁO TUẦN ${escHtml(w.period)} <span class="tx-dim">${escHtml(txVn(w.at))} · ${escHtml(txModel(w.model||""))}</span></div>`+
+    `<div style="font-size:11.5px;margin-bottom:6px">BTC tuần ${pc(b.chgPct)} · PERP ${pc(w.perp&&w.perp.pnlPct)} vs giữ BTC ${pc(w.perp&&w.perp.buyHoldPct)}${w.year?` · từ đầu năm ${pc(w.year.ytdPct)} · tuần ${w.year.weeksSinceHalving} sau halving`:""}</div>`+
+    `<div style="font-size:12px;margin-bottom:6px">${escHtml(v.week_summary||"")}</div>`+
+    `<div style="font-size:12px;margin-bottom:4px">Tuần tới: <b style="color:${bc[nw.bias]||"#cfe1ff"}">${escHtml(nw.bias||"—")}</b> <span class="tx-dim">(tin cậy ${escHtml(nw.confidence||"—")})</span> · vùng ±1σ <b>$${fp(f.lo)} – $${fp(f.hi)}</b></div>`+
+    (nw.scenarios||[]).map(x=>`<div class="tx-ptr"><span>${escHtml(x.name)}</span><span class="tx-dim">${escHtml(x.trigger)} → ${escHtml(x.target)}</span><span>${Number(x.probability)||0}%</span></div>`).join("")+
+    `<div class="tx-dim" style="font-size:11px;margin-top:6px">Sổ dự báo: ${r.n?`${r.n} tuần đã chấm · trong vùng ${r.inRange}% · đúng hướng ${r.dirOk}%`:"chưa có tuần nào được chấm"}</div>`+
+    done.map(x=>`<div class="tx-ptr"><span class="tx-dim">${escHtml(x.period)}</span><span>${escHtml(x.bias)} $${fp(x.lo)}–$${fp(x.hi)} → $${fp(x.result.close)}</span><span style="color:${x.result.dirOk?"#3dff8f":"#ff4d6d"}">${x.result.dirOk?"đúng":"sai"}${x.result.inRange?"":" · ngoài vùng"}</span></div>`).join("")+
+    `</div>`;
 }
 // Lệnh chờ PM (tauric/orders.py): stop / chốt lời / huỷ kịch bản / vào thêm — khớp theo nến 1H ở lần chạy sau
 const TX_ORD = { stop_loss:{tag:"STOP",vn:"Cắt lỗ",c:"#ff4d6d"}, take_profit:{tag:"TP",vn:"Chốt lời",c:"#3dff8f"},
